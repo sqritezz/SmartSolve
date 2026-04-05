@@ -1,2 +1,0 @@
-# SmartSolve
-Thesis
