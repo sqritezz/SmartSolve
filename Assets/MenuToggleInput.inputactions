@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "name": "MenuToggleInput",
+    "maps": [
+        {
+            "name": "VR",
+            "id": "a2183ea0-43d7-4429-9c2f-f20dfa8327ff",
+            "actions": [
+                {
+                    "name": "togglemenu",
+                    "type": "Button",
+                    "id": "457e3e0b-1b86-48be-81ce-d437518fa81b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b64ff089-4995-4dc5-a34a-fa7cc97d0975",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "togglemenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8b286ca-71cf-4ee3-9476-05d358bc89d3",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "togglemenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

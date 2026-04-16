@@ -2030,7 +2030,6 @@ GameObject:
   - component: {fileID: 477411619}
   - component: {fileID: 477411621}
   - component: {fileID: 477411620}
-  - component: {fileID: 477411622}
   m_Layer: 0
   m_Name: XR Origin (VR)
   m_TagString: Untagged
@@ -2305,31 +2304,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
   spawnPoint: {fileID: 1501160574}
---- !u!114 &477411622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 477411609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a671fad9dfd84b438ed03c079ef17a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuToggleVR
-  mainMenu: {fileID: 8532711283519071885}
-  toggleButton:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Toggle Button
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 29416fe1-1091-4af4-95ad-b6dc6067b54e
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: -6926013634430162500, guid: 7199dbec3ac5fa44ebd9dc36efd8828b, type: 3}
 --- !u!1 &526308423
 GameObject:
   m_ObjectHideFlags: 0
@@ -6200,11 +6174,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5463a4fa0e8b5eb47a2a66c2afeef683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TeleportToPoint
-  xrRig: {fileID: 477411612}
+  xrRig: {fileID: 0}
   easyPoint: {fileID: 337014838}
   mediumPoint: {fileID: 102509177}
   hardPoint: {fileID: 1477662782}
-  mainMenu: {fileID: 8532711283519071885}
 --- !u!4 &1112640490
 Transform:
   m_ObjectHideFlags: 0
@@ -28983,8 +28956,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8281144769485084212}
   m_HandleRect: {fileID: 7351813668057209344}
   m_Direction: 2
-  m_Value: 1.0000018
-  m_Size: 0.7833727
+  m_Value: 0.9999991
+  m_Size: 0.78337276
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -36393,7 +36366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.0004968643}
+  m_AnchoredPosition: {x: 0, y: -0.00013991729}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!4 &3995543742068715000
@@ -63231,7 +63204,7 @@ GameObject:
   - component: {fileID: 5169458300344663569}
   - component: {fileID: 1823351250}
   m_Layer: 5
-  m_Name: Main Menu
+  m_Name: newui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
