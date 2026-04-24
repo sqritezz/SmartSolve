@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -6,6 +6,10 @@ public class RamGrab : MonoBehaviour
 {
     private XRGrabInteractable grab;
     private Rigidbody rb;
+
+    public PowerButton powerButton;
+
+    private bool hasBeenRemoved = false;
 
     void Awake()
     {
@@ -17,8 +21,10 @@ public class RamGrab : MonoBehaviour
 
     void OnGrab(SelectEnterEventArgs args)
     {
-        transform.SetParent(null);
-        transform.position += Vector3.up * 0.01f;
+        hasBeenRemoved = true;
+
+        powerButton.isRamInstalled = false;
+
         StartCoroutine(EnablePhysics());
     }
 
@@ -26,5 +32,14 @@ public class RamGrab : MonoBehaviour
     {
         yield return new WaitForFixedUpdate();
         rb.isKinematic = false;
+    }
+
+    public void OnInserted()
+    {
+        if (hasBeenRemoved)
+        {
+            powerButton.isRamInstalled = true;
+            Debug.Log("RAM inserted via socket - FIXED");
+        }
     }
 }

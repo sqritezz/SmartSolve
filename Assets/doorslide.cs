@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DoorSlide : MonoBehaviour
 {
-    public Vector3 openOffset = new Vector3(-1.5f, 0, 0); // move left
+    public Vector3 openOffset = new Vector3(1.5f, 0, 0); // move left
     public float speed = 2f;
 
     private Vector3 closedPos;
