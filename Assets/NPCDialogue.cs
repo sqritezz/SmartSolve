@@ -1,21 +1,15 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
-public class NPCDialogue : MonoBehaviour
+public class NPCClick : MonoBehaviour
 {
-    public GameObject dialoguePanel;
-    public TextMeshProUGUI dialogueText;
+    public GameObject dialogueUI;
+    public TMP_Text dialogueText;
 
-    public string message = "Do you want to learn Ram Testing?";
-
-    public void ShowDialogue()
+    void OnMouseDown()
     {
-        dialoguePanel.SetActive(true);
-        dialogueText.text = message;
-    }
-
-    public void OnYesClicked()
-    {
-        dialoguePanel.SetActive(false);
+        dialogueUI.SetActive(true);
+        dialogueText.text = "Hello traveler!";
     }
 }
