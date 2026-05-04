@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PowerButton : MonoBehaviour
 {
-    [Header("Monitor Settings")]
-    public Renderer monitorRenderer;
+    [Header("Monitor")]
+    public GameObject monitorScreen;
     public Material screenOn;
     public Material screenOff;
 
@@ -12,38 +12,64 @@ public class PowerButton : MonoBehaviour
     public float onDuration = 3f;
 
     [Header("System State")]
-    public bool isRamInstalled = false; // becomes TRUE after reinserting RAM
+    public bool isRamInstalled = false;
 
-    // Called when button is pressed
-    public void TurnOnMonitor()
+    private bool firstBootDone = false;
+    private Renderer monitorRenderer;
+
+    void Start()
     {
-        Debug.Log("BUTTON CLICKED");
-        StartCoroutine(BootSequence());
+        monitorRenderer = monitorScreen.GetComponent<Renderer>();
+        TurnScreenOff();
     }
 
-    IEnumerator BootSequence()
+    public void PressPowerButton()
     {
-        if (monitorRenderer == null)
+        if (!firstBootDone)
         {
-            Debug.LogWarning("Monitor Renderer is NOT assigned!");
-            yield break;
-        }
-
-        // Turn ON
-        monitorRenderer.material = screenOn;
-
-        // Wait
-        yield return new WaitForSeconds(onDuration);
-
-        // Turn OFF only if RAM is NOT fixed
-        if (!isRamInstalled)
-        {
-            monitorRenderer.material = screenOff;
-            Debug.Log("System failed (RAM issue)");
+            StartCoroutine(FirstBootSequence());
         }
         else
         {
-            Debug.Log("System running нормально 😎");
+            if (isRamInstalled)
+            {
+                TurnScreenOn();
+            }
+            else
+            {
+                StartCoroutine(FailedBoot());
+            }
         }
+    }
+
+    IEnumerator FirstBootSequence()
+    {
+        firstBootDone = true;
+
+        TurnScreenOn();
+
+        yield return new WaitForSeconds(onDuration);
+
+        // Simulate faulty RAM shutdown
+        TurnScreenOff();
+    }
+
+    IEnumerator FailedBoot()
+    {
+        TurnScreenOn();
+
+        yield return new WaitForSeconds(2f);
+
+        TurnScreenOff();
+    }
+
+    public void TurnScreenOn()
+    {
+        monitorRenderer.material = screenOn;
+    }
+
+    public void TurnScreenOff()
+    {
+        monitorRenderer.material = screenOff;
     }
 }

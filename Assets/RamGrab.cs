@@ -16,30 +16,27 @@ public class RamGrab : MonoBehaviour
         grab = GetComponent<XRGrabInteractable>();
         rb = GetComponent<Rigidbody>();
 
+        rb.useGravity = false;
+        rb.isKinematic = true;
+
         grab.selectEntered.AddListener(OnGrab);
     }
 
     void OnGrab(SelectEnterEventArgs args)
     {
-        hasBeenRemoved = true;
+        transform.SetParent(null);
+
+        rb.isKinematic = false;
+        rb.useGravity = false;
 
         powerButton.isRamInstalled = false;
-
-        StartCoroutine(EnablePhysics());
     }
 
     IEnumerator EnablePhysics()
     {
         yield return new WaitForFixedUpdate();
-        rb.isKinematic = false;
-    }
 
-    public void OnInserted()
-    {
-        if (hasBeenRemoved)
-        {
-            powerButton.isRamInstalled = true;
-            Debug.Log("RAM inserted via socket - FIXED");
-        }
+        rb.isKinematic = false;
+        rb.useGravity = true;
     }
 }
