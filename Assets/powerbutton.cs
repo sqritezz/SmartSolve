@@ -1,75 +1,56 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PowerButton : MonoBehaviour
 {
-    [Header("Monitor")]
-    public GameObject monitorScreen;
-    public Material screenOn;
-    public Material screenOff;
+    public GameObject screenOn;
+    public GameObject screenOff;
 
-    [Header("Boot Settings")]
-    public float onDuration = 3f;
+    public float turnOffDelay = 3f;
+    public bool isRamFixed = false;
 
-    [Header("System State")]
-    public bool isRamInstalled = false;
+    private XRBaseInteractable interactable;
+    private Coroutine bootRoutine;
 
-    private bool firstBootDone = false;
-    private Renderer monitorRenderer;
+    void Awake()
+    {
+        interactable = GetComponent<XRBaseInteractable>();
+
+        if (interactable != null)
+            interactable.selectEntered.AddListener(OnPowerPressed);
+    }
 
     void Start()
     {
-        monitorRenderer = monitorScreen.GetComponent<Renderer>();
-        TurnScreenOff();
+        screenOn.SetActive(false);
+        screenOff.SetActive(true);
+    }
+
+    void OnPowerPressed(SelectEnterEventArgs args)
+    {
+        PressPowerButton();
     }
 
     public void PressPowerButton()
     {
-        if (!firstBootDone)
+        if (bootRoutine != null)
+            StopCoroutine(bootRoutine);
+
+        bootRoutine = StartCoroutine(BootMonitor());
+    }
+
+    IEnumerator BootMonitor()
+    {
+        screenOn.SetActive(true);
+        screenOff.SetActive(false);
+
+        if (!isRamFixed)
         {
-            StartCoroutine(FirstBootSequence());
+            yield return new WaitForSeconds(turnOffDelay);
+
+            screenOn.SetActive(false);
+            screenOff.SetActive(true);
         }
-        else
-        {
-            if (isRamInstalled)
-            {
-                TurnScreenOn();
-            }
-            else
-            {
-                StartCoroutine(FailedBoot());
-            }
-        }
-    }
-
-    IEnumerator FirstBootSequence()
-    {
-        firstBootDone = true;
-
-        TurnScreenOn();
-
-        yield return new WaitForSeconds(onDuration);
-
-        // Simulate faulty RAM shutdown
-        TurnScreenOff();
-    }
-
-    IEnumerator FailedBoot()
-    {
-        TurnScreenOn();
-
-        yield return new WaitForSeconds(2f);
-
-        TurnScreenOff();
-    }
-
-    public void TurnScreenOn()
-    {
-        monitorRenderer.material = screenOn;
-    }
-
-    public void TurnScreenOff()
-    {
-        monitorRenderer.material = screenOff;
     }
 }

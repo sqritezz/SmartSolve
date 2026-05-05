@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class RamGrab : MonoBehaviour
@@ -8,8 +7,6 @@ public class RamGrab : MonoBehaviour
     private Rigidbody rb;
 
     public PowerButton powerButton;
-
-    private bool hasBeenRemoved = false;
 
     void Awake()
     {
@@ -24,19 +21,12 @@ public class RamGrab : MonoBehaviour
 
     void OnGrab(SelectEnterEventArgs args)
     {
-        transform.SetParent(null);
+        transform.SetParent(null, true);
 
         rb.isKinematic = false;
         rb.useGravity = false;
 
-        powerButton.isRamInstalled = false;
-    }
-
-    IEnumerator EnablePhysics()
-    {
-        yield return new WaitForFixedUpdate();
-
-        rb.isKinematic = false;
-        rb.useGravity = true;
+        if (powerButton != null)
+            powerButton.isRamFixed = false;
     }
 }
