@@ -16,6 +16,15 @@ public class RamSnapMedium : MonoBehaviour
     {
         if (other.CompareTag(ramTag) && currentRam == null)
         {
+            // CHECK IF RAM IS CLEAN FIRST
+            RamCleaner cleaner = other.GetComponent<RamCleaner>();
+
+            if (cleaner == null || !cleaner.isClean)
+            {
+                Debug.Log("RAM is still dirty! Clean it first with the eraser.");
+                return;
+            }
+
             XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
 
             if (grab != null && !grab.isSelected)
@@ -40,18 +49,9 @@ public class RamSnapMedium : MonoBehaviour
 
                 if (monitorRenderer != null)
                     monitorRenderer.materials[materialIndex].color = Color.white;
+
+                Debug.Log("Clean RAM inserted successfully!");
             }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag(ramTag))
-        {
-            currentRam = null;
-
-            if (monitorRenderer != null)
-                monitorRenderer.materials[materialIndex].color = Color.black;
         }
     }
 }
