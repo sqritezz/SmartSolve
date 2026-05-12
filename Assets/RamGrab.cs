@@ -8,6 +8,8 @@ public class RamGrab : MonoBehaviour
 
     public PowerButton powerButton;
 
+    private bool fixedForever = false;
+
     void Awake()
     {
         grab = GetComponent<XRGrabInteractable>();
@@ -26,7 +28,15 @@ public class RamGrab : MonoBehaviour
         rb.isKinematic = false;
         rb.useGravity = false;
 
-        if (powerButton != null)
+        if (powerButton != null && !fixedForever)
             powerButton.isRamFixed = false;
+    }
+
+    public void MarkFixedForever()
+    {
+        fixedForever = true;
+
+        if (powerButton != null)
+            powerButton.isRamFixed = true;
     }
 }

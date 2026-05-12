@@ -38,8 +38,16 @@ public class RamSnap : MonoBehaviour
         other.transform.localRotation = Quaternion.identity;
         other.transform.localScale = Vector3.one;
 
+        // RAM is now fixed
         if (powerButton != null)
             powerButton.isRamFixed = true;
+
+        // THIS IS THE IMPORTANT PART:
+        RamGrab ramGrab = other.GetComponent<RamGrab>();
+        if (ramGrab != null)
+        {
+            ramGrab.MarkFixedForever();
+        }
 
         if (clickSound != null)
             clickSound.Play();
@@ -51,8 +59,13 @@ public class RamSnap : MonoBehaviour
         {
             currentRam = null;
 
-            if (powerButton != null)
+            // Only break again if it was never properly fixed
+            RamGrab ramGrab = other.GetComponent<RamGrab>();
+
+            if (ramGrab == null && powerButton != null)
+            {
                 powerButton.isRamFixed = false;
+            }
         }
     }
 }

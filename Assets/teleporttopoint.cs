@@ -9,12 +9,26 @@ public class TeleportToPoint : MonoBehaviour
     public Transform hardPoint;
 
     public GameObject mainMenu;
+    public GameObject home;
+
+    void Start()
+    {
+        home.SetActive(true);
+        mainMenu.SetActive(false);
+    }
+
+    public void OpenMainMenu()
+    {
+        home.SetActive(false);
+        mainMenu.SetActive(true);
+    }
 
     public void TeleportEasy()
     {
         xrRig.position = easyPoint.position;
 
         mainMenu.SetActive(false);
+        home.SetActive(false);
     }
 
     public void TeleportMedium()
@@ -22,6 +36,7 @@ public class TeleportToPoint : MonoBehaviour
         xrRig.position = mediumPoint.position;
 
         mainMenu.SetActive(false);
+        home.SetActive(false);
     }
 
     public void TeleportHard()
@@ -29,5 +44,6 @@ public class TeleportToPoint : MonoBehaviour
         xrRig.position = hardPoint.position;
 
         mainMenu.SetActive(false);
+        home.SetActive(false);
     }
 }
