@@ -7,17 +7,17 @@ public class VolumeSettings : MonoBehaviour
     public AudioMixer audioMixer;
 
     public Slider masterSlider;
-    public Slider backgroundSlider;
+    public Slider bgmSlider;
     public Slider sfxSlider;
 
     void Start()
     {
         masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        backgroundSlider.value = PlayerPrefs.GetFloat("BackgroundVolume", 1f);
+        bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 1f);
         sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
         SetMasterVolume(masterSlider.value);
-        SetBackgroundVolume(backgroundSlider.value);
+        SetBGMVolume(bgmSlider.value);
         SetSFXVolume(sfxSlider.value);
     }
 
@@ -27,10 +27,10 @@ public class VolumeSettings : MonoBehaviour
         PlayerPrefs.SetFloat("MasterVolume", value);
     }
 
-    public void SetBackgroundVolume(float value)
+    public void SetBGMVolume(float value)
     {
-        audioMixer.SetFloat("BackgroundVolume", Mathf.Log10(value) * 20);
-        PlayerPrefs.SetFloat("BackgroundVolume", value);
+        audioMixer.SetFloat("BGMVolume", Mathf.Log10(value) * 20);
+        PlayerPrefs.SetFloat("BGMVolume", value);
     }
 
     public void SetSFXVolume(float value)

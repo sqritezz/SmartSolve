@@ -1,74 +1,120 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 public class QuizManager : MonoBehaviour
 {
-    [Header("Question Panels")]
-    public GameObject[] questionPanels;
+    [Header("Quiz Questions")]
+    public GameObject[] questions; // Question1 to Question10 only
 
-    [Header("Correct Buttons")]
-    public Button[] correctButtons; // drag 1 correct button per question
+    [Header("Final Score Text")]
+    public TextMeshProUGUI scoreText; // Drag your (score) text here
 
-    [Header("Result")]
+    [Header("Result Panel")]
     public GameObject resultPanel;
-    public TextMeshProUGUI scoreText;
 
     private int currentQuestion = 0;
     private int score = 0;
 
+    // -1 = unanswered, 0 = wrong, 1 = correct
+    private int[] answers;
+
     void Start()
     {
-        score = 0;
-        currentQuestion = 0;
+        answers = new int[questions.Length];
 
-        resultPanel.SetActive(false);
+        for (int i = 0; i < answers.Length; i++)
+            answers[i] = -1;
 
-        foreach (GameObject panel in questionPanels)
-            panel.SetActive(false);
+        // Hide result panel at start
+        if (resultPanel != null)
+            resultPanel.SetActive(false);
 
         ShowQuestion(0);
+        UpdateScore();
+    }
+
+    // Called by answer buttons
+    public void AnswerQuestion(bool isCorrect)
+    {
+        int newAnswer = isCorrect ? 1 : 0;
+
+        // Remove previous correct score if changing answer
+        if (answers[currentQuestion] == 1)
+            score--;
+
+        answers[currentQuestion] = newAnswer;
+
+        if (isCorrect)
+            score++;
+
+        UpdateScore();
+
+        // Auto next or show result
+        if (currentQuestion < questions.Length - 1)
+        {
+            ShowQuestion(currentQuestion + 1);
+        }
+        else
+        {
+            ShowResult();
+        }
+    }
+
+    public void NextQuestion()
+    {
+        if (currentQuestion < questions.Length - 1)
+            ShowQuestion(currentQuestion + 1);
+    }
+
+    public void PreviousQuestion()
+    {
+        if (currentQuestion > 0)
+            ShowQuestion(currentQuestion - 1);
     }
 
     void ShowQuestion(int index)
     {
-        questionPanels[index].SetActive(true);
-
-        Button[] buttons = questionPanels[index].GetComponentsInChildren<Button>(true);
-
-        foreach (Button btn in buttons)
+        for (int i = 0; i < questions.Length; i++)
         {
-            Button clickedButton = btn;
-
-            clickedButton.onClick.RemoveAllListeners();
-            clickedButton.onClick.AddListener(() => Answer(clickedButton));
-        }
-    }
-
-    void Answer(Button clickedButton)
-    {
-        if (clickedButton == correctButtons[currentQuestion])
-        {
-            score++;
-            Debug.Log("Correct!");
-        }
-        else
-        {
-            Debug.Log("Wrong!");
+            questions[i].SetActive(i == index);
         }
 
-        questionPanels[currentQuestion].SetActive(false);
-        currentQuestion++;
+        if (resultPanel != null)
+            resultPanel.SetActive(false);
 
-        if (currentQuestion < questionPanels.Length)
-            ShowQuestion(currentQuestion);
-        else
-            ShowResult();
+        currentQuestion = index;
     }
 
     void ShowResult()
     {
-        resultPanel.SetActive(true);
-        scoreText.text = score + "/" + questionPanels.Length;
+        for (int i = 0; i < questions.Length; i++)
+        {
+            questions[i].SetActive(false);
+        }
+
+        if (resultPanel != null)
+            resultPanel.SetActive(true);
+
+        UpdateScore();
+    }
+
+    void UpdateScore()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = score + "/" + questions.Length;
+        }
+    }
+
+    // Optional restart button
+    public void RestartQuiz()
+    {
+        score = 0;
+
+        for (int i = 0; i < answers.Length; i++)
+            answers[i] = -1;
+
+        ShowQuestion(0);
+        UpdateScore();
     }
 }
