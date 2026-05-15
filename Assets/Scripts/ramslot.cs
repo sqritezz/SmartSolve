@@ -16,7 +16,6 @@ public class RamSnap : MonoBehaviour
 
         XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
 
-        // Do not snap while player is still holding RAM
         if (grab != null && grab.isSelected)
             return;
 
@@ -32,18 +31,16 @@ public class RamSnap : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
 
-        // Snap exactly to slot
         other.transform.SetParent(snapPoint, true);
         other.transform.localPosition = Vector3.zero;
         other.transform.localRotation = Quaternion.identity;
         other.transform.localScale = Vector3.one;
 
-        // RAM is now fixed
         if (powerButton != null)
             powerButton.isRamFixed = true;
 
-        // THIS IS THE IMPORTANT PART:
         RamGrab ramGrab = other.GetComponent<RamGrab>();
+
         if (ramGrab != null)
         {
             ramGrab.MarkFixedForever();
@@ -59,7 +56,6 @@ public class RamSnap : MonoBehaviour
         {
             currentRam = null;
 
-            // Only break again if it was never properly fixed
             RamGrab ramGrab = other.GetComponent<RamGrab>();
 
             if (ramGrab == null && powerButton != null)

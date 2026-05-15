@@ -3,23 +3,23 @@ using System.Collections;
 
 public class WarningFadeOut : MonoBehaviour
 {
-    public CanvasGroup warningCanvas;
+    public CanvasGroup canvasGroup;
+    public GameObject homeUI;
+
     public float stayTime = 3f;
     public float fadeDuration = 2f;
 
     void Start()
     {
-        if (warningCanvas == null)
-            warningCanvas = GetComponent<CanvasGroup>();
+        if (homeUI != null)
+            homeUI.SetActive(false);
 
-        StartCoroutine(FadeWarning());
+        StartCoroutine(FadeOutThenShowHome());
     }
 
-    IEnumerator FadeWarning()
+    IEnumerator FadeOutThenShowHome()
     {
-        warningCanvas.alpha = 1f;
-        warningCanvas.interactable = false;
-        warningCanvas.blocksRaycasts = false;
+        canvasGroup.alpha = 1f;
 
         yield return new WaitForSeconds(stayTime);
 
@@ -28,11 +28,14 @@ public class WarningFadeOut : MonoBehaviour
         while (timer < fadeDuration)
         {
             timer += Time.deltaTime;
-            warningCanvas.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
             yield return null;
         }
 
-        warningCanvas.alpha = 0f;
+        canvasGroup.alpha = 0f;
         gameObject.SetActive(false);
+
+        if (homeUI != null)
+            homeUI.SetActive(true);
     }
 }

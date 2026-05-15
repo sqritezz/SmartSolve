@@ -5,27 +5,39 @@ public class HardRamSlot : MonoBehaviour
 {
     public Transform snapPoint;
     public HardPCManager hardPCManager;
+    public AudioSource clickSound;
 
     private GameObject currentRam;
 
     private void OnTriggerEnter(Collider other)
     {
+        TrySnap(other);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        TrySnap(other);
+    }
+
+    void TrySnap(Collider other)
+    {
         if (currentRam != null) return;
 
-        XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
+        XRGrabInteractable grab = other.GetComponentInParent<XRGrabInteractable>();
+        if (grab == null) return;
 
-        if (grab != null && grab.isSelected)
-            return;
+        if (grab.isSelected) return;
 
-        if (other.CompareTag("RAM"))
+        GameObject ramObject = grab.gameObject;
+
+        if (ramObject.CompareTag("RAM"))
         {
-            SnapRam(other.gameObject);
+            SnapRam(ramObject);
             hardPCManager.BrokenRamInserted();
         }
-
-        if (other.CompareTag("WorkingRAM"))
+        else if (ramObject.CompareTag("WorkingRAM"))
         {
-            SnapRam(other.gameObject);
+            SnapRam(ramObject);
             hardPCManager.WorkingRamInserted();
         }
     }
@@ -35,7 +47,6 @@ public class HardRamSlot : MonoBehaviour
         currentRam = ram;
 
         Rigidbody rb = ram.GetComponent<Rigidbody>();
-
         if (rb != null)
         {
             rb.isKinematic = true;
@@ -44,9 +55,19 @@ public class HardRamSlot : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
         }
 
-        ram.transform.SetParent(snapPoint, true);
-        ram.transform.position = snapPoint.position;
-        ram.transform.rotation = snapPoint.rotation;
+        ram.transform.SetParent(snapPoint, false);
+        ram.transform.localPosition = Vector3.zero;
+        ram.transform.localRotation = Quaternion.identity;
         ram.transform.localScale = Vector3.one;
+
+        if (clickSound != null)
+            clickSound.Play();
+
+        Debug.Log("RAM SNAPPED: " + ram.name);
+    }
+
+    public void ClearSlot()
+    {
+        currentRam = null;
     }
 }

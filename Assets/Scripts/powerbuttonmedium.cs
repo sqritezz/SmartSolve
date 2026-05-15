@@ -6,69 +6,62 @@ public class PowerButtonMedium : MonoBehaviour
 {
     public GameObject screenOn;
     public GameObject screenOff;
-
     public AudioSource beepSound;
-
-    public float turnOffDelay = 3f;
 
     public bool ramFixed = false;
 
     private XRBaseInteractable interactable;
-    private Coroutine bootRoutine;
 
     void Awake()
     {
         interactable = GetComponent<XRBaseInteractable>();
-        interactable.selectEntered.AddListener(OnPowerPressed);
+
+        if (interactable != null)
+            interactable.selectEntered.AddListener(OnPowerPressed);
     }
 
     void Start()
     {
-        screenOn.SetActive(false);
-        screenOff.SetActive(true);
+        ShowScreenOff();
+
+        if (beepSound != null)
+            beepSound.Stop();
     }
 
     void OnPowerPressed(SelectEnterEventArgs args)
     {
-        if (bootRoutine != null)
-            StopCoroutine(bootRoutine);
-
-        bootRoutine = StartCoroutine(BootMonitor());
+        PressPowerButton();
     }
 
-    IEnumerator BootMonitor()
+    public void PressPowerButton()
     {
-        screenOn.SetActive(true);
-        screenOff.SetActive(false);
+        Debug.Log("Power pressed. ramFixed = " + ramFixed);
 
-        if (!ramFixed)
+        if (ramFixed)
         {
+            ShowScreenOn();
+
             if (beepSound != null)
-                beepSound.Play();
-
-            yield return new WaitForSeconds(turnOffDelay);
-
-            screenOn.SetActive(false);
-            screenOff.SetActive(true);
+                beepSound.Stop();
         }
         else
         {
-            if (beepSound != null)
-                beepSound.Stop();
+            ShowScreenOff();
 
-            screenOn.SetActive(true);
-            screenOff.SetActive(false);
+            if (beepSound != null)
+                beepSound.Play();
         }
     }
 
-    public void FixRAM()
+    void ShowScreenOn()
     {
-        ramFixed = true;
-
-        if (beepSound != null)
-            beepSound.Stop();
-
         screenOn.SetActive(true);
         screenOff.SetActive(false);
+    }
+
+    void ShowScreenOff()
+    {
+        screenOn.SetActive(false);
+        screenOff.SetActive(true);
     }
 }

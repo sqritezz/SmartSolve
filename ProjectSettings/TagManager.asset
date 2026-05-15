@@ -9,6 +9,7 @@ TagManager:
   - RAM
   - Eraser
   - WorkingRam
+  - WorkingRAM
   layers:
   - Default
   - TransparentFX

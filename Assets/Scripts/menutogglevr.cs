@@ -4,23 +4,23 @@ using UnityEngine.InputSystem;
 public class MenuToggleVR : MonoBehaviour
 {
     public GameObject mainMenu;
-    public InputActionProperty toggleButton;
+    public InputActionReference toggleButton;
 
-    void OnEnable()
+    private void OnEnable()
     {
         toggleButton.action.Enable();
+        toggleButton.action.performed += ToggleMenu;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
+        toggleButton.action.performed -= ToggleMenu;
         toggleButton.action.Disable();
     }
 
-    void Update()
+    private void ToggleMenu(InputAction.CallbackContext context)
     {
-        if (toggleButton.action.WasPressedThisFrame())
-        {
-            mainMenu.SetActive(!mainMenu.activeSelf);
-        }
+        mainMenu.SetActive(!mainMenu.activeSelf);
+        Debug.Log("VR MENU BUTTON PRESSED");
     }
 }

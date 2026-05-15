@@ -1,111 +1,91 @@
 using UnityEngine;
-using TMPro;
-using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class HardPCManager : MonoBehaviour
 {
     [Header("Monitor")]
-    public GameObject screenOff;
     public GameObject screenOn;
+    public GameObject screenOff;
 
     [Header("Audio")]
     public AudioSource beepSound;
 
-    [Header("NPC Dialogue")]
-    public GameObject dialoguePanel;
-    public TextMeshProUGUI dialogueText;
+    [Header("State")]
+    public bool workingRamInserted = false;
 
-    [Header("Settings")]
-    public float shutdownDelay = 3f;
+    private XRBaseInteractable interactable;
 
-    private bool pcFixed = false;
-    private bool brokenRamInserted = true;
-    private bool brokenRamCleaned = false;
-    private bool workingRamInserted = false;
-    private bool isBooting = false;
+    void Awake()
+    {
+        interactable = GetComponent<XRBaseInteractable>();
+
+        if (interactable != null)
+            interactable.selectEntered.AddListener(OnPowerPressed);
+    }
 
     void Start()
     {
         ShowScreenOff();
-        HideDialogue();
+
+        if (beepSound != null)
+            beepSound.Stop();
+    }
+
+    void OnPowerPressed(SelectEnterEventArgs args)
+    {
+        PressPowerButton();
     }
 
     public void PressPowerButton()
     {
-        if (isBooting) return;
+        Debug.Log("Hard Power Pressed | workingRamInserted = " + workingRamInserted);
 
-        StartCoroutine(BootSequence());
-    }
-
-    IEnumerator BootSequence()
-    {
-        isBooting = true;
-
-        ShowScreenOn();
-
-        if (pcFixed)
+        if (workingRamInserted)
         {
-            StopBeep();
-            ShowDialogue("The computer is now working properly.");
-            isBooting = false;
-            yield break;
-        }
+            ShowScreenOn();
 
-        PlayBeep();
-
-        yield return new WaitForSeconds(shutdownDelay);
-
-        ShowScreenOff();
-
-        if (brokenRamInserted && !brokenRamCleaned)
-        {
-            ShowDialogue("The PC still has RAM trouble. Try removing and reseating the RAM.");
-        }
-        else if (brokenRamInserted && brokenRamCleaned)
-        {
-            ShowDialogue("Cleaning did not fix the issue. The RAM may be damaged. Replace it with a new one.");
-        }
-        else if (!brokenRamInserted && !workingRamInserted)
-        {
-            ShowDialogue("The RAM is missing. Insert a working RAM.");
-        }
-
-        isBooting = false;
-    }
-
-    public void BrokenRamRemoved()
-    {
-        brokenRamInserted = false;
-        ShowDialogue("You removed the RAM. Try reseating it first.");
-    }
-
-    public void BrokenRamInserted()
-    {
-        brokenRamInserted = true;
-
-        if (!brokenRamCleaned)
-        {
-            ShowDialogue("RAM reseated. Try turning on the PC again.");
+            if (beepSound != null)
+                beepSound.Stop();
         }
         else
         {
-            ShowDialogue("Clean RAM inserted, but it may still be defective. Try powering on.");
+            ShowScreenOff();
+
+            if (beepSound != null && !beepSound.isPlaying)
+                beepSound.Play();
         }
     }
 
-    public void BrokenRamCleaned()
+    // Broken RAM inserted into slot
+    public void BrokenRamInserted()
     {
-        brokenRamCleaned = true;
-        ShowDialogue("RAM contacts cleaned. Insert it back and test the PC.");
+        workingRamInserted = false;
+        Debug.Log("Broken RAM inserted");
     }
 
+    // Broken RAM removed from slot
+    public void BrokenRamRemoved()
+    {
+        workingRamInserted = false;
+        Debug.Log("Broken RAM removed");
+    }
+
+    // Broken RAM cleaned with eraser
+    public void BrokenRamCleaned()
+    {
+        workingRamInserted = false;
+        Debug.Log("Broken RAM cleaned, but still not fixed");
+    }
+
+    // New Working RAM inserted
     public void WorkingRamInserted()
     {
         workingRamInserted = true;
-        pcFixed = true;
-        StopBeep();
-        ShowScreenOn();
-        ShowDialogue("New RAM installed. The PC is fixed!");
+
+        if (beepSound != null)
+            beepSound.Stop();
+
+        Debug.Log("Working RAM inserted");
     }
 
     void ShowScreenOn()
@@ -118,32 +98,5 @@ public class HardPCManager : MonoBehaviour
     {
         screenOn.SetActive(false);
         screenOff.SetActive(true);
-    }
-
-    void PlayBeep()
-    {
-        if (beepSound != null && !beepSound.isPlaying)
-            beepSound.Play();
-    }
-
-    void StopBeep()
-    {
-        if (beepSound != null && beepSound.isPlaying)
-            beepSound.Stop();
-    }
-
-    void ShowDialogue(string message)
-    {
-        if (dialoguePanel != null)
-            dialoguePanel.SetActive(true);
-
-        if (dialogueText != null)
-            dialogueText.text = message;
-    }
-
-    void HideDialogue()
-    {
-        if (dialoguePanel != null)
-            dialoguePanel.SetActive(false);
     }
 }

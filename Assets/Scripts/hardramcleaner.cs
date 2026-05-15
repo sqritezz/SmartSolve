@@ -3,25 +3,46 @@ using UnityEngine;
 public class HardRamCleaner : MonoBehaviour
 {
     public HardPCManager hardPCManager;
-
+    public MeshRenderer ramRenderer;
+    public Material dirtyMaterial;
     public Material cleanMaterial;
-    public Renderer ramRenderer;
+    public AudioSource cleanSound;
 
-    private bool cleaned = false;
+    private bool isClean = false;
+
+    void Start()
+    {
+        if (ramRenderer != null && dirtyMaterial != null)
+            ramRenderer.material = dirtyMaterial;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Eraser"))
+            CleanRam();
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (cleaned) return;
-
         if (collision.gameObject.CompareTag("Eraser"))
-        {
-            cleaned = true;
+            CleanRam();
+    }
 
-            if (ramRenderer != null && cleanMaterial != null)
-                ramRenderer.material = cleanMaterial;
+    void CleanRam()
+    {
+        if (isClean) return;
 
-            if (hardPCManager != null)
-                hardPCManager.BrokenRamCleaned();
-        }
+        isClean = true;
+
+        if (ramRenderer != null && cleanMaterial != null)
+            ramRenderer.material = cleanMaterial;
+
+        if (cleanSound != null)
+            cleanSound.Play();
+
+        if (hardPCManager != null)
+            hardPCManager.BrokenRamCleaned();
+
+        Debug.Log("HARD RAM CLEANED");
     }
 }

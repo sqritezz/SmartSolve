@@ -4,6 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class HardBrokenRam : MonoBehaviour
 {
     public HardPCManager hardPCManager;
+    public HardRamSlot ramSlot;
 
     private XRGrabInteractable grab;
 
@@ -17,6 +18,11 @@ public class HardBrokenRam : MonoBehaviour
 
     void OnGrabbed(SelectEnterEventArgs args)
     {
+        transform.SetParent(null, true);
+
+        if (ramSlot != null)
+            ramSlot.ClearSlot();
+
         if (hardPCManager != null)
             hardPCManager.BrokenRamRemoved();
     }

@@ -8,10 +8,17 @@ public class RamSnapMedium : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("RAM"))
-            return;
+        TrySnap(other);
+    }
 
-        RAMMedium ram = other.GetComponent<RAMMedium>();
+    private void OnTriggerStay(Collider other)
+    {
+        TrySnap(other);
+    }
+
+    void TrySnap(Collider other)
+    {
+        RAMMedium ram = other.GetComponentInParent<RAMMedium>();
 
         if (ram == null)
             return;
@@ -22,11 +29,11 @@ public class RamSnapMedium : MonoBehaviour
             return;
         }
 
-        Rigidbody rb = other.GetComponent<Rigidbody>();
+        Rigidbody rb = ram.GetComponent<Rigidbody>();
 
-        other.transform.SetParent(null, true);
-        other.transform.position = snapPoint.position;
-        other.transform.rotation = snapPoint.rotation;
+        ram.transform.SetParent(null, true);
+        ram.transform.position = snapPoint.position;
+        ram.transform.rotation = snapPoint.rotation;
 
         if (rb != null)
         {
@@ -38,11 +45,11 @@ public class RamSnapMedium : MonoBehaviour
 
         ram.isInserted = true;
 
+        if (powerButton != null)
+            powerButton.ramFixed = true;
+
         if (clickSound != null)
             clickSound.Play();
-
-        if (powerButton != null)
-            powerButton.FixRAM();
 
         Debug.Log("RAM INSERTED AND FIXED");
     }
