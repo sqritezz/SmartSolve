@@ -12,6 +12,11 @@ public class QuizManager : MonoBehaviour
     [Header("Result Panel")]
     public GameObject resultPanel;
 
+    [Header("Sound Effects")]
+    public AudioSource audioSource;   // Drag an AudioSource component here (add one to this GameObject)
+    public AudioClip wrongAnswerSound; // Drag your "wrong answer" sound clip here
+    public AudioClip correctAnswerSound; // Drag your "correct answer" sound clip here
+
     private int currentQuestion = 0;
     private int score = 0;
 
@@ -21,7 +26,6 @@ public class QuizManager : MonoBehaviour
     void Start()
     {
         answers = new int[questions.Length];
-
         for (int i = 0; i < answers.Length; i++)
             answers[i] = -1;
 
@@ -45,7 +49,14 @@ public class QuizManager : MonoBehaviour
         answers[currentQuestion] = newAnswer;
 
         if (isCorrect)
+        {
             score++;
+            PlayCorrectAnswerSound();
+        }
+        else
+        {
+            PlayWrongAnswerSound();
+        }
 
         UpdateScore();
 
@@ -57,6 +68,22 @@ public class QuizManager : MonoBehaviour
         else
         {
             ShowResult();
+        }
+    }
+
+    private void PlayWrongAnswerSound()
+    {
+        if (audioSource != null && wrongAnswerSound != null)
+        {
+            audioSource.PlayOneShot(wrongAnswerSound);
+        }
+    }
+
+    private void PlayCorrectAnswerSound()
+    {
+        if (audioSource != null && correctAnswerSound != null)
+        {
+            audioSource.PlayOneShot(correctAnswerSound);
         }
     }
 
@@ -110,7 +137,6 @@ public class QuizManager : MonoBehaviour
     public void RestartQuiz()
     {
         score = 0;
-
         for (int i = 0; i < answers.Length; i++)
             answers[i] = -1;
 
