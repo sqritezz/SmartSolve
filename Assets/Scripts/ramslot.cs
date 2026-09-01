@@ -7,6 +7,11 @@ public class RamSnap : MonoBehaviour
     public PowerButton powerButton;
     public AudioSource clickSound;
 
+    [Header("Checklist Integration")]
+    public ChecklistManager checklistManager;
+    [Tooltip("Index of the 'Re-attach the RAM' objective in the ChecklistManager's Objectives array")]
+    public int ramObjectiveIndex = 0;
+
     private GameObject currentRam;
 
     private void OnTriggerEnter(Collider other)
@@ -15,14 +20,12 @@ public class RamSnap : MonoBehaviour
             return;
 
         XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
-
         if (grab != null && grab.isSelected)
             return;
 
         currentRam = other.gameObject;
 
         Rigidbody rb = other.GetComponent<Rigidbody>();
-
         if (rb != null)
         {
             rb.isKinematic = true;
@@ -40,7 +43,6 @@ public class RamSnap : MonoBehaviour
             powerButton.isRamFixed = true;
 
         RamGrab ramGrab = other.GetComponent<RamGrab>();
-
         if (ramGrab != null)
         {
             ramGrab.MarkFixedForever();
@@ -48,6 +50,10 @@ public class RamSnap : MonoBehaviour
 
         if (clickSound != null)
             clickSound.Play();
+
+        // Mark the "Re-attach the RAM" objective as complete
+        if (checklistManager != null)
+            checklistManager.CompleteObjective(ramObjectiveIndex);
     }
 
     private void OnTriggerExit(Collider other)
@@ -55,9 +61,7 @@ public class RamSnap : MonoBehaviour
         if (other.CompareTag("RAM"))
         {
             currentRam = null;
-
             RamGrab ramGrab = other.GetComponent<RamGrab>();
-
             if (ramGrab == null && powerButton != null)
             {
                 powerButton.isRamFixed = false;

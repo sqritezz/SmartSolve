@@ -31,6 +31,12 @@ public class LevelCompleteManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip congratsSound;
 
+    [Header("Positioning")]
+    [Tooltip("If true, the reward panel repositions in front of the player's current view when it appears")]
+    public bool positionInFrontOfPlayer = true;
+    public float distanceFromPlayer = 1.5f;
+    public float heightOffset = 0f;
+
     private void Awake()
     {
         if (rewardPanel != null)
@@ -50,7 +56,13 @@ public class LevelCompleteManager : MonoBehaviour
             rewardText.text = "You unlocked: " + rewardPartName;
 
         if (rewardPanel != null)
+        {
+            if (positionInFrontOfPlayer && Camera.main != null)
+            {
+                PositionInFrontOfPlayer();
+            }
             rewardPanel.SetActive(true);
+        }
 
         if (audioSource != null && congratsSound != null)
             audioSource.PlayOneShot(congratsSound);
@@ -59,6 +71,28 @@ public class LevelCompleteManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(rewardPartName) && RewardManager.Instance != null)
             RewardManager.Instance.UnlockPart(rewardPartName);
+    }
+
+    private void PositionInFrontOfPlayer()
+    {
+        Transform cam = Camera.main.transform;
+
+        // Flatten the forward direction so the panel doesn't tilt up/down with head pitch
+        Vector3 flatForward = cam.forward;
+        flatForward.y = 0f;
+        if (flatForward.sqrMagnitude < 0.001f) flatForward = Vector3.forward;
+        flatForward.Normalize();
+
+        Vector3 targetPos = cam.position + flatForward * distanceFromPlayer;
+        targetPos.y = cam.position.y + heightOffset;
+
+        rewardPanel.transform.position = targetPos;
+
+        // Face the player (rotate to look back at the camera, flattened)
+        Vector3 lookDir = rewardPanel.transform.position - cam.position;
+        lookDir.y = 0f;
+        if (lookDir.sqrMagnitude > 0.001f)
+            rewardPanel.transform.rotation = Quaternion.LookRotation(lookDir);
     }
 
     private void SetStarsVisible(int count)
