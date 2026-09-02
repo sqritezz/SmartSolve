@@ -2,20 +2,14 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 
-// Attach this ONE script to a manager object in your scene (not per-part).
-// It listens for hover events on every XRBaseInteractable found in the scene
-// (or a given list), and moves/enables a shared world-space UI panel to
-// display that part's PartInfo when the ray hovers over it.
 public class HoverInfoDisplay : MonoBehaviour
 {
-    [Header("References")]
-    [Tooltip("World-space Canvas panel with a title and description text")]
     public GameObject infoPanel;
     public TMP_Text titleText;
     public TMP_Text descriptionText;
 
-    [Header("Positioning")]
-    [Tooltip("How far above the part's collider bounds to float the panel")]
+    public GameObject info;
+
     public float verticalOffset = 0.15f;
 
     private Transform hoveredPart;
@@ -28,7 +22,6 @@ public class HoverInfoDisplay : MonoBehaviour
 
     private void OnEnable()
     {
-        // Auto-hook every interactable with a PartInfo component in the scene.
         var interactables = FindObjectsByType<XRBaseInteractable>(FindObjectsSortMode.None);
         foreach (var interactable in interactables)
         {
@@ -66,8 +59,6 @@ public class HoverInfoDisplay : MonoBehaviour
 
     private void OnHoverExited(HoverExitEventArgs args)
     {
-        // Only hide if the exiting object is the one currently shown
-        // (prevents flicker if two colliders briefly overlap).
         if (args.interactableObject.transform == hoveredPart)
         {
             hoveredPart = null;

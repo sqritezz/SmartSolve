@@ -159292,6 +159292,7 @@ MonoBehaviour:
   infoPanel: {fileID: 2019025495}
   titleText: {fileID: 1604732412}
   descriptionText: {fileID: 1758974528}
+  info: {fileID: 0}
   verticalOffset: 0.15
 --- !u!4 &1138605995
 Transform:
@@ -179010,7 +179011,7 @@ GameObject:
   - component: {fileID: 1274971272}
   - component: {fileID: 1274971271}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Power Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179032,7 +179033,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215.01, y: 11.4}
+  m_AnchoredPosition: {x: -215.01, y: 4.5}
   m_SizeDelta: {x: 147.1, y: 30.04}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1274971271
@@ -179055,7 +179056,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PSU
+  m_text: 'Power Button
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -179082,10 +179085,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.85
-  m_fontSizeBase: 36
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -207795,6 +207798,7 @@ GameObject:
   - component: {fileID: 1464259269}
   - component: {fileID: 1464259271}
   - component: {fileID: 1464259272}
+  - component: {fileID: 1464259273}
   m_Layer: 0
   m_Name: power button
   m_TagString: Untagged
@@ -208054,6 +208058,21 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1464259273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464259263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7242b38eb464368458ff94e782ccca71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartInfo
+  partName: Power Button
+  description: Power Button - a physical switch or button used to turn your computer
+    system on or off
 --- !u!1 &1464316872
 GameObject:
   m_ObjectHideFlags: 0
@@ -209123,7 +209142,7 @@ GameObject:
   - component: {fileID: 1471327972}
   - component: {fileID: 1471327971}
   m_Layer: 5
-  m_Name: DescriptionsPanel (3)
+  m_Name: power button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -209144,7 +209163,6 @@ RectTransform:
   - {fileID: 1946665964}
   - {fileID: 1521810774}
   - {fileID: 1274971270}
-  - {fileID: 1811488240}
   - {fileID: 2002462913}
   m_Father: {fileID: 688327557}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -252886,143 +252904,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1811451162}
   m_Mesh: {fileID: 739136718380859413, guid: 08a49f6d8c1cadb45b4ddc6020ca1c45, type: 3}
---- !u!1 &1811488239
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1811488240}
-  - component: {fileID: 1811488242}
-  - component: {fileID: 1811488241}
-  m_Layer: 5
-  m_Name: Text (TMP) (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1811488240
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811488239}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1471327970}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -217.09, y: -15.76}
-  m_SizeDelta: {x: 151.25, y: 24.28}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1811488241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811488239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: (Power Supply Unit)
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 9
-  m_fontSizeBase: 9
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1811488242
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811488239}
-  m_CullTransparentMesh: 1
 --- !u!1 &1813601436
 GameObject:
   m_ObjectHideFlags: 0
@@ -283755,167 +283636,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2009446064}
   m_CullTransparentMesh: 1
---- !u!1 &2009762612
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2009762613}
-  - component: {fileID: 2009762615}
-  - component: {fileID: 2009762614}
-  - component: {fileID: 2009762616}
-  m_Layer: 0
-  m_Name: PCManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2009762613
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009762612}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.38053, y: 0, z: -1.72294}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &2009762614
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009762612}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 1741724412252583360, guid: 7af45882a7c999546a7a3fa7878a8af5, type: 2}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 4d23d1fa6b2e7c746826a56e3b713295, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &2009762615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009762612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eb2bc15f6c0dee49b1a1491e71f3642, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PCManager
-  ramCleaned: 0
-  ramInserted: 0
-  isFixed: 0
-  monitorScreen: {fileID: 0}
-  beepSound: {fileID: 2009762614}
---- !u!114 &2009762616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009762612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bd10f0cd0baff44383cb2f7923cae7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  beepSound: {fileID: 2009762614}
 --- !u!1 &2010235385
 GameObject:
   m_ObjectHideFlags: 0
@@ -310613,6 +310333,7 @@ GameObject:
   - component: {fileID: 2222000807772995294}
   - component: {fileID: 2988695130912829819}
   - component: {fileID: 1053012365839123889}
+  - component: {fileID: 2988695130912829820}
   m_Layer: 0
   m_Name: PcMonitor
   m_TagString: Untagged
@@ -318335,6 +318056,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1557666418734982244}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!114 &2988695130912829820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557666418734982244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7242b38eb464368458ff94e782ccca71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartInfo
+  partName: Monitor
+  description: Monitor - hardware device that displays visual information like text,
+    images, and videos received from a computer's graphics card.
 --- !u!33 &2997399429393113257
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -322272,7 +322008,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2009762616}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: beepsound, Assembly-CSharp
         m_MethodName: PlayMediumSound
         m_Mode: 1
@@ -322897,6 +322633,7 @@ GameObject:
   - component: {fileID: 1369999798748888587}
   - component: {fileID: 6248258598755196465}
   - component: {fileID: 2047421974506113124}
+  - component: {fileID: 6248258598755196466}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -337972,6 +337709,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3710406089501191400}
   m_Mesh: {fileID: -3262789968867269347, guid: 08a49f6d8c1cadb45b4ddc6020ca1c45, type: 3}
+--- !u!114 &6248258598755196466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3710406089501191400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7242b38eb464368458ff94e782ccca71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartInfo
+  partName: System Unit
+  description: the main case or tower of a personal computer that houses and protects
+    its internal processing and storage components
 --- !u!4 &6248751241993374703
 Transform:
   m_ObjectHideFlags: 0
@@ -346042,6 +345794,7 @@ GameObject:
   - component: {fileID: 8534051796244656663}
   - component: {fileID: 237000977405164500}
   - component: {fileID: 7833337645690073557}
+  - component: {fileID: 8534051796244656664}
   m_Layer: 0
   m_Name: Box4
   m_TagString: Untagged
@@ -347531,6 +347284,7 @@ GameObject:
   - component: {fileID: 25335842524443420}
   - component: {fileID: 9099587024576636541}
   - component: {fileID: 7092082666576081444}
+  - component: {fileID: 9099587024576636542}
   m_Layer: 0
   m_Name: Box210
   m_TagString: Untagged
@@ -351333,6 +351087,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6480206172413145433}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8534051796244656664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7695135213968471380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7242b38eb464368458ff94e782ccca71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartInfo
+  partName: System Unit
+  description: the main case or tower of a personal computer that houses and protects
+    its internal processing and storage components
 --- !u!1 &8535757669940364626
 GameObject:
   m_ObjectHideFlags: 0
@@ -351419,6 +351188,7 @@ GameObject:
   - component: {fileID: 8883895254965643381}
   - component: {fileID: 8883895254965643379}
   - component: {fileID: 8883895254965643382}
+  - component: {fileID: 8883895254965643383}
   m_Layer: 0
   m_Name: CPU LID
   m_TagString: Untagged
@@ -353056,6 +352826,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoorSlide
   openOffset: {x: 1.5, y: 0, z: 0}
   speed: 2
+--- !u!114 &8883895254965643383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8569555741806982692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7242b38eb464368458ff94e782ccca71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartInfo
+  partName: System Unit
+  description: the main case or tower of a personal computer that houses and protects
+    its internal processing and storage components
 --- !u!4 &8884908291662991304
 Transform:
   m_ObjectHideFlags: 0
@@ -354296,6 +354081,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7985741863922650584}
   m_Mesh: {fileID: -3579609910969799837, guid: 08a49f6d8c1cadb45b4ddc6020ca1c45, type: 3}
+--- !u!114 &9099587024576636542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7985741863922650584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7242b38eb464368458ff94e782ccca71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PartInfo
+  partName: System Unit
+  description: the main case or tower of a personal computer that houses and protects
+    its internal processing and storage components
 --- !u!33 &9102581191434502353
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -354819,7 +354619,6 @@ SceneRoots:
   - {fileID: 1112640490}
   - {fileID: 443942059}
   - {fileID: 1749505908}
-  - {fileID: 2009762613}
   - {fileID: 1581216120}
   - {fileID: 421431557}
   - {fileID: 25106106}
