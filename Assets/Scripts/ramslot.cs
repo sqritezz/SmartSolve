@@ -8,9 +8,11 @@ public class RamSnap : MonoBehaviour
     public AudioSource clickSound;
 
     [Header("Checklist Integration")]
-    public ChecklistManager checklistManager;
-    [Tooltip("Index of the 'Re-attach the RAM' objective in the ChecklistManager's Objectives array")]
-    public int ramObjectiveIndex = 0;
+    public SequentialChecklist checklist;
+    [Tooltip("Which group this objective belongs to")]
+    public int groupIndex = 1;
+    [Tooltip("Which objective line within that group this is")]
+    public int objectiveIndex = 0;
 
     private GameObject currentRam;
 
@@ -51,9 +53,9 @@ public class RamSnap : MonoBehaviour
         if (clickSound != null)
             clickSound.Play();
 
-        // Mark the "Re-attach the RAM" objective as complete
-        if (checklistManager != null)
-            checklistManager.CompleteObjective(ramObjectiveIndex);
+        // Mark this objective complete, only if it's currently the active pending one
+        if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
+            checklist.CompleteObjective(groupIndex, objectiveIndex);
     }
 
     private void OnTriggerExit(Collider other)

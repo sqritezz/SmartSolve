@@ -10,9 +10,15 @@ public class PowerButton : MonoBehaviour
     public bool isRamFixed = false;
 
     [Header("Checklist Integration")]
-    public ChecklistManager checklistManager;
-    [Tooltip("Index of the 'Click the Power button' objective in the ChecklistManager's Objectives array")]
-    public int powerObjectiveIndex = 1;
+    public SequentialChecklist checklist;
+
+    [Tooltip("Group/objective that completes only when the fix succeeds (isRamFixed is true)")]
+    public int successGroupIndex = 1;
+    public int successObjectiveIndex = 1;
+
+    [Tooltip("Optional: group/objective that completes on ANY press, used for 'press to see what happens' steps (e.g. observing a short circuit). Set observeGroupIndex to -1 to disable.")]
+    public int observeGroupIndex = -1;
+    public int observeObjectiveIndex = 0;
 
     private XRBaseInteractable interactable;
     private Coroutine bootRoutine;
@@ -47,6 +53,13 @@ public class PowerButton : MonoBehaviour
         screenOn.SetActive(true);
         screenOff.SetActive(false);
 
+        // "Press to see what happens" objective -- completes on any press, regardless of outcome
+        if (checklist != null && observeGroupIndex >= 0 &&
+            checklist.IsCurrentStep(observeGroupIndex, observeObjectiveIndex))
+        {
+            checklist.CompleteObjective(observeGroupIndex, observeObjectiveIndex);
+        }
+
         if (!isRamFixed)
         {
             yield return new WaitForSeconds(turnOffDelay);
@@ -55,9 +68,11 @@ public class PowerButton : MonoBehaviour
         }
         else
         {
-            // Success case: RAM was fixed, screen stays on -- objective complete
-            if (checklistManager != null)
-                checklistManager.CompleteObjective(powerObjectiveIndex);
+            // Success case: fix was applied, screen stays on -- confirm objective complete
+            if (checklist != null && checklist.IsCurrentStep(successGroupIndex, successObjectiveIndex))
+            {
+                checklist.CompleteObjective(successGroupIndex, successObjectiveIndex);
+            }
         }
     }
 }
