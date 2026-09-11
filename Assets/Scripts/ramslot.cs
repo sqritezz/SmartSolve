@@ -14,6 +14,14 @@ public class RamSnap : MonoBehaviour
     [Tooltip("Which objective line within that group this is")]
     public int objectiveIndex = 0;
 
+    [Header("Randomized Slot Support")]
+    [Tooltip("If false, this slot won't accept the fix (used when multiple slots exist and only one is randomly correct each playthrough). Set automatically by RamSlotRandomizer if used.")]
+    public bool isActiveSlot = true;
+    [Tooltip("Optional: played when RAM is placed in a WRONG slot")]
+    public AudioSource wrongSlotSound;
+    [Tooltip("Optional: counts a wrong-slot attempt toward the star rating")]
+    public PerformanceTracker performanceTracker;
+
     private GameObject currentRam;
 
     private void OnTriggerEnter(Collider other)
@@ -24,6 +32,16 @@ public class RamSnap : MonoBehaviour
         XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
         if (grab != null && grab.isSelected)
             return;
+
+        if (!isActiveSlot)
+        {
+            // Wrong slot for this playthrough -- don't snap, just flag the mistake
+            if (wrongSlotSound != null)
+                wrongSlotSound.Play();
+            if (performanceTracker != null)
+                performanceTracker.RegisterWrongAttempt();
+            return;
+        }
 
         currentRam = other.gameObject;
 

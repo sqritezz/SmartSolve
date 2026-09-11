@@ -7,6 +7,15 @@ public class HardRamSlot : MonoBehaviour
     public HardPCManager hardPCManager;
     public AudioSource clickSound;
 
+    [Header("Checklist Integration - Broken RAM placed")]
+    public SequentialChecklist checklist;
+    public int brokenRamGroupIndex = 1;
+    public int brokenRamObjectiveIndex = 2;
+
+    [Header("Checklist Integration - Working RAM placed")]
+    public int workingRamGroupIndex = 2;
+    public int workingRamObjectiveIndex = 2;
+
     private GameObject currentRam;
 
     private void OnTriggerEnter(Collider other)
@@ -34,11 +43,17 @@ public class HardRamSlot : MonoBehaviour
         {
             SnapRam(ramObject);
             hardPCManager.BrokenRamInserted();
+
+            if (checklist != null && checklist.IsCurrentStep(brokenRamGroupIndex, brokenRamObjectiveIndex))
+                checklist.CompleteObjective(brokenRamGroupIndex, brokenRamObjectiveIndex);
         }
         else if (ramObject.CompareTag("WorkingRAM"))
         {
             SnapRam(ramObject);
             hardPCManager.WorkingRamInserted();
+
+            if (checklist != null && checklist.IsCurrentStep(workingRamGroupIndex, workingRamObjectiveIndex))
+                checklist.CompleteObjective(workingRamGroupIndex, workingRamObjectiveIndex);
         }
     }
 

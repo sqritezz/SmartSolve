@@ -1,17 +1,16 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class HardBrokenRam : MonoBehaviour
+// Attach this to the "working ram" object on the table.
+public class HardWorkingRamPickup : MonoBehaviour
 {
-    public HardPCManager hardPCManager;
-    public HardRamSlot ramSlot;
-
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
-    public int groupIndex = 1;
-    public int objectiveIndex = 0;
+    public int groupIndex = 2;
+    public int objectiveIndex = 1;
 
     private XRGrabInteractable grab;
+    private bool hasBeenPickedUp = false;
 
     void Start()
     {
@@ -23,13 +22,8 @@ public class HardBrokenRam : MonoBehaviour
 
     void OnGrabbed(SelectEnterEventArgs args)
     {
-        transform.SetParent(null, true);
-
-        if (ramSlot != null)
-            ramSlot.ClearSlot();
-
-        if (hardPCManager != null)
-            hardPCManager.BrokenRamRemoved();
+        if (hasBeenPickedUp) return;
+        hasBeenPickedUp = true;
 
         if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
             checklist.CompleteObjective(groupIndex, objectiveIndex);

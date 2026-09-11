@@ -8,6 +8,11 @@ public class HardRamCleaner : MonoBehaviour
     public Material cleanMaterial;
     public AudioSource cleanSound;
 
+    [Header("Checklist Integration")]
+    public SequentialChecklist checklist;
+    public int groupIndex = 1;
+    public int objectiveIndex = 1;
+
     private bool isClean = false;
 
     void Start()
@@ -42,6 +47,9 @@ public class HardRamCleaner : MonoBehaviour
 
         if (hardPCManager != null)
             hardPCManager.BrokenRamCleaned();
+
+        if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
+            checklist.CompleteObjective(groupIndex, objectiveIndex);
 
         Debug.Log("HARD RAM CLEANED");
     }

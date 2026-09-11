@@ -1,80 +1,86 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class RAMMedium : MonoBehaviour
+public class RamMedium : MonoBehaviour
 {
+    [Header("Visuals")]
     public MeshRenderer ramRenderer;
     public Material dirtyMat;
     public Material cleanMat;
-
     public AudioSource cleanSound;
 
+    [Header("State")]
     public bool isClean = false;
     public bool isInserted = false;
 
-    private Rigidbody rb;
-    private XRGrabInteractable grab;
+    [Header("Eraser Detection")]
+    public string eraserTag = "Eraser";
 
-    void Awake()
+    [Header("Checklist Integration - Cleaning")]
+    public SequentialChecklist checklist;
+    public int groupIndex = 1;
+    public int objectiveIndex = 1;
+
+    [Header("Checklist Integration - First Pickup")]
+    [Tooltip("Completed the first time the player grabs this RAM. Set pickupGroupIndex to -1 to disable.")]
+    public int pickupGroupIndex = 1;
+    public int pickupObjectiveIndex = 0;
+
+    private bool hasBeenPickedUp = false;
+
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        grab = GetComponent<XRGrabInteractable>();
-
-        grab.selectEntered.AddListener(OnGrab);
-        grab.selectExited.AddListener(OnRelease);
+        XRGrabInteractable grab = GetComponent<XRGrabInteractable>();
+        if (grab != null)
+            grab.selectEntered.AddListener(OnGrabbed);
     }
 
-    void Start()
+    private void Start()
     {
-        ramRenderer.material = dirtyMat;
-
-        rb.useGravity = false;
-        rb.isKinematic = true;
+        isClean = false;
+        ApplyMaterial();
     }
 
-    void OnGrab(SelectEnterEventArgs args)
+    private void OnGrabbed(SelectEnterEventArgs args)
     {
-        isInserted = false;
+        if (hasBeenPickedUp) return;
+        hasBeenPickedUp = true;
 
-        rb.isKinematic = false;
-        rb.useGravity = true;
-    }
-
-    void OnRelease(SelectExitEventArgs args)
-    {
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-
-        rb.useGravity = true;
-        rb.isKinematic = false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Eraser") && !isClean)
+        if (checklist != null && pickupGroupIndex >= 0 &&
+            checklist.IsCurrentStep(pickupGroupIndex, pickupObjectiveIndex))
         {
-            CleanRAM();
+            checklist.CompleteObjective(pickupGroupIndex, pickupObjectiveIndex);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Eraser") && !isClean)
-        {
-            CleanRAM();
-        }
+        TryClean(collision.collider);
     }
 
-    void CleanRAM()
+    private void OnTriggerEnter(Collider other)
     {
-        isClean = true;
+        TryClean(other);
+    }
 
-        if (ramRenderer != null && cleanMat != null)
-            ramRenderer.material = cleanMat;
+    private void TryClean(Collider other)
+    {
+        if (isClean) return;
+        if (!other.CompareTag(eraserTag)) return;
+
+        isClean = true;
+        ApplyMaterial();
 
         if (cleanSound != null)
             cleanSound.Play();
 
-        Debug.Log("RAM CLEANED");
+        if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
+            checklist.CompleteObjective(groupIndex, objectiveIndex);
+    }
+
+    private void ApplyMaterial()
+    {
+        if (ramRenderer == null) return;
+        ramRenderer.material = isClean ? cleanMat : dirtyMat;
     }
 }

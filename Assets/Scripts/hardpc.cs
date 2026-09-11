@@ -13,6 +13,21 @@ public class HardPCManager : MonoBehaviour
     [Header("State")]
     public bool workingRamInserted = false;
 
+    [Header("Checklist Integration")]
+    public SequentialChecklist checklist;
+    [Tooltip("First press -- completes regardless of outcome (the 'see it fail' moment)")]
+    public int observeGroupIndex = 0;
+    public int observeObjectiveIndex = 0;
+    [Tooltip("The 'click power again, try RAM on table' step -- also completes regardless of outcome")]
+    public int retryGroupIndex = 2;
+    public int retryObjectiveIndex = 0;
+    [Tooltip("Final press -- only completes if workingRamInserted is true")]
+    public int successGroupIndex = 2;
+    public int successObjectiveIndex = 4;
+
+    [Header("Scoring")]
+    public PerformanceTracker performanceTracker;
+
     private XRBaseInteractable interactable;
 
     void Awake()
@@ -40,12 +55,24 @@ public class HardPCManager : MonoBehaviour
     {
         Debug.Log("Hard Power Pressed | workingRamInserted = " + workingRamInserted);
 
+        bool isObserveStep = checklist != null && checklist.IsCurrentStep(observeGroupIndex, observeObjectiveIndex);
+        bool isRetryStep = checklist != null && checklist.IsCurrentStep(retryGroupIndex, retryObjectiveIndex);
+
+        if (isObserveStep)
+            checklist.CompleteObjective(observeGroupIndex, observeObjectiveIndex);
+
+        if (isRetryStep)
+            checklist.CompleteObjective(retryGroupIndex, retryObjectiveIndex);
+
         if (workingRamInserted)
         {
             ShowScreenOn();
 
             if (beepSound != null)
                 beepSound.Stop();
+
+            if (checklist != null && checklist.IsCurrentStep(successGroupIndex, successObjectiveIndex))
+                checklist.CompleteObjective(successGroupIndex, successObjectiveIndex);
         }
         else
         {
@@ -53,31 +80,31 @@ public class HardPCManager : MonoBehaviour
 
             if (beepSound != null && !beepSound.isPlaying)
                 beepSound.Play();
+
+            // Only count as a mistake if this wasn't one of the expected "try it and see" presses
+            if (!isObserveStep && !isRetryStep && performanceTracker != null)
+                performanceTracker.RegisterWrongAttempt();
         }
     }
 
-    // Broken RAM inserted into slot
     public void BrokenRamInserted()
     {
         workingRamInserted = false;
         Debug.Log("Broken RAM inserted");
     }
 
-    // Broken RAM removed from slot
     public void BrokenRamRemoved()
     {
         workingRamInserted = false;
         Debug.Log("Broken RAM removed");
     }
 
-    // Broken RAM cleaned with eraser
     public void BrokenRamCleaned()
     {
         workingRamInserted = false;
         Debug.Log("Broken RAM cleaned, but still not fixed");
     }
 
-    // New Working RAM inserted
     public void WorkingRamInserted()
     {
         workingRamInserted = true;
