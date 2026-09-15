@@ -16,6 +16,11 @@ public class HardRamSlot : MonoBehaviour
     public int workingRamGroupIndex = 2;
     public int workingRamObjectiveIndex = 2;
 
+    [Header("Randomized Slot Support")]
+    public bool isActiveSlot = true;
+    public AudioSource wrongSlotSound;
+    public PerformanceTracker performanceTracker;
+
     private GameObject currentRam;
 
     private void OnTriggerEnter(Collider other)
@@ -49,6 +54,15 @@ public class HardRamSlot : MonoBehaviour
         }
         else if (ramObject.CompareTag("WorkingRAM"))
         {
+            if (!isActiveSlot)
+            {
+                if (wrongSlotSound != null)
+                    wrongSlotSound.Play();
+                if (performanceTracker != null)
+                    performanceTracker.RegisterWrongAttempt();
+                return;
+            }
+
             SnapRam(ramObject);
             hardPCManager.WorkingRamInserted();
 
@@ -79,6 +93,14 @@ public class HardRamSlot : MonoBehaviour
             clickSound.Play();
 
         Debug.Log("RAM SNAPPED: " + ram.name);
+    }
+
+    // Only clears this slot if it's actually holding the given RAM object.
+    // Safe to call on every slot without knowing which one currently holds it.
+    public void ClearSlotIfHolding(GameObject ram)
+    {
+        if (currentRam == ram)
+            currentRam = null;
     }
 
     public void ClearSlot()

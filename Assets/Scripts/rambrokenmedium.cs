@@ -4,7 +4,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class HardBrokenRam : MonoBehaviour
 {
     public HardPCManager hardPCManager;
-    public HardRamSlot ramSlot;
+
+    [Tooltip("All possible slots in the scene -- whichever one is currently holding this RAM will clear itself automatically")]
+    public HardRamSlot[] allSlots;
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
@@ -25,8 +27,14 @@ public class HardBrokenRam : MonoBehaviour
     {
         transform.SetParent(null, true);
 
-        if (ramSlot != null)
-            ramSlot.ClearSlot();
+        if (allSlots != null)
+        {
+            foreach (var slot in allSlots)
+            {
+                if (slot != null)
+                    slot.ClearSlotIfHolding(gameObject);
+            }
+        }
 
         if (hardPCManager != null)
             hardPCManager.BrokenRamRemoved();
