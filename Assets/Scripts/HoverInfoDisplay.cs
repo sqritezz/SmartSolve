@@ -8,7 +8,6 @@ public class HoverInfoDisplay : MonoBehaviour
     public TMP_Text titleText;
     public TMP_Text descriptionText;
 
-    public GameObject info;
 
     public float verticalOffset = 0.15f;
 
