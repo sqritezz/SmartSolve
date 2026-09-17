@@ -55,9 +55,6 @@ public class PowerButtonMedium : MonoBehaviour
 
     IEnumerator BootMonitor()
     {
-        screenOn.SetActive(true);
-        screenOff.SetActive(false);
-
         bool isObserveStep = checklist != null && observeGroupIndex >= 0 &&
             checklist.IsCurrentStep(observeGroupIndex, observeObjectiveIndex);
 
@@ -68,19 +65,20 @@ public class PowerButtonMedium : MonoBehaviour
 
         if (!isRamFixed)
         {
+            // RAM not fixed yet -- just beep, no screen flash at all
             if (!isObserveStep && performanceTracker != null)
                 performanceTracker.RegisterWrongAttempt();
 
-            yield return new WaitForSeconds(turnOffDelay);
-            screenOn.SetActive(false);
-            screenOff.SetActive(true);
+            yield break;
         }
-        else
+
+        // RAM correctly fixed -- boot normally and stay on
+        screenOn.SetActive(true);
+        screenOff.SetActive(false);
+
+        if (checklist != null && checklist.IsCurrentStep(successGroupIndex, successObjectiveIndex))
         {
-            if (checklist != null && checklist.IsCurrentStep(successGroupIndex, successObjectiveIndex))
-            {
-                checklist.CompleteObjective(successGroupIndex, successObjectiveIndex);
-            }
+            checklist.CompleteObjective(successGroupIndex, successObjectiveIndex);
         }
     }
 }

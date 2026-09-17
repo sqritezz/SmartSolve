@@ -19,6 +19,7 @@ public class RamGrab : MonoBehaviour
         rb.isKinematic = true;
 
         grab.selectEntered.AddListener(OnGrab);
+        grab.selectExited.AddListener(OnRelease);
     }
 
     void OnGrab(SelectEnterEventArgs args)
@@ -30,6 +31,18 @@ public class RamGrab : MonoBehaviour
 
         if (powerButton != null && !fixedForever)
             powerButton.isRamFixed = false;
+    }
+
+    void OnRelease(SelectExitEventArgs args)
+    {
+        if (fixedForever) return; // already correctly snapped, RamSnap owns it now
+
+        // Force these regardless of what Throw On Detach or anything else
+        // set them to right before this listener ran.
+        rb.isKinematic = false;
+        rb.useGravity = true;
+
+        Debug.Log("[RamGrab] After release fix. isKinematic=" + rb.isKinematic + " useGravity=" + rb.useGravity);
     }
 
     public void MarkFixedForever()

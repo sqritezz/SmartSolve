@@ -9,13 +9,11 @@ public class RamSnap : MonoBehaviour
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
-    [Tooltip("Which group this objective belongs to")]
-    public int groupIndex = 1;
-    [Tooltip("Which objective line within that group this is")]
-    public int objectiveIndex = 0;
+    public int groupIndex;
+    public int objectiveIndex;
 
     [Header("Randomized Slot Support")]
-    [Tooltip("If false, this slot won't accept the fix (used when multiple slots exist and only one is randomly correct each playthrough). Set automatically by RamSlotRandomizer if used.")]
+    [Tooltip("Set automatically by RamSlotRandomizer if used.")]
     public bool isActiveSlot = true;
     [Tooltip("Optional: played when RAM is placed in a WRONG slot")]
     public AudioSource wrongSlotSound;
@@ -23,6 +21,7 @@ public class RamSnap : MonoBehaviour
     public PerformanceTracker performanceTracker;
 
     private GameObject currentRam;
+    private bool warnedThisOverlap = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -45,6 +44,11 @@ public class RamSnap : MonoBehaviour
 
         currentRam = other.gameObject;
 
+        // Capture the RAM's current visual (world) size BEFORE reparenting,
+        // so whatever size you already tuned it to stays exactly the same
+        // after it becomes a child of the Snap Point.
+        Vector3 desiredWorldScale = other.transform.lossyScale;
+
         Rigidbody rb = other.GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -57,7 +61,15 @@ public class RamSnap : MonoBehaviour
         other.transform.SetParent(snapPoint, true);
         other.transform.localPosition = Vector3.zero;
         other.transform.localRotation = Quaternion.identity;
-        other.transform.localScale = Vector3.one;
+
+        // Solve for whatever local scale reproduces that same world size
+        // under this Snap Point's own scale.
+        Vector3 parentLossy = snapPoint.lossyScale;
+        other.transform.localScale = new Vector3(
+            parentLossy.x != 0f ? desiredWorldScale.x / parentLossy.x : desiredWorldScale.x,
+            parentLossy.y != 0f ? desiredWorldScale.y / parentLossy.y : desiredWorldScale.y,
+            parentLossy.z != 0f ? desiredWorldScale.z / parentLossy.z : desiredWorldScale.z
+        );
 
         if (powerButton != null)
             powerButton.isRamFixed = true;
@@ -76,11 +88,38 @@ public class RamSnap : MonoBehaviour
             checklist.CompleteObjective(groupIndex, objectiveIndex);
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (!other.CompareTag("RAM") || currentRam != null)
+            return;
+
+        XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
+        if (grab != null && grab.isSelected)
+            return;
+
+        if (!isActiveSlot)
+        {
+            if (!warnedThisOverlap)
+            {
+                if (wrongSlotSound != null)
+                    wrongSlotSound.Play();
+                if (performanceTracker != null)
+                    performanceTracker.RegisterWrongAttempt();
+                warnedThisOverlap = true;
+            }
+            return;
+        }
+
+        OnTriggerEnter(other); // reuse the exact same snap logic
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("RAM"))
         {
             currentRam = null;
+            warnedThisOverlap = false;
+
             RamGrab ramGrab = other.GetComponent<RamGrab>();
             if (ramGrab == null && powerButton != null)
             {

@@ -25,8 +25,19 @@ public class NPCDialogue : MonoBehaviour
     public string talkTriggerName = "Talk";
     public string idleTriggerName = "Idle";
 
+    [Header("Checklist Integration")]
+    [Tooltip("Completed once the player has finished this NPC's dialogue")]
+    public SequentialChecklist checklist;
+    public int groupIndex;
+    public int objectiveIndex;
+
+    [Header("Gate the PSU switch on this conversation (optional)")]
+    [Tooltip("If assigned, this NPC talking marks the PSU switch as unlocked")]
+    public PSUSwitch1 psuSwitchToUnlock;
+
     private int currentLine = -1;
     private bool isTalking = false;
+    private bool hasCompletedOnce = false;
     private XRSimpleInteractable interactable;
 
     private void Awake()
@@ -90,5 +101,16 @@ public class NPCDialogue : MonoBehaviour
 
         if (animator != null && !string.IsNullOrEmpty(idleTriggerName))
             animator.SetTrigger(idleTriggerName);
+
+        if (!hasCompletedOnce)
+        {
+            hasCompletedOnce = true;
+
+            if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
+                checklist.CompleteObjective(groupIndex, objectiveIndex);
+
+            if (psuSwitchToUnlock != null)
+                psuSwitchToUnlock.MarkNpcTalkedTo();
+        }
     }
 }

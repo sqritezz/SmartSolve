@@ -5,6 +5,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 // Detects the three tutorial actions and checks them off on a
 // ChecklistManager (the static list version, not SequentialChecklist)
 // since all three guidelines are shown together at once.
+//
+// IMPORTANT: tracking no longer starts automatically in Start(). Call
+// BeginTracking() once the player has actually spawned in the room --
+// either from your teleport script directly, or via RoomEntryDetector.cs
+// on a trigger volume at the room entrance.
 public class GuidelineTracker : MonoBehaviour
 {
     [Header("References")]
@@ -28,9 +33,16 @@ public class GuidelineTracker : MonoBehaviour
     private bool moveDone = false;
     private bool interactDone = false;
     private bool rotateDone = false;
+    private bool tracking = false;
 
-    private void Start()
+    // Call this once the player has actually spawned/entered the room --
+    // not on scene load. This is what used to happen automatically in
+    // Start(), which caused the "greened while still in the main menu" bug.
+    public void BeginTracking()
     {
+        if (tracking) return; // don't reset progress if called twice
+        tracking = true;
+
         if (xrOrigin != null)
         {
             startPosition = xrOrigin.position;
@@ -48,7 +60,7 @@ public class GuidelineTracker : MonoBehaviour
 
     private void Update()
     {
-        if (xrOrigin == null) return;
+        if (!tracking || xrOrigin == null) return;
 
         if (!moveDone)
         {
@@ -75,7 +87,7 @@ public class GuidelineTracker : MonoBehaviour
 
     private void OnAnyInteract(SelectEnterEventArgs args)
     {
-        if (interactDone) return;
+        if (!tracking || interactDone) return;
 
         interactDone = true;
         if (checklist != null)
