@@ -10,6 +10,7 @@ TagManager:
   - Eraser
   - WorkingRam
   - WorkingRAM
+  - PSUCable
   layers:
   - Default
   - TransparentFX
