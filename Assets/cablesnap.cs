@@ -1,16 +1,19 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-// Attach to Cable Port. Practice-mode socket: unlike RamSnap, there's no
-// wrong-slot logic -- this is a tutorial, so any correctly-tagged cable
-// that reaches the port succeeds. Preserves the cable's real-world size
-// the same safe way RamSnap does (protects against non-uniform parent scale).
+// Attach to Cable Port. Practice-mode socket: any correctly-tagged cable
+// that reaches the port succeeds (no wrong-slot logic, this is a tutorial).
 public class CableSnap : MonoBehaviour
 {
     public Transform snapPoint;
     public AudioSource clickSound;
 
-    [Tooltip("Optional: fires once the cable is successfully plugged in -- hook up dialogue advance, checklist completion, VFX, etc.")]
+    [Header("Checklist Integration")]
+    public SequentialChecklist checklist;
+    public int groupIndex;
+    public int objectiveIndex;
+
+    [Tooltip("Optional: fires once the cable is successfully plugged in -- hook up the follow-up dialogue unlock here.")]
     public UnityEngine.Events.UnityEvent onPluggedIn;
 
     private GameObject currentCable;
@@ -67,6 +70,9 @@ public class CableSnap : MonoBehaviour
 
         if (clickSound != null)
             clickSound.Play();
+
+        if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
+            checklist.CompleteObjective(groupIndex, objectiveIndex);
 
         onPluggedIn?.Invoke();
     }

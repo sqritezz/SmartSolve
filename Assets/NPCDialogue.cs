@@ -5,9 +5,19 @@ using TMPro;
 // Attach this directly to the NPC GameObject.
 // Requires an XRSimpleInteractable on the same object (or a child) so the
 // player can point their ray at the NPC and pull the trigger to talk.
+//
+// IMPORTANT: if this NPC has more than one NPCDialogue component on it
+// (e.g. one for a tutorial intro, one for the real briefing), only ONE
+// should have isActiveDialogue = true at any given moment -- otherwise
+// both will respond to the same click. A flow manager script flips this
+// flag when switching phases.
 [RequireComponent(typeof(XRSimpleInteractable))]
 public class NPCDialogue : MonoBehaviour
 {
+    [Header("Phase Gating")]
+    [Tooltip("Only one NPCDialogue component on this NPC should be active at a time. Inactive ones ignore clicks entirely.")]
+    public bool isActiveDialogue = true;
+
     [Header("Dialogue Content")]
     [TextArea(2, 4)]
     public string[] lines;
@@ -35,6 +45,10 @@ public class NPCDialogue : MonoBehaviour
     [Tooltip("If assigned, this NPC talking marks the PSU switch as unlocked")]
     public PSUSwitch1 psuSwitchToUnlock;
 
+    [Header("Runs when this dialogue finishes (optional)")]
+    [Tooltip("Hook up phase transitions here, e.g. a flow manager's OnTutorialDialogueFinished()")]
+    public UnityEngine.Events.UnityEvent onDialogueFinished;
+
     private int currentLine = -1;
     private bool isTalking = false;
     private bool hasCompletedOnce = false;
@@ -51,6 +65,8 @@ public class NPCDialogue : MonoBehaviour
 
     private void OnInteract(SelectEnterEventArgs args)
     {
+        if (!isActiveDialogue) return; // this dialogue isn't the current phase -- ignore the click
+
         if (!isTalking)
             StartDialogue();
         else
@@ -59,6 +75,8 @@ public class NPCDialogue : MonoBehaviour
 
     public void StartDialogue()
     {
+        if (!isActiveDialogue) return;
+
         if (lines == null || lines.Length == 0)
         {
             Debug.LogWarning(gameObject.name + ": NPCDialogue has no lines assigned.");
@@ -111,6 +129,8 @@ public class NPCDialogue : MonoBehaviour
 
             if (psuSwitchToUnlock != null)
                 psuSwitchToUnlock.MarkNpcTalkedTo();
+
+            onDialogueFinished?.Invoke();
         }
     }
 }
