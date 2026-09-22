@@ -12,6 +12,7 @@ TagManager:
   - WorkingRAM
   - PSUCable
   - practicesponge
+  - PracticeRAM
   layers:
   - Default
   - TransparentFX
