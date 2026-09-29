@@ -13,6 +13,8 @@ TagManager:
   - PSUCable
   - practicesponge
   - PracticeRAM
+  - PSUOld
+  - PSUNew
   layers:
   - Default
   - TransparentFX
