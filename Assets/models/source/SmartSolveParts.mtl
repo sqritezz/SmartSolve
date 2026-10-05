@@ -1,0 +1,12 @@
+newmtl Gold
+Kd 1.0 0.78 0.25
+Ks 0.9 0.8 0.5
+Ns 200
+newmtl BlackPlastic
+Kd 0.05 0.05 0.05
+Ks 0.1 0.1 0.1
+Ns 20
+newmtl WireWhite
+Kd 0.92 0.92 0.92
+newmtl WireOrange
+Kd 1.0 0.45 0.05
