@@ -2,19 +2,30 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-// Attach to the 24-pin connector (needs Rigidbody + XR Grab Interactable + Collider).
-// Starts plugged into the motherboard. Grab it and let go:
-//  - released near the socket  -> plugs back in (seated)
-//  - released anywhere else    -> rests at the "Unplugged Spot" (no falling)
-// Grabbing it while the PSU is ON is a safety mistake: it's dropped and counts
-// as a wrong attempt. It also can't be moved while the paperclip is inserted.
+// Attach to a 24-pin connector (needs Rigidbody + XR Grab Interactable + Collider).
+// Grab it and let go:
+//  - released near the motherboard socket -> plugs in (seated)
+//  - released anywhere else               -> rests at the "Unplugged Spot" (no falling)
+// Grabbing it while the PSU is ON is a safety mistake: dropped + wrong attempt.
+// It also can't be moved while a paperclip is inserted.
+//
+// PSU Medium: leave Seated Spot empty and Start Unplugged off (works as before).
+// PSU Hard (new PSU's connector): set Seated Spot to an empty object at the
+// motherboard socket and check Start Unplugged. PSUHardManager turns
+// "Allow Plug In" on once the new PSU is installed.
 public class PullOutConnector : MonoBehaviour
 {
     [Header("Positions")]
-    [Tooltip("Empty object where the connector rests once pulled out (just in front of the socket)")]
+    [Tooltip("Empty object where the connector rests when unplugged")]
     public Transform unpluggedSpot;
-    [Tooltip("How close (meters) to the socket it must be released to plug back in")]
+    [Tooltip("Optional: empty object at the motherboard socket. Empty = where the connector starts.")]
+    public Transform seatedSpot;
+    [Tooltip("Starts unplugged (e.g. the new PSU's connector)")]
+    public bool startUnplugged = false;
+    [Tooltip("How close (meters) to the socket it must be released to plug in")]
     public float snapDistance = 0.08f;
+    [Tooltip("Turned on/off by a manager. When off, it can't be plugged in.")]
+    public bool allowPlugIn = true;
 
     [Header("Safety")]
     public PSUSwitch1 psuSwitch;
@@ -22,7 +33,7 @@ public class PullOutConnector : MonoBehaviour
     [Tooltip("e.g. \"Turn off the PSU switch before touching the cables!\"")]
     public GameObject powerOnWarning;
 
-    [Header("Paperclip")]
+    [Header("Paperclip (PSU Medium only)")]
     public PaperclipSlot paperclipSlot;
     [Tooltip("e.g. \"Remove the paperclip first.\"")]
     public GameObject removeClipMessage;
@@ -67,6 +78,12 @@ public class PullOutConnector : MonoBehaviour
     {
         if (powerOnWarning != null) powerOnWarning.SetActive(false);
         if (removeClipMessage != null) removeClipMessage.SetActive(false);
+
+        if (startUnplugged)
+        {
+            isSeated = false;
+            PlaceUnplugged();
+        }
     }
 
     private void OnGrabbed(SelectEnterEventArgs args)
@@ -93,16 +110,13 @@ public class PullOutConnector : MonoBehaviour
         StartCoroutine(SettleNextFrame());
     }
 
-    // XR Grab restores the Rigidbody/parent on release, so wait a frame
     private IEnumerator SettleNextFrame()
     {
-        yield return null;
+        yield return null; // let XR Grab finish releasing
 
-        Vector3 seatedWorld = originalParent != null
-            ? originalParent.TransformPoint(seatedLocalPos)
-            : seatedLocalPos;
+        GetSeatedPose(out Vector3 seatedPos, out _);
 
-        if (Vector3.Distance(transform.position, seatedWorld) <= snapDistance)
+        if (allowPlugIn && Vector3.Distance(transform.position, seatedPos) <= snapDistance)
         {
             PlaceSeated();
             if (!isSeated) { isSeated = true; if (plugSound != null) plugSound.Play(); }
@@ -124,12 +138,31 @@ public class PullOutConnector : MonoBehaviour
         forceDropping = false;
     }
 
+    private void GetSeatedPose(out Vector3 pos, out Quaternion rot)
+    {
+        if (seatedSpot != null)
+        {
+            pos = seatedSpot.position;
+            rot = seatedSpot.rotation;
+        }
+        else if (originalParent != null)
+        {
+            pos = originalParent.TransformPoint(seatedLocalPos);
+            rot = originalParent.rotation * seatedLocalRot;
+        }
+        else
+        {
+            pos = seatedLocalPos;
+            rot = seatedLocalRot;
+        }
+    }
+
     private void PlaceSeated()
     {
         if (rb != null) { rb.isKinematic = true; rb.useGravity = false; }
-        transform.SetParent(originalParent, false);
-        transform.localPosition = seatedLocalPos;
-        transform.localRotation = seatedLocalRot;
+        transform.SetParent(originalParent, true);
+        GetSeatedPose(out Vector3 pos, out Quaternion rot);
+        transform.SetPositionAndRotation(pos, rot);
     }
 
     private void PlaceUnplugged()
