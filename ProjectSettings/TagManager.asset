@@ -17,6 +17,7 @@ TagManager:
   - PSUNew
   - CleaningBrush
   - Pliers
+  - Screwdriver
   layers:
   - Default
   - TransparentFX
