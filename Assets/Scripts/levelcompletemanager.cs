@@ -51,13 +51,19 @@ public class LevelCompleteManager : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip congratsSound;
 
-    [Header("Positioning")]
-    [Tooltip("Moves the panel in front of the player's view when it appears")]
+    [Header("Positioning (panel follows the player's view)")]
+    [Tooltip("Keeps the panel in front of the player's eyes while it's open")]
     public bool positionInFrontOfPlayer = true;
-    public float distanceFromPlayer = 1.5f;
+    [Tooltip("Meters in front of the eyes. Keep it close so nothing gets between you and the panel.")]
+    public float distanceFromPlayer = 0.7f;
     public float heightOffset = 0f;
+    [Tooltip("How quickly it catches up when you turn your head (higher = snappier)")]
+    public float followSmoothing = 8f;
+    [Tooltip("Draws the panel above other world UI (like the objectives board)")]
+    public int sortingOrder = 100;
 
     private bool hasShown = false;
+    private bool isShowing = false;
     private Vector3 bannerOriginalScale = Vector3.one;
     private Vector3[] starOriginalScales;
 
@@ -78,7 +84,33 @@ public class LevelCompleteManager : MonoBehaviour
         }
 
         if (rewardPanel != null)
+        {
+            Canvas canvas = rewardPanel.GetComponentInParent<Canvas>(true);
+            if (canvas == null) canvas = rewardPanel.GetComponentInChildren<Canvas>(true);
+            if (canvas != null)
+            {
+                canvas.overrideSorting = true;
+                canvas.sortingOrder = sortingOrder;
+            }
+
+            // Make sure the panel is fully opaque
+            CanvasGroup group = rewardPanel.GetComponent<CanvasGroup>();
+            if (group != null) group.alpha = 1f;
+
             rewardPanel.SetActive(false);
+        }
+    }
+
+    // Keep the panel in front of the player's eyes while this level's panel is open
+    private void LateUpdate()
+    {
+        if (!isShowing || rewardPanel == null || !rewardPanel.activeInHierarchy) { isShowing = false; return; }
+        if (!positionInFrontOfPlayer || Camera.main == null) return;
+
+        GetTargetPose(out Vector3 pos, out Quaternion rot);
+        float k = 1f - Mathf.Exp(-followSmoothing * Time.unscaledDeltaTime);
+        rewardPanel.transform.position = Vector3.Lerp(rewardPanel.transform.position, pos, k);
+        rewardPanel.transform.rotation = Quaternion.Slerp(rewardPanel.transform.rotation, rot, k);
     }
 
     // Call this from the checklist's "On All Steps Complete" event
@@ -106,8 +138,12 @@ public class LevelCompleteManager : MonoBehaviour
         if (rewardPanel != null)
         {
             if (positionInFrontOfPlayer && Camera.main != null)
-                PositionInFrontOfPlayer();
+            {
+                GetTargetPose(out Vector3 pos, out Quaternion rot);
+                rewardPanel.transform.SetPositionAndRotation(pos, rot); // appear right away
+            }
             rewardPanel.SetActive(true);
+            isShowing = true;
         }
 
         if (audioSource != null && congratsSound != null)
@@ -192,23 +228,11 @@ public class LevelCompleteManager : MonoBehaviour
     }
 
     // ---------- Positioning ----------
-    private void PositionInFrontOfPlayer()
+    // Straight in front of the eyes, facing the player (not tilted, not flattened)
+    private void GetTargetPose(out Vector3 pos, out Quaternion rot)
     {
         Transform cam = Camera.main.transform;
-
-        // Flatten forward so the panel doesn't tilt with head pitch
-        Vector3 flatForward = cam.forward;
-        flatForward.y = 0f;
-        if (flatForward.sqrMagnitude < 0.001f) flatForward = Vector3.forward;
-        flatForward.Normalize();
-
-        Vector3 targetPos = cam.position + flatForward * distanceFromPlayer;
-        targetPos.y = cam.position.y + heightOffset;
-        rewardPanel.transform.position = targetPos;
-
-        Vector3 lookDir = rewardPanel.transform.position - cam.position;
-        lookDir.y = 0f;
-        if (lookDir.sqrMagnitude > 0.001f)
-            rewardPanel.transform.rotation = Quaternion.LookRotation(lookDir);
+        pos = cam.position + cam.forward * distanceFromPlayer + Vector3.up * heightOffset;
+        rot = Quaternion.LookRotation(pos - cam.position, Vector3.up);
     }
 }

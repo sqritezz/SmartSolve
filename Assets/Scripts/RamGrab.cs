@@ -3,29 +3,39 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 // On the RAM (needs Rigidbody + XR Grab Interactable).
-// When the player lets go and it did NOT snap into the correct slot
-// (wrong slot, or dropped anywhere), the RAM no longer falls.
-// It waits a moment (so the wrong-slot sound can play), then glides back
-// to where it was picked up from - or to the Return Spot, if one is set.
+// When the player lets go, the RAM picks the CLOSEST RamSnap slot it is in:
+//  - correct slot -> snaps in with a click and is locked
+//  - wrong slot   -> pauses, plays the wrong sound ONCE, glides back home
+//  - no slot      -> glides back home quietly
+// It never falls or floats.
 public class RamGrab : MonoBehaviour
 {
     public PowerButton powerButton;
 
+    [Header("Slot Detection")]
+    [Tooltip("How close (meters) to a slot's snap point the RAM must be released to count as 'in' that slot. Raise if it's too strict.")]
+    public float slotRadius = 0.1f;
+
     [Header("Return When Not Snapped")]
     [Tooltip("Optional: a fixed spot to return to (e.g. on the table). Empty = back to where it was picked up.")]
     public Transform returnSpot;
-    [Tooltip("Seconds to wait after letting go before returning (lets the slot check and the wrong sound play)")]
+    [Tooltip("Seconds it stays still before gliding back")]
     public float waitBeforeReturn = 0.35f;
     [Tooltip("Seconds the glide back takes")]
     public float returnDuration = 0.35f;
     public AudioSource returnSound;
 
+    [Header("Debug")]
+    [Tooltip("Prints which slot was chosen and how far away it was")]
+    public bool logSlotChoice = false;
+
+    public bool IsFixed => fixedForever;
+
     private XRGrabInteractable grab;
     private Rigidbody rb;
     private bool fixedForever = false;
-    private Coroutine returnRoutine;
+    private Coroutine releaseRoutine;
 
-    // Where it was when picked up
     private Transform homeParent;
     private Vector3 homeLocalPos;
     private Quaternion homeLocalRot;
@@ -55,48 +65,79 @@ public class RamGrab : MonoBehaviour
 
     void OnGrab(SelectEnterEventArgs args)
     {
-        // Stop a return that's in progress if they grab it again
-        if (returnRoutine != null) { StopCoroutine(returnRoutine); returnRoutine = null; }
-        else if (!fixedForever) RememberHome(); // remember where it was taken from
+        if (fixedForever) return;
+
+        if (releaseRoutine != null)
+        {
+            // Grabbed again mid-glide: keep the original home
+            StopCoroutine(releaseRoutine);
+            releaseRoutine = null;
+        }
+        else
+        {
+            RememberHome();
+        }
 
         transform.SetParent(null, true);
-
         rb.isKinematic = false;
         rb.useGravity = false;
 
-        if (powerButton != null && !fixedForever)
+        if (powerButton != null)
             powerButton.isRamFixed = false;
     }
 
     void OnRelease(SelectExitEventArgs args)
     {
-        if (fixedForever) return; // correctly snapped - RamSnap owns it now
-
-        // Hold it still in place (no falling) while the slots check it
+        if (fixedForever) return;
         StopMotion();
-        returnRoutine = StartCoroutine(ReturnIfNotSnapped());
+        releaseRoutine = StartCoroutine(HandleRelease());
     }
 
-    private IEnumerator ReturnIfNotSnapped()
+    private IEnumerator HandleRelease()
     {
+        yield return null; // let XR Grab finish releasing
+        StopMotion();
+
+        RamSnap slot = FindClosestSlot();
+
+        // Correct slot -> snap right away
+        if (slot != null && slot.isActiveSlot && !slot.IsFilled)
+        {
+            if (logSlotChoice) Debug.Log("[RamGrab] Snapped into " + slot.name);
+            slot.SnapRam(this);
+            releaseRoutine = null;
+            yield break;
+        }
+
+        bool wrongSlot = slot != null;
+        if (wrongSlot)
+        {
+            if (logSlotChoice) Debug.Log("[RamGrab] Wrong slot: " + slot.name);
+            slot.RegisterWrong();
+        }
+        else if (logSlotChoice)
+        {
+            Debug.Log("[RamGrab] Not in any slot");
+        }
+
+        // Stay still for a moment (another slot type, e.g. Medium's, may still snap it)
         float t = 0f;
         while (t < waitBeforeReturn)
         {
-            // XR Grab may restore physics on release - keep it frozen
+            if (fixedForever) { releaseRoutine = null; yield break; }
             StopMotion();
-            if (fixedForever) { returnRoutine = null; yield break; }
             t += Time.deltaTime;
             yield return null;
         }
+        if (fixedForever) { releaseRoutine = null; yield break; }
 
-        if (fixedForever) { returnRoutine = null; yield break; }
+        // Wrong sound plays once, as it goes back
+        if (wrongSlot) slot.PlayWrongSound();
+        else if (returnSound != null) returnSound.Play();
 
         // Glide back
         Vector3 startPos = transform.position;
         Quaternion startRot = transform.rotation;
-
-        if (returnSound != null) returnSound.Play();
-
         float g = 0f;
         while (g < returnDuration)
         {
@@ -110,7 +151,6 @@ public class RamGrab : MonoBehaviour
             yield return null;
         }
 
-        // Land exactly at home
         if (returnSpot != null)
         {
             transform.SetPositionAndRotation(returnSpot.position, returnSpot.rotation);
@@ -124,7 +164,29 @@ public class RamGrab : MonoBehaviour
         }
 
         StopMotion();
-        returnRoutine = null;
+        releaseRoutine = null;
+    }
+
+    // The single closest slot the RAM is in - overlapping slots can't both claim it
+    private RamSnap FindClosestSlot()
+    {
+        Vector3 pos = transform.position;
+        RamSnap best = null;
+        float bestDist = float.MaxValue;
+
+        foreach (RamSnap s in RamSnap.AllSlots)
+        {
+            if (s == null || !s.isActiveAndEnabled) continue;
+            if (!s.Contains(pos, slotRadius)) continue;
+
+            float d = s.DistanceTo(pos);
+            if (d < bestDist) { bestDist = d; best = s; }
+        }
+
+        if (logSlotChoice && best != null)
+            Debug.Log("[RamGrab] Closest slot: " + best.name + " at " + bestDist.ToString("F3") + " m");
+
+        return best;
     }
 
     private void GetHomePose(out Vector3 pos, out Quaternion rot)
@@ -133,10 +195,8 @@ public class RamGrab : MonoBehaviour
         {
             pos = returnSpot.position;
             rot = returnSpot.rotation;
-            return;
         }
-
-        if (homeParent != null)
+        else if (homeParent != null)
         {
             pos = homeParent.TransformPoint(homeLocalPos);
             rot = homeParent.rotation * homeLocalRot;
@@ -163,7 +223,10 @@ public class RamGrab : MonoBehaviour
     {
         fixedForever = true;
 
-        if (returnRoutine != null) { StopCoroutine(returnRoutine); returnRoutine = null; }
+        if (releaseRoutine != null) { StopCoroutine(releaseRoutine); releaseRoutine = null; }
+
+        // Lock it in so it can't be pulled out and left floating
+        if (grab != null) grab.enabled = false;
 
         if (powerButton != null)
             powerButton.isRamFixed = true;

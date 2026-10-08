@@ -3,6 +3,7 @@ using UnityEngine;
 public class TeleportToPoint : MonoBehaviour
 {
     public Transform xrRig;
+    public Transform pcRoom;
 
     [Header("RAM Points")]
     public Transform easyPoint;
@@ -83,6 +84,16 @@ public class TeleportToPoint : MonoBehaviour
 
         if (hintButton != null)
             hintButton.SetActive(true);
+    }
+
+    public void TeleportPCRoom()
+    {
+        xrRig.position = pcRoom.position;
+        mainMenu.SetActive(false);
+        home.SetActive(false);
+
+        if (hintButton != null)
+            hintButton.SetActive(false);
     }
 
     public void TeleportEasy()

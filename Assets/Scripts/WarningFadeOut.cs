@@ -2,30 +2,50 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using System.Collections;
 
+// Warning screen: stays, fades out, then shows Home.
+// Pressing the TRIGGER anywhere skips it (needs TriggerClicker on the controllers).
 public class WarningFadeOut : MonoBehaviour
 {
     public CanvasGroup canvasGroup;
     public GameObject homeUI;
 
+    public float stayTime = 3f;
     public float fadeDuration = 2f;
+    [Tooltip("Ignore clicks for this long, so a leftover press doesn't skip instantly")]
+    public float ignoreClicksFor = 0.5f;
 
+    private Coroutine fadeRoutine;
     private bool skipped = false;
+    private float startTime;
+
+    private void OnEnable()
+    {
+        TriggerClicker.OnAnyTriggerPressed += OnAnyClick;
+    }
+
+    private void OnDisable()
+    {
+        TriggerClicker.OnAnyTriggerPressed -= OnAnyClick;
+    }
 
     void Start()
     {
+        startTime = Time.time;
+
         if (homeUI != null)
             homeUI.SetActive(false);
 
-        canvasGroup.alpha = 1f;
-
-        // Hook up "click anywhere to skip" if an interactable is present
+        // Still works if a ClickOnly + XR Simple Interactable is on the panel
         XRSimpleInteractable interactable = GetComponent<XRSimpleInteractable>();
         if (interactable != null)
-            interactable.selectEntered.AddListener(OnSkipClicked);
+            interactable.selectEntered.AddListener(args => Skip());
+
+        fadeRoutine = StartCoroutine(FadeOutThenShowHome());
     }
 
-    private void OnSkipClicked(SelectEnterEventArgs args)
+    private void OnAnyClick()
     {
+        if (Time.time - startTime < ignoreClicksFor) return;
         Skip();
     }
 
@@ -34,13 +54,23 @@ public class WarningFadeOut : MonoBehaviour
         if (skipped) return;
         skipped = true;
 
-        StartCoroutine(FadeOutThenShowHome());
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+
+        canvasGroup.alpha = 0f;
+        gameObject.SetActive(false);
+
+        if (homeUI != null)
+            homeUI.SetActive(true);
     }
 
     IEnumerator FadeOutThenShowHome()
     {
-        float timer = 0f;
+        canvasGroup.alpha = 1f;
 
+        yield return new WaitForSeconds(stayTime);
+
+        float timer = 0f;
         while (timer < fadeDuration)
         {
             timer += Time.deltaTime;
@@ -48,10 +78,6 @@ public class WarningFadeOut : MonoBehaviour
             yield return null;
         }
 
-        canvasGroup.alpha = 0f;
-        gameObject.SetActive(false);
-
-        if (homeUI != null)
-            homeUI.SetActive(true);
+        Skip();
     }
 }
