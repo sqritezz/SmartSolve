@@ -2,14 +2,28 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-// NPC intro:
-//  1. Waits OUTSIDE the closed door (idle) while a knock SOUND plays.
-//  2. Player opens the door -> knocking stops -> he WAVES once -> faces the player.
-//  3. After the intro dialogue (call StartWalking) he walks along the waypoints
-//     to his spot, then idles and faces the player.
-// Put this on the NPC object that has the Animator.
+// NPC arrival at the door:
+//  1. Waits OUTSIDE the closed door while a knock SOUND plays.
+//     He can't be talked to yet.
+//  2. Player opens the door -> knocking stops -> he WAVES -> the DOOR dialogue
+//     starts by itself ("Hello, I am Azer." / "May I come in?").
+//  3. When the door dialogue ends, he walks along the waypoints to his spot.
+//  4. When he arrives, the INTRO dialogue (the tutorial one) is unlocked and the
+//     player clicks him to continue talking. The door lines never repeat.
+//
+// Put this on the NPC root (NPC Easy (RAM)).
+// The two NPCDialogue components go on the object you click (e.g. "boy").
+// Do NOT wire StartWalking in the dialogue events - this script handles it.
 public class NPCKnockAndWalk : MonoBehaviour
 {
+    [Header("Dialogues")]
+    [Tooltip("NPCDialogue with ONLY the door lines (Hello, I am Azer. / May I come in?)")]
+    public NPCDialogue doorDialogue;
+    [Tooltip("The tutorial intro NPCDialogue (Thanks for letting me in... etc). Unlocked when he arrives.")]
+    public NPCDialogue introDialogue;
+    [Tooltip("Seconds after the door opens before he starts talking (lets the wave play)")]
+    public float talkDelayAfterDoor = 1.2f;
+
     [Header("Animator")]
     public Animator animator;
     [Tooltip("Animator Trigger that plays the wave")]
@@ -23,12 +37,6 @@ public class NPCKnockAndWalk : MonoBehaviour
     [Tooltip("Start knocking when the level starts")]
     public bool knockOnStart = true;
 
-    [Header("Door")]
-    [Tooltip("The part of the door that moves when it opens")]
-    public Transform door;
-    [Tooltip("How far (meters) the door must move to count as opened (rotation uses this x100 in degrees)")]
-    public float doorOpenThreshold = 0.05f;
-
     [Header("Walking")]
     [Tooltip("Path from the door to his spot, in order. The LAST one is where he stays.")]
     public Transform[] waypoints;
@@ -40,7 +48,7 @@ public class NPCKnockAndWalk : MonoBehaviour
     public bool facePlayer = true;
 
     [Header("Events")]
-    [Tooltip("Runs when the door opens (e.g. show a 'Talk to him' hint)")]
+    [Tooltip("Runs when the door opens")]
     public UnityEvent onDoorOpened;
     [Tooltip("Runs when he reaches his spot")]
     public UnityEvent onArrived;
@@ -52,42 +60,42 @@ public class NPCKnockAndWalk : MonoBehaviour
     public bool hasArrived;
 
     private Transform player;
-    private Vector3 doorStartPos;
-    private Quaternion doorStartRot;
+    private bool doorTalkDone = false;
 
     private void Awake()
     {
         if (animator == null) animator = GetComponentInChildren<Animator>();
         if (animator != null) animator.applyRootMotion = false; // the script moves him
+
+        if (doorDialogue != null)
+            doorDialogue.onDialogueFinished.AddListener(OnDoorDialogueFinished);
     }
 
     private void Start()
     {
         if (Camera.main != null) player = Camera.main.transform;
-
-        if (door != null)
-        {
-            doorStartPos = door.localPosition;
-            doorStartRot = door.localRotation;
-        }
-
         if (knockOnStart) StartKnocking();
+        StartCoroutine(LockDialoguesNextFrame());
+    }
+
+    // Runs one frame late so it wins over TutorialFlowManager turning the intro on
+    private IEnumerator LockDialoguesNextFrame()
+    {
+        yield return null;
+        if (!doorOpened && doorDialogue != null) doorDialogue.isActiveDialogue = false;
+        if (!hasArrived && introDialogue != null) introDialogue.isActiveDialogue = false;
     }
 
     private void Update()
     {
         if (player == null && Camera.main != null) player = Camera.main.transform;
 
-        // Door opened -> stop knocking, wave
-        if (!doorOpened && DoorIsOpen())
-            OnDoorOpened();
-
         // After the door opens, keep facing the player (not while walking)
         if (doorOpened && !isWalking && facePlayer && player != null)
             TurnTowards(player.position);
     }
 
-    // Can also be called from your door's script/event
+    // Wired from DoorSwing -> On Opened
     public void OnDoorOpened()
     {
         if (doorOpened) return;
@@ -99,6 +107,32 @@ public class NPCKnockAndWalk : MonoBehaviour
             animator.SetTrigger(waveTrigger);
 
         onDoorOpened?.Invoke();
+        StartCoroutine(StartDoorTalk());
+    }
+
+    private IEnumerator StartDoorTalk()
+    {
+        yield return new WaitForSeconds(talkDelayAfterDoor);
+
+        if (doorDialogue != null)
+        {
+            if (introDialogue != null) introDialogue.isActiveDialogue = false;
+            doorDialogue.isActiveDialogue = true;
+            doorDialogue.StartDialogue();
+        }
+        else
+        {
+            StartWalking(); // no door dialogue set - just walk in
+        }
+    }
+
+    private void OnDoorDialogueFinished()
+    {
+        if (doorTalkDone) return;
+        doorTalkDone = true;
+
+        if (doorDialogue != null) doorDialogue.isActiveDialogue = false; // never repeats
+        StartWalking();
     }
 
     public void StartKnocking()
@@ -113,14 +147,18 @@ public class NPCKnockAndWalk : MonoBehaviour
         if (knockSound != null && knockSound.isPlaying) knockSound.Stop();
     }
 
-    // Call this from the INTRO dialogue's "Runs when this dialogue finishes"
     public void StartWalking()
     {
         if (isWalking || hasArrived) return;
-        if (waypoints == null || waypoints.Length == 0) return;
 
         StopKnocking();
         doorOpened = true;
+
+        if (waypoints == null || waypoints.Length == 0)
+        {
+            Arrive();
+            return;
+        }
         StartCoroutine(WalkRoutine());
     }
 
@@ -143,22 +181,20 @@ public class NPCKnockAndWalk : MonoBehaviour
         }
 
         isWalking = false;
-        hasArrived = true;
         if (animator != null) animator.SetBool(walkingBool, false);
 
         Transform last = waypoints[waypoints.Length - 1];
         if (!facePlayer && last != null)
             transform.rotation = Quaternion.Euler(0f, last.eulerAngles.y, 0f);
 
-        onArrived?.Invoke();
+        Arrive();
     }
 
-    private bool DoorIsOpen()
+    private void Arrive()
     {
-        if (door == null) return false;
-        if (Vector3.Distance(door.localPosition, doorStartPos) > doorOpenThreshold) return true;
-        if (Quaternion.Angle(door.localRotation, doorStartRot) > doorOpenThreshold * 100f) return true;
-        return false;
+        hasArrived = true;
+        if (introDialogue != null) introDialogue.isActiveDialogue = true; // player can talk now
+        onArrived?.Invoke();
     }
 
     private void TurnTowards(Vector3 point)

@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 // Put this on an empty object (e.g. "TutorialPropReset (PSU Easy)").
 // It remembers where each prop starts, and when ResetProps() is called
 // (wire it to the follow-up dialogue's finish event), every prop goes back
-// to its starting spot. If the player is still holding one, it is dropped
+// to its starting spot and size. If the player is still holding one, it is dropped
 // from their hand first. Runs only once, so the tutorial stays "done".
 public class TutorialPropReset : MonoBehaviour
 {
@@ -27,6 +27,7 @@ public class TutorialPropReset : MonoBehaviour
         public Transform parent;
         public Vector3 localPosition;
         public Quaternion localRotation;
+        public Vector3 localScale;
         public Rigidbody rigidbody;
         public XRBaseInteractable interactable;
     }
@@ -49,6 +50,7 @@ public class TutorialPropReset : MonoBehaviour
                 parent = prop.parent,
                 localPosition = prop.localPosition,
                 localRotation = prop.localRotation,
+                localScale = prop.localScale,
                 rigidbody = prop.GetComponent<Rigidbody>(),
                 interactable = prop.GetComponent<XRBaseInteractable>()
             });
@@ -97,9 +99,13 @@ public class TutorialPropReset : MonoBehaviour
             p.transform.SetParent(p.parent, false);
             p.transform.localPosition = p.localPosition;
             p.transform.localRotation = p.localRotation;
+            p.transform.localScale = p.localScale; // back to its original size
 
             if (p.rigidbody != null)
+            {
                 p.rigidbody.position = p.transform.position;
+                p.rigidbody.rotation = p.transform.rotation;
+            }
         }
 
         // 3. Let the player grab the dropped props again

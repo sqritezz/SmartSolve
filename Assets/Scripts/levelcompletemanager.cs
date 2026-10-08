@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 
@@ -7,6 +8,9 @@ using TMPro;
 // every time ShowRewardScreen() runs, the banner, stars and reward text are
 // fully reset for this level.
 // Wire ShowRewardScreen() to the level checklist's "On All Steps Complete".
+// The shared panel's NEXT and BACK TO MENU buttons are re-wired by whichever
+// level just finished, so each level's Next goes to the right place.
+// IMPORTANT: leave the buttons' own "On Click ()" lists EMPTY in the Inspector.
 public class LevelCompleteManager : MonoBehaviour
 {
     [Header("Reward Panel")]
@@ -46,6 +50,16 @@ public class LevelCompleteManager : MonoBehaviour
     [Tooltip("Optional: an Image on the panel that shows the unlocked part")]
     public Image rewardIcon;
     public Sprite rewardSprite;
+
+    [Header("Panel Buttons (this level)")]
+    [Tooltip("The panel's NEXT button (shared by all levels)")]
+    public Button nextButton;
+    [Tooltip("What NEXT does for THIS level, e.g. TeleportToPoint.TeleportMedium. The panel closes by itself.")]
+    public UnityEvent onNext;
+    [Tooltip("The panel's BACK TO MAIN MENU button (shared by all levels)")]
+    public Button backToMenuButton;
+    [Tooltip("What BACK TO MENU does for THIS level. The panel closes by itself.")]
+    public UnityEvent onBackToMenu;
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -135,6 +149,9 @@ public class LevelCompleteManager : MonoBehaviour
         // Reset all stars to "unearned" before showing the panel
         ResetStars();
 
+        // Point the shared buttons at THIS level
+        WireButtons();
+
         if (rewardPanel != null)
         {
             if (positionInFrontOfPlayer && Camera.main != null)
@@ -153,6 +170,27 @@ public class LevelCompleteManager : MonoBehaviour
 
         if (!string.IsNullOrEmpty(rewardPartName) && RewardManager.Instance != null)
             RewardManager.Instance.UnlockPart(rewardPartName);
+    }
+
+    // ---------- Buttons ----------
+    private void WireButtons()
+    {
+        if (nextButton != null)
+        {
+            nextButton.onClick.RemoveAllListeners();
+            nextButton.onClick.AddListener(() => { ClosePanel(); onNext?.Invoke(); });
+        }
+        if (backToMenuButton != null)
+        {
+            backToMenuButton.onClick.RemoveAllListeners();
+            backToMenuButton.onClick.AddListener(() => { ClosePanel(); onBackToMenu?.Invoke(); });
+        }
+    }
+
+    public void ClosePanel()
+    {
+        isShowing = false;
+        if (rewardPanel != null) rewardPanel.SetActive(false);
     }
 
     // ---------- Animation ----------

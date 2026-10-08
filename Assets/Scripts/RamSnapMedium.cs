@@ -1,8 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
+// One per MEDIUM RAM slot. Works exactly like Easy's RamSnap now:
+// the slot doesn't decide anything by itself - when the player lets go of the RAM,
+// RamGrab finds the CLOSEST slot (Easy or Medium) and asks it to snap the RAM
+// (correct slot + clean RAM) or to report a mistake (wrong slot / still dirty).
+// Wrong or dirty -> the RAM glides back to where it was picked up.
 public class RamSnapMedium : MonoBehaviour
 {
+    // All Medium slots in the scene (RamGrab searches these)
+    public static readonly List<RamSnapMedium> AllSlots = new List<RamSnapMedium>();
+
     public Transform snapPoint;
     public PowerButtonMedium powerButton;
     public AudioSource clickSound;
@@ -13,129 +21,118 @@ public class RamSnapMedium : MonoBehaviour
     public int objectiveIndex = 0;
 
     [Header("Randomized Slot Support")]
+    [Tooltip("Set automatically by RamSlotRandomizer if used.")]
     public bool isActiveSlot = true;
+    [Tooltip("Played when the RAM is placed in this slot and it's the WRONG one")]
     public AudioSource wrongSlotSound;
+    [Tooltip("Counts a mistake toward the star rating")]
     public PerformanceTracker performanceTracker;
 
     [Header("Requires Clean RAM")]
     [Tooltip("If true, dirty RAM cannot be inserted -- it must be cleaned first")]
     public bool requireClean = true;
+    [Tooltip("Played when DIRTY RAM is placed in a slot")]
     public AudioSource dirtyRejectSound;
 
-    private GameObject currentRam;
-    private bool warnedThisOverlap = false;
+    public bool IsFilled { get; private set; }
 
-    private void OnTriggerEnter(Collider other)
+    private Collider slotCollider;
+
+    private void Awake()
     {
-        if (!other.CompareTag("RAM") || currentRam != null)
-            return;
+        if (snapPoint == null) snapPoint = transform;
+        slotCollider = GetComponent<Collider>();
+    }
 
-        XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
-        if (grab != null && grab.isSelected)
-            return;
+    private void OnEnable() { if (!AllSlots.Contains(this)) AllSlots.Add(this); }
+    private void OnDisable() { AllSlots.Remove(this); }
 
-        RamMedium ramMedium = other.GetComponent<RamMedium>();
+    // Is the RAM (at this world position) inside or near this slot?
+    public bool Contains(Vector3 ramPos, float extraRadius)
+    {
+        if (slotCollider != null && slotCollider.bounds.Contains(ramPos)) return true;
+        return Vector3.Distance(ramPos, snapPoint.position) <= extraRadius;
+    }
 
-        // Block insertion if RAM isn't clean yet
-        if (requireClean && ramMedium != null && !ramMedium.isClean)
-        {
-            if (!warnedThisOverlap)
-            {
-                if (dirtyRejectSound != null)
-                    dirtyRejectSound.Play();
-                if (performanceTracker != null)
-                    performanceTracker.RegisterWrongAttempt();
-                warnedThisOverlap = true;
-            }
-            return;
-        }
+    public float DistanceTo(Vector3 ramPos)
+    {
+        return Vector3.Distance(ramPos, snapPoint.position);
+    }
 
-        if (!isActiveSlot)
-        {
-            // Wrong slot for this playthrough
-            if (!warnedThisOverlap)
-            {
-                if (wrongSlotSound != null)
-                    wrongSlotSound.Play();
-                if (performanceTracker != null)
-                    performanceTracker.RegisterWrongAttempt();
-                warnedThisOverlap = true;
-            }
-            return;
-        }
+    // Is this RAM still dirty (and this slot needs it clean)?
+    public bool IsDirty(RamGrab ram)
+    {
+        if (!requireClean || ram == null) return false;
+        RamMedium ramMedium = ram.GetComponent<RamMedium>();
+        return ramMedium != null && !ramMedium.isClean;
+    }
 
-        currentRam = other.gameObject;
+    // Can this RAM go in right now?
+    public bool CanAccept(RamGrab ram)
+    {
+        return isActiveSlot && !IsFilled && !IsDirty(ram);
+    }
 
-        // Capture the RAM's current visual (world) size BEFORE reparenting,
-        // so whatever size it already is stays exactly the same after it
-        // becomes a child of the Snap Point (protects against non-uniform
-        // scale on the Snap Point's parent chain).
-        Vector3 desiredWorldScale = other.transform.lossyScale;
+    // Mistake: count it (the sound is played by RamGrab on the way back)
+    public void RegisterWrong()
+    {
+        if (performanceTracker != null)
+            performanceTracker.RegisterWrongAttempt();
+    }
 
-        Rigidbody rb = other.GetComponent<Rigidbody>();
+    // Dirty RAM -> dirty sound, otherwise wrong-slot sound
+    public void PlayWrongSound(RamGrab ram)
+    {
+        if (IsDirty(ram) && dirtyRejectSound != null)
+            dirtyRejectSound.Play();
+        else if (wrongSlotSound != null)
+            wrongSlotSound.Play();
+    }
+
+    // Correct slot: snap and lock the RAM in
+    public void SnapRam(RamGrab ram)
+    {
+        IsFilled = true;
+        Transform t = ram.transform;
+
+        // Keep the RAM's current world size after reparenting
+        Vector3 desiredWorldScale = t.lossyScale;
+
+        Rigidbody rb = ram.GetComponent<Rigidbody>();
         if (rb != null)
         {
+            if (!rb.isKinematic)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
             rb.isKinematic = true;
             rb.useGravity = false;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
         }
 
-        other.transform.SetParent(snapPoint, true);
-        other.transform.localPosition = Vector3.zero;
-        other.transform.localRotation = Quaternion.identity;
+        t.SetParent(snapPoint, true);
+        t.localPosition = Vector3.zero;
+        t.localRotation = Quaternion.identity;
 
-        Vector3 parentLossy = snapPoint.lossyScale;
-        other.transform.localScale = new Vector3(
-            parentLossy.x != 0f ? desiredWorldScale.x / parentLossy.x : desiredWorldScale.x,
-            parentLossy.y != 0f ? desiredWorldScale.y / parentLossy.y : desiredWorldScale.y,
-            parentLossy.z != 0f ? desiredWorldScale.z / parentLossy.z : desiredWorldScale.z
-        );
+        Vector3 p = snapPoint.lossyScale;
+        t.localScale = new Vector3(
+            p.x != 0f ? desiredWorldScale.x / p.x : desiredWorldScale.x,
+            p.y != 0f ? desiredWorldScale.y / p.y : desiredWorldScale.y,
+            p.z != 0f ? desiredWorldScale.z / p.z : desiredWorldScale.z);
 
         if (powerButton != null)
             powerButton.isRamFixed = true;
 
+        RamMedium ramMedium = ram.GetComponent<RamMedium>();
         if (ramMedium != null)
             ramMedium.isInserted = true;
 
-        RamGrab ramGrab = other.GetComponent<RamGrab>();
-        if (ramGrab != null)
-        {
-            ramGrab.MarkFixedForever();
-        }
+        ram.MarkFixedForever();
 
         if (clickSound != null)
             clickSound.Play();
 
         if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
             checklist.CompleteObjective(groupIndex, objectiveIndex);
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        if (!other.CompareTag("RAM") || currentRam != null)
-            return;
-
-        XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
-        if (grab != null && grab.isSelected)
-            return;
-
-        OnTriggerEnter(other); // reuse the exact same logic (clean check, active slot check, snap)
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("RAM"))
-        {
-            currentRam = null;
-            warnedThisOverlap = false;
-
-            RamMedium ramMedium = other.GetComponent<RamMedium>();
-            if (ramMedium != null)
-                ramMedium.isInserted = false;
-
-            if (powerButton != null)
-                powerButton.isRamFixed = false;
-        }
     }
 }
