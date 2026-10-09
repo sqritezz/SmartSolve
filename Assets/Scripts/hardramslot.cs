@@ -1,8 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
+// One per HARD RAM slot. Works like Easy/Medium now: the slot doesn't decide
+// anything by itself - when the player lets go of a RAM, HardRamGrab finds the
+// CLOSEST slot and asks it what to do:
+//   - Broken RAM (tag "RAM")         -> goes into any empty slot
+//   - Working RAM (tag "WorkingRAM") -> only into the active slot, otherwise
+//                                       it's a mistake and the RAM glides back
 public class HardRamSlot : MonoBehaviour
 {
+    // All Hard slots in the scene (HardRamGrab searches these)
+    public static readonly List<HardRamSlot> AllSlots = new List<HardRamSlot>();
+
     public Transform snapPoint;
     public HardPCManager hardPCManager;
     public AudioSource clickSound;
@@ -21,51 +30,69 @@ public class HardRamSlot : MonoBehaviour
     public AudioSource wrongSlotSound;
     public PerformanceTracker performanceTracker;
 
+    public bool IsFilled => currentRam != null;
+
     private GameObject currentRam;
+    private Collider slotCollider;
 
-    private void OnTriggerEnter(Collider other)
+    private void Awake()
     {
-        TrySnap(other);
+        if (snapPoint == null) snapPoint = transform;
+        slotCollider = GetComponent<Collider>();
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnEnable() { if (!AllSlots.Contains(this)) AllSlots.Add(this); }
+    private void OnDisable() { AllSlots.Remove(this); }
+
+    // Is the RAM (at this world position) inside or near this slot?
+    public bool Contains(Vector3 ramPos, float extraRadius)
     {
-        TrySnap(other);
+        if (slotCollider != null && slotCollider.bounds.Contains(ramPos)) return true;
+        return Vector3.Distance(ramPos, snapPoint.position) <= extraRadius;
     }
 
-    void TrySnap(Collider other)
+    public float DistanceTo(Vector3 ramPos)
     {
-        if (currentRam != null) return;
+        return Vector3.Distance(ramPos, snapPoint.position);
+    }
 
-        XRGrabInteractable grab = other.GetComponentInParent<XRGrabInteractable>();
-        if (grab == null) return;
+    // Can this RAM go in here right now?
+    public bool CanAccept(GameObject ram)
+    {
+        if (IsFilled || ram == null) return false;
+        if (ram.CompareTag("RAM")) return true;                 // broken RAM: any empty slot
+        if (ram.CompareTag("WorkingRAM")) return isActiveSlot;  // working RAM: only the right slot
+        return false;
+    }
 
-        if (grab.isSelected) return;
+    // Wrong slot: count the mistake (the sound is played by HardRamGrab on the way back)
+    public void RegisterWrong()
+    {
+        if (performanceTracker != null)
+            performanceTracker.RegisterWrongAttempt();
+    }
 
-        GameObject ramObject = grab.gameObject;
+    public void PlayWrongSound()
+    {
+        if (wrongSlotSound != null)
+            wrongSlotSound.Play();
+    }
 
-        if (ramObject.CompareTag("RAM"))
+    // Correct: snap it in and report to the manager + checklist
+    public void Accept(GameObject ram)
+    {
+        bool isBroken = ram.CompareTag("RAM");
+        SnapRam(ram);
+
+        if (isBroken)
         {
-            SnapRam(ramObject);
-            hardPCManager.BrokenRamInserted();
-
+            if (hardPCManager != null) hardPCManager.BrokenRamInserted();
             if (checklist != null && checklist.IsCurrentStep(brokenRamGroupIndex, brokenRamObjectiveIndex))
                 checklist.CompleteObjective(brokenRamGroupIndex, brokenRamObjectiveIndex);
         }
-        else if (ramObject.CompareTag("WorkingRAM"))
+        else
         {
-            if (!isActiveSlot)
-            {
-                if (wrongSlotSound != null)
-                    wrongSlotSound.Play();
-                if (performanceTracker != null)
-                    performanceTracker.RegisterWrongAttempt();
-                return;
-            }
-
-            SnapRam(ramObject);
-            hardPCManager.WorkingRamInserted();
-
+            if (hardPCManager != null) hardPCManager.WorkingRamInserted();
             if (checklist != null && checklist.IsCurrentStep(workingRamGroupIndex, workingRamObjectiveIndex))
                 checklist.CompleteObjective(workingRamGroupIndex, workingRamObjectiveIndex);
         }
@@ -78,10 +105,13 @@ public class HardRamSlot : MonoBehaviour
         Rigidbody rb = ram.GetComponent<Rigidbody>();
         if (rb != null)
         {
+            if (!rb.isKinematic)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
             rb.isKinematic = true;
             rb.useGravity = false;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
         }
 
         ram.transform.SetParent(snapPoint, false);
