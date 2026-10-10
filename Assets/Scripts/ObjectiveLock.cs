@@ -1,12 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Filtering;
 
 // Put this on any grabbable / clickable object that belongs to the objectives.
 // It only works during the checklist steps listed in "Allowed Groups".
-// Grabbing or clicking it during any other step is blocked and shows a warning
-// ("Follow the objective"). Works for tutorials and real levels - just point
-// it at the right checklist.
+// Using it during any other step is blocked and shows a warning.
+//
+// The warning ONLY appears the moment the player PRESSES a button while
+// pointing at / touching the object. Just looking at it with the ray,
+// or sweeping the ray across it while holding a button, shows nothing.
 public class ObjectiveLock : MonoBehaviour, IXRSelectFilter
 {
     [Tooltip("Leave empty to use the interactable on this object")]
@@ -30,6 +33,9 @@ public class ObjectiveLock : MonoBehaviour, IXRSelectFilter
     private const int MaxGroups = 40;
     private const int MaxObjectives = 10;
 
+    // Remembers whether each hovering hand/ray had its button pressed last frame
+    private readonly Dictionary<IXRHoverInteractor, bool> wasPressed = new Dictionary<IXRHoverInteractor, bool>();
+
     private void Awake()
     {
         if (interactable == null)
@@ -44,29 +50,69 @@ public class ObjectiveLock : MonoBehaviour, IXRSelectFilter
     private void OnDisable()
     {
         if (interactable != null) interactable.selectFilters.Remove(this);
+        wasPressed.Clear();
     }
 
-    // Grip grab attempts go through here
+    // XR checks this filter very often (even while just pointing at the object),
+    // so it only blocks silently here. Never shows the warning.
     public bool Process(IXRSelectInteractor interactor, IXRSelectInteractable target)
     {
         // Already holding it -> never force-drop
         if (interactable != null && interactable.isSelected) return true;
-        return CheckAndWarn();
+        return IsAllowedNow();
     }
 
-    // Returns true if allowed now. If not, shows the warning (with a cooldown).
+    // Shows the warning only on a real NEW press while pointing at this object
+    private void Update()
+    {
+        if (interactable == null) return;
+
+        var hovering = interactable.interactorsHovering;
+
+        // forget hands/rays that stopped pointing at this object
+        if (wasPressed.Count > 0)
+        {
+            var stale = new List<IXRHoverInteractor>();
+            foreach (var key in wasPressed.Keys)
+                if (!hovering.Contains(key)) stale.Add(key);
+            foreach (var key in stale) wasPressed.Remove(key);
+        }
+
+        foreach (var hover in hovering)
+        {
+            var select = hover as IXRSelectInteractor;
+            if (select == null || select is XRSocketInteractor) continue;
+
+            bool pressedNow = select.isSelectActive && !select.hasSelection;
+
+            bool known = wasPressed.TryGetValue(hover, out bool pressedBefore);
+            wasPressed[hover] = pressedNow;
+
+            // First time we see this hand pointing here: just remember its state.
+            // (Prevents a warning when sweeping the ray across while holding a button.)
+            if (!known) continue;
+
+            if (pressedNow && !pressedBefore && !IsAllowedNow())
+                Warn();
+        }
+    }
+
+    // Used by ClickOnly / trigger-click scripts. Returns true if allowed now,
+    // otherwise shows the warning (with a cooldown) and returns false.
     public bool CheckAndWarn()
     {
         if (IsAllowedNow()) return true;
-
-        if (Time.time - lastWarnTime > WarnCooldown)
-        {
-            lastWarnTime = Time.time;
-
-            if (ObjectiveWarning.Instance != null)
-                ObjectiveWarning.Instance.Show(customMessage);
-        }
+        Warn();
         return false;
+    }
+
+    private void Warn()
+    {
+        if (Time.time - lastWarnTime <= WarnCooldown) return;
+        lastWarnTime = Time.time;
+
+        if (ObjectiveWarning.Instance != null)
+            ObjectiveWarning.Instance.Show(customMessage);
     }
 
     public bool IsAllowedNow()

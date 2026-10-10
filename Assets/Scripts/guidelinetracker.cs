@@ -2,14 +2,12 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 // Attach this to the Guidelines panel (or any manager object).
-// Detects the three tutorial actions and checks them off on a
-// ChecklistManager (the static list version, not SequentialChecklist)
-// since all three guidelines are shown together at once.
+// Detects the tutorial actions and checks them off on a
+// ChecklistManager (the static list version, not SequentialChecklist).
 //
-// IMPORTANT: tracking no longer starts automatically in Start(). Call
-// BeginTracking() once the player has actually spawned in the room --
-// either from your teleport script directly, or via RoomEntryDetector.cs
-// on a trigger volume at the room entrance.
+// IMPORTANT: tracking does not start automatically in Start(). Call
+// BeginTracking() once the player has actually spawned in the room
+// (RoomEntryDetector / roomentry.cs does this).
 public class GuidelineTracker : MonoBehaviour
 {
     [Header("References")]
@@ -21,6 +19,8 @@ public class GuidelineTracker : MonoBehaviour
     public int moveObjectiveIndex = 0;
     public int interactObjectiveIndex = 1;
     public int rotateObjectiveIndex = 2;
+    [Tooltip("Add more guideline indices here (press + to add)")]
+    public int[] moreObjectiveIndices = { };
 
     [Header("Thresholds")]
     [Tooltip("How far the player must move (meters) before 'How to move' checks off")]
@@ -35,9 +35,7 @@ public class GuidelineTracker : MonoBehaviour
     private bool rotateDone = false;
     private bool tracking = false;
 
-    // Call this once the player has actually spawned/entered the room --
-    // not on scene load. This is what used to happen automatically in
-    // Start(), which caused the "greened while still in the main menu" bug.
+    // Call this once the player has actually spawned/entered the room.
     public void BeginTracking()
     {
         if (tracking) return; // don't reset progress if called twice
@@ -49,8 +47,7 @@ public class GuidelineTracker : MonoBehaviour
             startYRotation = xrOrigin.eulerAngles.y;
         }
 
-        // Hook into every interactable in the scene so grabbing ANYTHING
-        // counts as completing "How to interact"
+        // Grabbing ANYTHING counts as completing "How to interact"
         var interactables = FindObjectsByType<XRBaseInteractable>(FindObjectsSortMode.None);
         foreach (var interactable in interactables)
         {
@@ -92,5 +89,14 @@ public class GuidelineTracker : MonoBehaviour
         interactDone = true;
         if (checklist != null)
             checklist.CompleteObjective(interactObjectiveIndex);
+    }
+
+    // Checks off one of the "More Objective Indices".
+    // slot 0 = first one in the list, slot 1 = second, etc.
+    // Call it from any event (button OnClick, NPC dialogue finished, etc.)
+    public void CompleteMoreObjective(int slot)
+    {
+        if (checklist == null || slot < 0 || slot >= moreObjectiveIndices.Length) return;
+        checklist.CompleteObjective(moreObjectiveIndices[slot]);
     }
 }

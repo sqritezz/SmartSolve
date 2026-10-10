@@ -1,10 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// One per RAM slot. The slot no longer decides anything by itself -
-// when the player lets go of the RAM, RamGrab finds the CLOSEST slot and asks it
-// to snap (correct slot) or to report a mistake (wrong slot).
+// One per EASY RAM slot. The slot doesn't decide anything by itself:
+// when the player lets go of the RAM, RamGrab finds the CLOSEST slot
+// and asks it to snap the RAM (correct slot) or report a mistake (wrong slot).
 // This stops overlapping slots from fighting over the RAM.
+//
+// Audio: ONE Audio Source (leave empty = uses the one on this slot),
+// and the sounds are clips you drag in.
 public class RamSnap : MonoBehaviour
 {
     // All slots in the scene (RamGrab searches these)
@@ -12,7 +15,14 @@ public class RamSnap : MonoBehaviour
 
     public Transform snapPoint;
     public PowerButton powerButton;
-    public AudioSource clickSound;
+
+    [Header("Audio")]
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    [Tooltip("Played when the RAM snaps into the correct slot")]
+    public AudioClip clickSound;
+    [Tooltip("Played when the RAM is placed in this slot and it's the WRONG one")]
+    public AudioClip wrongSlotSound;
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
@@ -22,8 +32,6 @@ public class RamSnap : MonoBehaviour
     [Header("Randomized Slot Support")]
     [Tooltip("Set automatically by RamSlotRandomizer if used.")]
     public bool isActiveSlot = true;
-    [Tooltip("Played when the RAM is placed in this slot and it's the WRONG one")]
-    public AudioSource wrongSlotSound;
     [Tooltip("Counts a wrong-slot attempt toward the star rating")]
     public PerformanceTracker performanceTracker;
 
@@ -34,6 +42,7 @@ public class RamSnap : MonoBehaviour
     private void Awake()
     {
         if (snapPoint == null) snapPoint = transform;
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
         slotCollider = GetComponent<Collider>();
     }
 
@@ -61,8 +70,7 @@ public class RamSnap : MonoBehaviour
 
     public void PlayWrongSound()
     {
-        if (wrongSlotSound != null)
-            wrongSlotSound.Play();
+        Play(wrongSlotSound);
     }
 
     // Correct slot: snap and lock the RAM in
@@ -101,10 +109,15 @@ public class RamSnap : MonoBehaviour
 
         ram.MarkFixedForever();
 
-        if (clickSound != null)
-            clickSound.Play();
+        Play(clickSound);
 
         if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
             checklist.CompleteObjective(groupIndex, objectiveIndex);
+    }
+
+    private void Play(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+            audioSource.PlayOneShot(clip);
     }
 }
