@@ -163242,6 +163242,7 @@ GameObject:
   - component: {fileID: 477411619}
   - component: {fileID: 477411623}
   - component: {fileID: 477411627}
+  - component: {fileID: 477411629}
   - component: {fileID: 477411628}
   - component: {fileID: 477411625}
   - component: {fileID: 477411624}
@@ -163781,10 +163782,54 @@ MonoBehaviour:
     spawnPoint: {fileID: 1269233296}
     panel: {fileID: 2016144143}
   - label: RAM Hard
-    spawnPoint: {fileID: 337014838}
-    panel: {fileID: 990833278}
+    spawnPoint: {fileID: 990833279}
+    panel: {fileID: 2016144143}
   maxDistance: 30
   fallbackPanel: {fileID: 424336824}
+  openSound: {fileID: 477411625}
+  closeSound: {fileID: 477411624}
+--- !u!114 &477411629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477411609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1be71a44a06bd7e43b0387a1d534e8c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ControllerButtonPanel
+  button: 3
+  panel: {fileID: 0}
+  toggle: 1
+  hideWhenOpened: []
+  placeInFrontOfPlayer: 0
+  distance: 0.8
+  heightOffset: -0.1
+  backSteps: []
+  uiButtonsToPress: []
+  onPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2072386977}
+        m_TargetAssemblyTypeName: HintSystem, Assembly-CSharp
+        m_MethodName: UseHint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onOpened:
+    m_PersistentCalls:
+      m_Calls: []
+  onClosed:
+    m_PersistentCalls:
+      m_Calls: []
   openSound: {fileID: 477411625}
   closeSound: {fileID: 477411624}
 --- !u!1 &477660094
@@ -720831,13 +720876,14 @@ GameObject:
   - component: {fileID: 2072386975}
   - component: {fileID: 2072386974}
   - component: {fileID: 2072386973}
+  - component: {fileID: 2072386977}
   m_Layer: 5
   m_Name: HIntbutton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2072386973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720922,6 +720968,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.34, y: 1.699}
   m_SizeDelta: {x: 808.714, y: 161.8129}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2072386977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072386972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38366814890e100418f0a4d441323f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HintSystem
+  maxHints: 2
+  hintMessages: []
+  hintPanel: {fileID: 539841379}
+  hintText: {fileID: 1796001801}
+  displayDuration: 4
+  performanceTracker: {fileID: 337014841}
+  hintsRemainingText: {fileID: 0}
 --- !u!1 &2072632430
 GameObject:
   m_ObjectHideFlags: 0
