@@ -113536,11 +113536,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 350623235}
+  - {fileID: 2052650474}
   - {fileID: 1242786766}
   - {fileID: 1741611303}
-  - {fileID: 6731366257554394218}
   - {fileID: 231031929}
+  - {fileID: 6731366257554394218}
+  - {fileID: 350623235}
   - {fileID: 234896967}
   - {fileID: 1767544736}
   - {fileID: 1579788605}
@@ -149675,6 +149676,163 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 439879781}
   m_CullTransparentMesh: 1
+--- !u!1 &439893062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 439893065}
+  - component: {fileID: 439893064}
+  - component: {fileID: 439893063}
+  m_Layer: 0
+  m_Name: Explanation Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &439893063
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439893062}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &439893064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439893062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff09e8d8094ffca479c2a80bed71f7bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  panel: {fileID: 1526562564}
+  titleText: {fileID: 965710249}
+  bodyText: {fileID: 1626314062}
+  whyHeading: Why did this happen?
+  fixHeading: How to fix it
+  closeHint: Click anywhere to continue
+  playerHead: {fileID: 575191971}
+  distanceFromPlayer: 1.2
+  heightOffset: -0.05
+  canvasGroup: {fileID: 1526562569}
+  ignoreClicksFor: 0.5
+  fadeDuration: 0.25
+  audioSource: {fileID: 439893063}
+  showSound: {fileID: 8300000, guid: 1040ae69985d7734aa334fbca3c63a5c, type: 3}
+--- !u!4 &439893065
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439893062}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.335182, y: 0.47984, z: -30.361664}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1526562568}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &440523291
 GameObject:
   m_ObjectHideFlags: 0
@@ -332112,7 +332270,7 @@ GameObject:
   - component: {fileID: 965710250}
   - component: {fileID: 965710249}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341157,6 +341315,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1184490376}
   - {fileID: 1507811590}
   - {fileID: 1744317770}
   - {fileID: 977374680}
@@ -407827,6 +407986,74 @@ Transform:
   - {fileID: 457313192}
   m_Father: {fileID: 734753364}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1184490375
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1184490376}
+  - component: {fileID: 1184490377}
+  m_Layer: 0
+  m_Name: Explanation (RAM Hard)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1184490376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184490375}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.031944275, y: 0, z: 21.201782}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 990833279}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1184490377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184490375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fb7818407ae07408994aa0934587f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  checklist: {fileID: 1101813224}
+  explanations:
+  - afterGroupIndex: 1
+    delay: 3.5
+    title: The PC shut down again
+    why: 'The computer beep. This points to a RAM problem: it may be dirty, loose
+      or damaged.'
+    howToFix: Turn off the PSU switch and open the side cover. Remove the RAM and
+      clean its gold contacts with the eraser, then put it back and test the PC again.
+  - afterGroupIndex: 7
+    delay: 3.5
+    title: The RAM is faulty
+    why: "You cleaned and reseated the RAM, but the PC still won\u2019t start. That
+      means the RAM module itself is damaged, and cleaning can\u2019t fix a broken
+      chip."
+    howToFix: Turn off the PSU switch, remove the old RAM and install the working
+      RAM from the table into the correct slot. Then test the PC again.
+  - afterGroupIndex: 9
+    delay: 3.5
+    title: Getting rid of old parts
+    why: "A faulty RAM stick can\u2019t be repaired, so it shouldn\u2019t stay mixed
+      with your working parts."
+    howToFix: "In real life, don\u2019t throw electronics in normal trash. Bring
+      old parts to an e-waste drop-off or recycling center."
 --- !u!1 &1185003234
 GameObject:
   m_ObjectHideFlags: 0
@@ -435893,6 +436120,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1981225459}
   - {fileID: 447403812}
   - {fileID: 966012743}
   - {fileID: 252386181}
@@ -529856,6 +530084,7 @@ GameObject:
   - component: {fileID: 1526562567}
   - component: {fileID: 1526562566}
   - component: {fileID: 1526562565}
+  - component: {fileID: 1526562569}
   m_Layer: 5
   m_Name: explanationpanel
   m_TagString: Untagged
@@ -529933,21 +530162,33 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1526562564}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 30.361664}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1124244329}
   - {fileID: 965710248}
   - {fileID: 1626314061}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 439893065}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 429.39996, y: 192.1}
+  m_AnchoredPosition: {x: 411.0648, y: 191.62016}
   m_SizeDelta: {x: 858.7999, y: 384.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &1526562569
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526562564}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1526834982
 GameObject:
   m_ObjectHideFlags: 0
@@ -562556,7 +562797,7 @@ GameObject:
   - component: {fileID: 1626314063}
   - component: {fileID: 1626314062}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -644161,6 +644402,7 @@ GameObject:
   - component: {fileID: 1861637884}
   - component: {fileID: 1861637891}
   - component: {fileID: 1861637890}
+  - component: {fileID: 1861637892}
   m_Layer: 5
   m_Name: WarningCanvas
   m_TagString: Untagged
@@ -644407,6 +644649,19 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1861637892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861637883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c4a9b3cef2c3e94db118a614d510d64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClickOnly
+  interactable: {fileID: 0}
 --- !u!1 &1862276797
 GameObject:
   m_ObjectHideFlags: 0
@@ -683296,6 +683551,69 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1981225458
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1981225459}
+  - component: {fileID: 1981225460}
+  m_Layer: 0
+  m_Name: Explanation (RAM Medium)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1981225459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981225458}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.011947632, y: 0, z: 10.691772}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1269233296}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1981225460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981225458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fb7818407ae07408994aa0934587f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  checklist: {fileID: 1101813224}
+  explanations:
+  - afterGroupIndex: 1
+    delay: 3.5
+    title: The PC beeps but shows nothing
+    why: "The beeping is the computer warning you that it has detected a memory problem
+      during startup. The RAM is seated, but its gold contacts are dirty or oxidized,
+      so it can\u2019t connect properly to the motherboard."
+    howToFix: Put the RAM back into the correct slot. Push it straight down evenly
+      until both clips snap into place.
+  - afterGroupIndex: 6
+    delay: 3.5
+    title: RAM contacts cleaned
+    why: Dirt and oxidation on the gold contacts block the electrical connection
+      between the RAM and the slot. Cleaning them restores that connection.
+    howToFix: Turn off the PSU switch, open the system unit's cover and remove the
+      RAM. Gently rub the gold contacts with an eraser to clean them, then put the
+      RAM back into the correct slot until the clips lock. Close the cover, turn
+      the PSU on and press the power button.
 --- !u!1 &1981366021
 GameObject:
   m_ObjectHideFlags: 0
@@ -707015,6 +707333,61 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2052598520}
   m_Mesh: {fileID: 8058058586705424687, guid: 08a49f6d8c1cadb45b4ddc6020ca1c45, type: 3}
+--- !u!1 &2052650473
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2052650474}
+  - component: {fileID: 2052650475}
+  m_Layer: 0
+  m_Name: Explanation (RAM Easy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2052650474
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052650473}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 337014838}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2052650475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052650473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58fb7818407ae07408994aa0934587f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  checklist: {fileID: 1767544737}
+  explanations:
+  - afterGroupIndex: 1
+    delay: 3.5
+    title: The PC shut down by itself
+    why: "The computer turned on for a moment, then shut down without showing anything.
+      This usually means the RAM is loose or not seated properly. Without working
+      memory, the computer can\u2019t finish starting up."
+    howToFix: Turn off the PSU switch first for safety. Open the system unit's cover,
+      remove the RAM, and push it back firmly into the other slot until the clips
+      lock. Then close the cover, turn the PSU back on and press the power button.
 --- !u!1 &2052853060
 GameObject:
   m_ObjectHideFlags: 0
@@ -1025740,6 +1026113,7 @@ SceneRoots:
   - {fileID: 1897503982}
   - {fileID: 1471640811}
   - {fileID: 1319820339}
+  - {fileID: 439893065}
   - {fileID: 575010552}
   - {fileID: 1055280444}
   - {fileID: 915845042}
@@ -1025753,4 +1026127,3 @@ SceneRoots:
   - {fileID: 87358225}
   - {fileID: 1853113833}
   - {fileID: 1193306890}
-  - {fileID: 1526562568}
