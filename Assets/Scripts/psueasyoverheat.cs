@@ -25,13 +25,16 @@ public class PSUEasyOverheat : MonoBehaviour
     public GameObject overheatMessage;
     [Tooltip("How many seconds before shutdown the warning appears")]
     public float overheatWarningTime = 1.5f;
-    public AudioSource shutdownSound;
+    [Tooltip("Sound clip when the PC shuts itself off")]
+    public AudioClip shutdownClip;
 
-    [Header("Audio")]
+    [Header("Audio (ONE Audio Source for everything)")]
+    [Tooltip("Leave empty to use the Audio Source on this object (one is added if missing)")]
+    public AudioSource audioSource;
     [Tooltip("Plays on every button press")]
-    public AudioSource beepSound;
+    public AudioClip beepClip;
     [Tooltip("Optional: plays when the PC finally stays on")]
-    public AudioSource successSound;
+    public AudioClip successClip;
 
     [Header("Parts")]
     public PSUSwitch1 psuSwitch;
@@ -69,6 +72,10 @@ public class PSUEasyOverheat : MonoBehaviour
         if (interactable != null)
             interactable.selectEntered.AddListener(OnPressed);
 
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+
         if (psuSwitch != null)
         {
             psuSwitch.onTurnedOff.AddListener(OnSwitchTurnedOff);
@@ -103,7 +110,7 @@ public class PSUEasyOverheat : MonoBehaviour
     {
         if (isBooting) return; // wait for the current overheat cycle to finish
 
-        if (beepSound != null) beepSound.Play();
+        PlayClip(beepClip);
 
         if (pcRunning) return; // already fixed and running
 
@@ -119,7 +126,7 @@ public class PSUEasyOverheat : MonoBehaviour
             // FIXED: PC stays on
             pcRunning = true;
             ShowOn();
-            if (successSound != null) successSound.Play();
+            PlayClip(successClip);
             CompleteStep(successGroupIndex);
             return;
         }
@@ -149,7 +156,7 @@ public class PSUEasyOverheat : MonoBehaviour
     {
         if (overheatMessage != null) overheatMessage.SetActive(false);
         ShowOff();
-        if (playShutdownSound && shutdownSound != null) shutdownSound.Play();
+        if (playShutdownSound) PlayClip(shutdownClip);
 
         isBooting = false;
         overheatRoutine = null;
@@ -200,6 +207,12 @@ public class PSUEasyOverheat : MonoBehaviour
     }
 
     // ---------- Helpers ----------
+    private void PlayClip(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+            audioSource.PlayOneShot(clip);
+    }
+
     private void CompleteStep(int groupIndex)
     {
         if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))

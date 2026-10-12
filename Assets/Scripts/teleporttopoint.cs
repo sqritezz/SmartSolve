@@ -1,9 +1,18 @@
+using System.Collections;
 using UnityEngine;
 
 public class TeleportToPoint : MonoBehaviour
 {
     public Transform xrRig;
     public Transform pcRoom;
+
+    [Header("Menu Room")]
+    [Tooltip("Where the player lands in the menu room (e.g. MenuPlatform)")]
+    public Transform menuRoomPoint;
+    [Tooltip("Replaces Intro To Menu: move to the menu room automatically when the game starts")]
+    public bool goToMenuRoomOnStart = true;
+    [Tooltip("Seconds to wait first (the old Intro Duration). 0 = right away.")]
+    public float menuRoomStartDelay = 5f;
 
     [Header("RAM Points")]
     public Transform easyPoint;
@@ -63,6 +72,46 @@ public class TeleportToPoint : MonoBehaviour
 
         if (hintButton != null)
             hintButton.SetActive(false);
+
+        if (goToMenuRoomOnStart && menuRoomPoint != null)
+            StartCoroutine(GoToMenuRoomAfterIntro());
+    }
+
+    // Same as the old Intro To Menu: wait, then move to the menu room
+    // (panels stay as they are, so the warning/home screen still works)
+    private IEnumerator GoToMenuRoomAfterIntro()
+    {
+        if (menuRoomStartDelay > 0f)
+            yield return new WaitForSeconds(menuRoomStartDelay);
+        MoveRig(menuRoomPoint);
+    }
+
+    // Teleports to the menu room and opens the main menu.
+    // Use this for the Hard levels' NEXT button (or any Back to Menu).
+    public void TeleportMenuRoom()
+    {
+        MoveRig(menuRoomPoint);
+        home.SetActive(false);
+        mainMenu.SetActive(true);
+
+        if (hintButton != null)
+            hintButton.SetActive(false);
+    }
+
+    // Moves the player and faces the point's direction.
+    // The Character Controller blocks teleporting, so it is switched off for a moment.
+    private void MoveRig(Transform point)
+    {
+        if (xrRig == null || point == null) return;
+
+        CharacterController cc = xrRig.GetComponent<CharacterController>();
+        bool ccWasOn = cc != null && cc.enabled;
+        if (cc != null) cc.enabled = false;
+
+        xrRig.position = point.position;
+        xrRig.rotation = Quaternion.Euler(0f, point.eulerAngles.y, 0f);
+
+        if (cc != null) cc.enabled = ccWasOn;
     }
 
     public void OpenMainMenu()

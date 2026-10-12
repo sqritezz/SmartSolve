@@ -30,7 +30,9 @@ public class PracticeFanTask : MonoBehaviour
     [Header("Case Reattach")]
     [Tooltip("How close (meters) the case must be to its original spot when released to snap back")]
     public float snapDistance = 0.25f;
-    public AudioSource snapSound;
+    public AudioClip snapClip;
+    [Tooltip("Prints how far the case is from its spot when you let go (for testing)")]
+    public bool logSnapDistance = false;
 
     [Header("Cleanable Parts")]
     public PracticeCleanable bladesCleanable;
@@ -44,12 +46,17 @@ public class PracticeFanTask : MonoBehaviour
     [Tooltip("Seconds to spin up / spin down")]
     public float spinChangeTime = 1f;
 
-    [Header("Audio")]
-    public AudioSource buttonClickSound;
-    [Tooltip("Looping hum while the fan is on (set Loop on the AudioSource)")]
-    public AudioSource fanHumSound;
+    [Header("Audio (ONE Audio Source for everything)")]
+    [Tooltip("Leave empty to use the Audio Source on this object (one is added if missing)")]
+    public AudioSource audioSource;
+    public AudioClip buttonClickClip;
+    [Tooltip("Looping hum while the fan is on")]
+    public AudioClip fanHumClip;
+    [Range(0f, 1f)] public float fanHumVolume = 0.6f;
+    [Tooltip("The hum only plays when the player is within this many meters of the fan (so it can't be heard from other levels)")]
+    public float humHearDistance = 6f;
     [Tooltip("Plays when the button is pressed at the wrong time")]
-    public AudioSource errorSound;
+    public AudioClip errorClip;
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
@@ -71,9 +78,12 @@ public class PracticeFanTask : MonoBehaviour
     private Transform caseOriginalParent;
     private Vector3 caseOriginalLocalPos;
     private Quaternion caseOriginalLocalRot;
+    private Vector3 caseOriginalCenterLocal;
 
     private void Awake()
     {
+        SetupAudio();
+
         if (fanButton != null)
             fanButton.selectEntered.AddListener(OnButtonPressed);
 
@@ -96,7 +106,7 @@ public class PracticeFanTask : MonoBehaviour
         isFanOn = true;
         currentSpinSpeed = maxSpinSpeed;
 
-        if (fanHumSound != null) fanHumSound.Play();
+        StartHum();
 
         if (caseRigidbody != null)
         {
@@ -104,6 +114,12 @@ public class PracticeFanTask : MonoBehaviour
             caseOriginalParent = t.parent;
             caseOriginalLocalPos = t.localPosition;
             caseOriginalLocalRot = t.localRotation;
+
+            // Remember where the case's VISIBLE middle sits (its pivot may be far away)
+            Vector3 center = CaseVisualCenter();
+            caseOriginalCenterLocal = caseOriginalParent != null
+                ? caseOriginalParent.InverseTransformPoint(center)
+                : center;
 
             caseRigidbody.isKinematic = true;
             caseRigidbody.useGravity = false;
@@ -118,6 +134,8 @@ public class PracticeFanTask : MonoBehaviour
 
     private void Update()
     {
+        UpdateHum();
+
         float target = isFanOn ? maxSpinSpeed : 0f;
         float rate = spinChangeTime > 0f ? maxSpinSpeed / spinChangeTime : float.MaxValue;
         currentSpinSpeed = Mathf.MoveTowards(currentSpinSpeed, target, rate * Time.deltaTime);
@@ -138,7 +156,7 @@ public class PracticeFanTask : MonoBehaviour
         {
             PlayClick();
             isFanOn = false;
-            if (fanHumSound != null) fanHumSound.Stop();
+            StopHum();
 
             CompleteStep(Step.TurnOff);
             currentStep = Step.RemoveCase;
@@ -149,7 +167,7 @@ public class PracticeFanTask : MonoBehaviour
         {
             PlayClick();
             isFanOn = true;
-            if (fanHumSound != null) fanHumSound.Play();
+            StartHum();
 
             CompleteStep(Step.TurnOn);
             currentStep = Step.Done;
@@ -159,7 +177,7 @@ public class PracticeFanTask : MonoBehaviour
         else
         {
             // Pressed while the fan is open (or after done) - fan must stay off
-            if (errorSound != null) errorSound.Play();
+            PlayClip(errorClip);
         }
     }
 
@@ -208,10 +226,28 @@ public class PracticeFanTask : MonoBehaviour
             : caseOriginalLocalPos;
     }
 
+    // Compares the case's VISIBLE middle with where it was on the fan,
+    // so it snaps even if the case is held tilted or its pivot is far away
     private bool IsCaseNearOriginalSpot()
     {
-        float distance = Vector3.Distance(caseRigidbody.transform.position, CaseOriginalWorldPosition());
+        Vector3 originalCenter = caseOriginalParent != null
+            ? caseOriginalParent.TransformPoint(caseOriginalCenterLocal)
+            : caseOriginalCenterLocal;
+
+        float distance = Vector3.Distance(CaseVisualCenter(), originalCenter);
+        if (logSnapDistance)
+            Debug.Log("[PracticeFanTask] Case is " + distance.ToString("F2") + " m from its spot (snaps within " + snapDistance + ")");
         return distance <= snapDistance;
+    }
+
+    private Vector3 CaseVisualCenter()
+    {
+        Renderer[] renderers = caseRigidbody.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return caseRigidbody.transform.position;
+
+        Bounds b = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++) b.Encapsulate(renderers[i].bounds);
+        return b.center;
     }
 
     private void SnapCaseBack()
@@ -227,7 +263,7 @@ public class PracticeFanTask : MonoBehaviour
         // Lock the case again so it can't be pulled off after reattaching
         if (caseGrab != null) caseGrab.enabled = false;
 
-        if (snapSound != null) snapSound.Play();
+        PlayClip(snapClip);
 
         CompleteStep(Step.ReattachCase);
         currentStep = Step.TurnOn;
@@ -265,6 +301,73 @@ public class PracticeFanTask : MonoBehaviour
 
     private void PlayClick()
     {
-        if (buttonClickSound != null) buttonClickSound.Play();
+        PlayClip(buttonClickClip);
+    }
+
+    // ---------- Audio (one Audio Source) ----------
+    private AudioSource humSource; // made automatically, copies the main source's settings
+
+    private void SetupAudio()
+    {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+    }
+
+    private void PlayClip(AudioClip clip)
+    {
+        if (audioSource == null) SetupAudio();
+        if (clip != null) audioSource.PlayOneShot(clip);
+    }
+
+    // The hum loops, so it runs on a hidden copy of the Audio Source
+    // (so stopping it never cuts off the click sounds)
+    private bool humWanted = false;
+
+    // Fan is on -> hum is allowed (it still only plays when the player is close)
+    private void StartHum()
+    {
+        humWanted = true;
+        UpdateHum();
+    }
+
+    private void UpdateHum()
+    {
+        bool playerNear = Camera.main != null &&
+            Vector3.Distance(Camera.main.transform.position, transform.position) <= humHearDistance;
+        bool shouldPlay = humWanted && playerNear && fanHumClip != null;
+
+        if (!shouldPlay)
+        {
+            if (humSource != null && humSource.isPlaying) humSource.Stop();
+            return;
+        }
+
+        if (audioSource == null) SetupAudio();
+
+        if (humSource == null)
+        {
+            GameObject go = new GameObject("Fan Hum (auto)");
+            go.transform.SetParent(audioSource.transform, false);
+            humSource = go.AddComponent<AudioSource>();
+            humSource.playOnAwake = false;
+            humSource.loop = true;
+            humSource.spatialBlend = audioSource.spatialBlend;
+            humSource.minDistance = audioSource.minDistance;
+            humSource.maxDistance = audioSource.maxDistance;
+            humSource.rolloffMode = audioSource.rolloffMode;
+            humSource.outputAudioMixerGroup = audioSource.outputAudioMixerGroup;
+        }
+
+        humSource.clip = fanHumClip;
+        humSource.volume = audioSource.volume * fanHumVolume;
+        if (!humSource.isPlaying) humSource.Play();
+    }
+
+    private void StopHum()
+    {
+        humWanted = false;
+        if (humSource != null) humSource.Stop();
     }
 }
