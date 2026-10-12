@@ -66,7 +66,17 @@ public class ExplanationPanel : MonoBehaviour
             Display(waiting.Dequeue());
     }
 
-    // Levels call this
+    private void LateUpdate()
+    {
+        // Keep following the player every frame while visible, instead of
+        // only being placed once when it first appears.
+        if (IsShowing)
+            PlaceInFrontOfPlayer();
+    }
+
+    // Levels call this. Leave howToFix empty (as LevelExplanations already
+    // lets you do per entry) and the "How to fix it" heading just won't
+    // show - same for "why" if you ever only need a fix.
     public void Show(string title, string why, string howToFix)
     {
         waiting.Enqueue(new Entry { title = title, why = why, fix = howToFix });

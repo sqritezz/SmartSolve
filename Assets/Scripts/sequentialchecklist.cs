@@ -21,6 +21,10 @@ public class SequentialChecklist : MonoBehaviour
     [Header("Display")]
     public TextMeshProUGUI stepText;
 
+    [Header("Visibility (optional)")]
+    [Tooltip("If set, use SetPanelVisible() to show/hide this instead of disabling the whole GameObject. Keeping this GameObject active (even while the panel is hidden) prevents null-reference errors from other scripts that query this checklist.")]
+    public GameObject visualPanel;
+
     [Header("Groups (in order)")]
     public Group[] groups;
 
@@ -38,18 +42,49 @@ public class SequentialChecklist : MonoBehaviour
     private bool isTransitioning = false;
     private bool allComplete = false;
 
+    private void Awake()
+    {
+        // Make sure every group has its completed[] array ready immediately,
+        // even before Start() runs, so IsCurrentStep/CompleteObjective never
+        // hit a null reference no matter what order/state things load in.
+        EnsureAllGroupsInitialized();
+    }
+
     private void Start()
     {
         ShowGroup(0);
     }
 
+    private void EnsureAllGroupsInitialized()
+    {
+        if (groups == null) return;
+        foreach (Group g in groups)
+        {
+            if (g.completed == null || g.completed.Length != g.objectives.Length)
+                g.completed = new bool[g.objectives.Length];
+        }
+    }
+
+    // Call this instead of gameObject.SetActive(false) when you just want to
+    // hide the checklist UI (e.g. because the tutorial checklist is showing
+    // instead). Keeping this component's GameObject active means its logic
+    // keeps tracking progress correctly in the background.
+    public void SetPanelVisible(bool visible)
+    {
+        if (visualPanel != null)
+            visualPanel.SetActive(visible);
+        else if (stepText != null)
+            stepText.gameObject.SetActive(visible);
+    }
+
     private void ShowGroup(int index)
     {
-        if (index < 0 || index >= groups.Length) return;
+        if (groups == null || index < 0 || index >= groups.Length) return;
 
         currentGroupIndex = index;
         Group g = groups[index];
-        g.completed = new bool[g.objectives.Length];
+        if (g.completed == null || g.completed.Length != g.objectives.Length)
+            g.completed = new bool[g.objectives.Length];
 
         RenderText();
     }
@@ -57,6 +92,7 @@ public class SequentialChecklist : MonoBehaviour
     private void RenderText()
     {
         if (stepText == null) return;
+        if (groups == null || currentGroupIndex >= groups.Length) return;
 
         Group g = groups[currentGroupIndex];
         StringBuilder sb = new StringBuilder();
@@ -83,10 +119,14 @@ public class SequentialChecklist : MonoBehaviour
     // without worrying about firing at the wrong time).
     public bool IsCurrentStep(int groupIndex, int objectiveIndex)
     {
+        if (groups == null || groupIndex < 0 || groupIndex >= groups.Length) return false;
         if (allComplete || isTransitioning) return false;
         if (groupIndex != currentGroupIndex) return false;
 
         Group g = groups[groupIndex];
+        if (g.completed == null || g.completed.Length != g.objectives.Length)
+            g.completed = new bool[g.objectives.Length];
+
         if (objectiveIndex < 0 || objectiveIndex >= g.completed.Length) return false;
 
         return !g.completed[objectiveIndex];

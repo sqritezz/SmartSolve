@@ -7,7 +7,11 @@ public class RamMedium : MonoBehaviour
     public MeshRenderer ramRenderer;
     public Material dirtyMat;
     public Material cleanMat;
-    public AudioSource cleanSound;
+
+    [Header("Audio")]
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    public AudioClip cleanSound;
 
     [Header("State")]
     public bool isClean = false;
@@ -30,6 +34,8 @@ public class RamMedium : MonoBehaviour
 
     private void Awake()
     {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         XRGrabInteractable grab = GetComponent<XRGrabInteractable>();
         if (grab != null)
             grab.selectEntered.AddListener(OnGrabbed);
@@ -71,8 +77,8 @@ public class RamMedium : MonoBehaviour
         isClean = true;
         ApplyMaterial();
 
-        if (cleanSound != null)
-            cleanSound.Play();
+        if (audioSource != null && cleanSound != null)
+            audioSource.PlayOneShot(cleanSound);
 
         if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
             checklist.CompleteObjective(groupIndex, objectiveIndex);

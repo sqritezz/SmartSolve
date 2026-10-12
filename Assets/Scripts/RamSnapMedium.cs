@@ -13,7 +13,6 @@ public class RamSnapMedium : MonoBehaviour
 
     public Transform snapPoint;
     public PowerButtonMedium powerButton;
-    public AudioSource clickSound;
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
@@ -23,16 +22,21 @@ public class RamSnapMedium : MonoBehaviour
     [Header("Randomized Slot Support")]
     [Tooltip("Set automatically by RamSlotRandomizer if used.")]
     public bool isActiveSlot = true;
-    [Tooltip("Played when the RAM is placed in this slot and it's the WRONG one")]
-    public AudioSource wrongSlotSound;
     [Tooltip("Counts a mistake toward the star rating")]
     public PerformanceTracker performanceTracker;
 
     [Header("Requires Clean RAM")]
     [Tooltip("If true, dirty RAM cannot be inserted -- it must be cleaned first")]
     public bool requireClean = true;
+
+    [Header("Audio")]
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    public AudioClip clickSound;
+    [Tooltip("Played when the RAM is placed in this slot and it's the WRONG one")]
+    public AudioClip wrongSlotSound;
     [Tooltip("Played when DIRTY RAM is placed in a slot")]
-    public AudioSource dirtyRejectSound;
+    public AudioClip dirtyRejectSound;
 
     public bool IsFilled { get; private set; }
 
@@ -42,6 +46,7 @@ public class RamSnapMedium : MonoBehaviour
     {
         if (snapPoint == null) snapPoint = transform;
         slotCollider = GetComponent<Collider>();
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable() { if (!AllSlots.Contains(this)) AllSlots.Add(this); }
@@ -83,10 +88,12 @@ public class RamSnapMedium : MonoBehaviour
     // Dirty RAM -> dirty sound, otherwise wrong-slot sound
     public void PlayWrongSound(RamGrab ram)
     {
+        if (audioSource == null) return;
+
         if (IsDirty(ram) && dirtyRejectSound != null)
-            dirtyRejectSound.Play();
+            audioSource.PlayOneShot(dirtyRejectSound);
         else if (wrongSlotSound != null)
-            wrongSlotSound.Play();
+            audioSource.PlayOneShot(wrongSlotSound);
     }
 
     // Correct slot: snap and lock the RAM in
@@ -129,8 +136,8 @@ public class RamSnapMedium : MonoBehaviour
 
         ram.MarkFixedForever();
 
-        if (clickSound != null)
-            clickSound.Play();
+        if (audioSource != null && clickSound != null)
+            audioSource.PlayOneShot(clickSound);
 
         if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
             checklist.CompleteObjective(groupIndex, objectiveIndex);

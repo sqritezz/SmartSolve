@@ -2,17 +2,22 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 
-// Attach this to a "Call for Help" button object in the scene (needs an
-// XRSimpleInteractable + Collider so the player can select it with their
-// ray), or hook UseHint() to a UI Button's OnClick() instead.
+// ONE in the whole scene. Attach this to the "Call for Help" button object
+// (needs an XRSimpleInteractable + Collider), or hook UseHint() to a UI
+// Button's OnClick() instead.
+//
+// Per-level hint content comes from TeleportToPoint, which calls SetHints()
+// with that stage's tracker + hint list every time you teleport into it.
 public class HintSystem : MonoBehaviour
 {
+    public static HintSystem Instance { get; private set; }
+
     [Header("Limits")]
     public int maxHints = 2;
     private int hintsUsed = 0;
 
     [Header("Hint Content")]
-    [Tooltip("One hint message per use, in order. If the player uses more hints than there are messages, the last one repeats.")]
+    [Tooltip("Set per-stage by TeleportToPoint.ShowHintFor(). One hint message per use, in order.")]
     [TextArea(1, 3)]
     public string[] hintMessages;
 
@@ -20,6 +25,12 @@ public class HintSystem : MonoBehaviour
     public GameObject hintPanel;
     public TMP_Text hintText;
     public float displayDuration = 4f;
+
+    [Header("Placement (in front of the player)")]
+    [Tooltip("Main Camera. Empty = finds it automatically")]
+    public Transform playerHead;
+    public float distanceFromPlayer = 1.2f;
+    public float heightOffset = -0.05f;
 
     [Header("Scoring Integration")]
     public PerformanceTracker performanceTracker;
@@ -29,6 +40,10 @@ public class HintSystem : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
+        if (playerHead == null && Camera.main != null) playerHead = Camera.main.transform;
+
         if (hintPanel != null)
             hintPanel.SetActive(false);
 
@@ -36,6 +51,17 @@ public class HintSystem : MonoBehaviour
         if (interactable != null)
             interactable.selectEntered.AddListener(OnButtonPressed);
 
+        UpdateRemainingText();
+    }
+
+    // Call this instead of setting performanceTracker/hintMessages directly
+    // (TeleportToPoint.ShowHintFor uses this) - it also resets the hint
+    // count, so arriving at a new stage always starts with a fresh "Hints left".
+    public void SetHints(PerformanceTracker tracker, string[] hints)
+    {
+        performanceTracker = tracker;
+        hintMessages = hints;
+        hintsUsed = 0;
         UpdateRemainingText();
     }
 
@@ -54,7 +80,7 @@ public class HintSystem : MonoBehaviour
             return;
         }
 
-        string message = hintMessages.Length > 0
+        string message = (hintMessages != null && hintMessages.Length > 0)
             ? hintMessages[Mathf.Min(hintsUsed, hintMessages.Length - 1)]
             : "Try checking each part carefully.";
 
@@ -70,7 +96,12 @@ public class HintSystem : MonoBehaviour
     private void ShowMessage(string message)
     {
         if (hintText != null) hintText.text = message;
-        if (hintPanel != null) hintPanel.SetActive(true);
+
+        if (hintPanel != null)
+        {
+            PlaceInFrontOfPlayer();
+            hintPanel.SetActive(true);
+        }
 
         CancelInvoke(nameof(HideMessage));
         Invoke(nameof(HideMessage), displayDuration);
@@ -86,5 +117,21 @@ public class HintSystem : MonoBehaviour
     {
         if (hintsRemainingText != null)
             hintsRemainingText.text = "Hints left: " + (maxHints - hintsUsed);
+    }
+
+    private void PlaceInFrontOfPlayer()
+    {
+        if (playerHead == null || hintPanel == null) return;
+
+        Vector3 forward = playerHead.forward;
+        forward.y = 0f;
+        if (forward.sqrMagnitude < 0.001f) forward = playerHead.up;
+        forward.Normalize();
+
+        Vector3 pos = playerHead.position + forward * distanceFromPlayer;
+        pos.y = playerHead.position.y + heightOffset;
+
+        hintPanel.transform.position = pos;
+        hintPanel.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
     }
 }

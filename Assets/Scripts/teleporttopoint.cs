@@ -77,10 +77,7 @@ public class TeleportToPoint : MonoBehaviour
     private void ShowHintFor(PerformanceTracker tracker, string[] hints)
     {
         if (hintSystem != null)
-        {
-            hintSystem.performanceTracker = tracker;
-            hintSystem.hintMessages = hints;
-        }
+            hintSystem.SetHints(tracker, hints);
 
         if (hintButton != null)
             hintButton.SetActive(true);

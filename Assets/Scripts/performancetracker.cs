@@ -19,6 +19,12 @@ public class PerformanceTracker : MonoBehaviour
     [Tooltip("Finish within this time for 2 stars (max 1 mistake and 1 hint)")]
     public float twoStarTime = 120f;
 
+    [Header("Hints")]
+    [Tooltip("Stars taken away for EACH hint used")]
+    public int starsLostPerHint = 1;
+    [Tooltip("Never go below this many stars for finishing the level")]
+    [Range(0, 3)] public int minimumStars = 1;
+
     [Header("When Tracking Starts")]
     [Tooltip("Start counting as soon as the game starts (only for levels WITHOUT a tutorial)")]
     public bool startImmediately = false;
@@ -93,14 +99,18 @@ public class PerformanceTracker : MonoBehaviour
             finished = true;
         }
 
-        bool flawless = wrongAttempts == 0 && hintsUsed == 0;
+        // 1. Stars from time + mistakes
+        int stars;
+        if (wrongAttempts == 0 && elapsedTime <= threeStarTime)
+            stars = 3;
+        else if (wrongAttempts <= 1 && elapsedTime <= twoStarTime)
+            stars = 2;
+        else
+            stars = 1;
 
-        if (flawless && elapsedTime <= threeStarTime)
-            return 3;
+        // 2. Every hint used costs 1 star
+        stars -= hintsUsed * starsLostPerHint;
 
-        if (wrongAttempts <= 1 && hintsUsed <= 1 && elapsedTime <= twoStarTime)
-            return 2;
-
-        return 1;
+        return Mathf.Clamp(stars, minimumStars, 3);
     }
 }

@@ -101,6 +101,14 @@ public class HardRamSlot : MonoBehaviour
     void SnapRam(GameObject ram)
     {
         currentRam = ram;
+        Transform t = ram.transform;
+
+        // Keep the RAM's current world size, the SAME way RamSnapMedium does it.
+        // We capture it BEFORE touching parent/rotation, because once we force
+        // localRotation to identity below, whatever scale SetParent(true) auto-
+        // computed (which was based on the RAM's OLD rotation) stops matching -
+        // that mismatch is what was causing the stretched/sheared look.
+        Vector3 desiredWorldScale = t.lossyScale;
 
         Rigidbody rb = ram.GetComponent<Rigidbody>();
         if (rb != null)
@@ -114,10 +122,20 @@ public class HardRamSlot : MonoBehaviour
             rb.useGravity = false;
         }
 
-        ram.transform.SetParent(snapPoint, false);
-        ram.transform.localPosition = Vector3.zero;
-        ram.transform.localRotation = Quaternion.identity;
-        ram.transform.localScale = Vector3.one;
+        t.SetParent(snapPoint, true);
+        t.localPosition = Vector3.zero;
+        t.localRotation = Quaternion.identity;
+
+        // Now that rotation is locked to identity, recompute local scale directly
+        // from the world size we want vs. the snap point's world scale. This is
+        // a plain per-axis division (no rotation/shear involved), so it always
+        // lands on the correct visual size regardless of what the snap point's
+        // own scale looks like.
+        Vector3 p = snapPoint.lossyScale;
+        t.localScale = new Vector3(
+            p.x != 0f ? desiredWorldScale.x / p.x : desiredWorldScale.x,
+            p.y != 0f ? desiredWorldScale.y / p.y : desiredWorldScale.y,
+            p.z != 0f ? desiredWorldScale.z / p.z : desiredWorldScale.z);
 
         if (clickSound != null)
             clickSound.Play();

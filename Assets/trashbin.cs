@@ -30,8 +30,14 @@ public class TrashBin : MonoBehaviour
     [Tooltip("Only accept the object while this step is the current one. Otherwise it's ignored (the RAM goes back).")]
     public bool onlyDuringThisStep = true;
 
+    [Header("Retry (in case the checklist is mid-transition)")]
+    public float retryWindow = 2f;
+    public float retryInterval = 0.1f;
+
     [Header("Events (optional)")]
     public UnityEvent onTrashed;
+
+    private bool isTrashing = false;
 
     private void Awake()
     {
@@ -44,6 +50,8 @@ public class TrashBin : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (isTrashing) return;
+
         GameObject obj = other.attachedRigidbody != null ? other.attachedRigidbody.gameObject : other.gameObject;
 
         if (!IsAccepted(obj)) return;
@@ -54,8 +62,13 @@ public class TrashBin : MonoBehaviour
 
         // Not the right moment in the checklist -> ignore
         if (onlyDuringThisStep && checklist != null && !checklist.IsCurrentStep(groupIndex, objectiveIndex))
+        {
+            Debug.Log("[TrashBin] " + obj.name + " dropped in, but checklist isn't on Group "
+                + groupIndex + "/Objective " + objectiveIndex + " yet - ignoring for now.");
             return;
+        }
 
+        isTrashing = true;
         StartCoroutine(Trash(obj, grab));
     }
 
@@ -69,6 +82,8 @@ public class TrashBin : MonoBehaviour
 
     private IEnumerator Trash(GameObject obj, XRGrabInteractable grab)
     {
+        Debug.Log("[TrashBin] Trashing " + obj.name);
+
         // Lock it so it can't be grabbed or trashed twice
         if (grab != null) grab.enabled = false;
         obj.tag = "Untagged";
@@ -105,9 +120,30 @@ public class TrashBin : MonoBehaviour
 
         obj.SetActive(false);
 
-        if (checklist != null && checklist.IsCurrentStep(groupIndex, objectiveIndex))
-            checklist.CompleteObjective(groupIndex, objectiveIndex);
+        yield return StartCoroutine(TryCompleteWithRetry());
 
         onTrashed?.Invoke();
+        isTrashing = false;
+    }
+
+    private IEnumerator TryCompleteWithRetry()
+    {
+        if (checklist == null) yield break;
+
+        float elapsed = 0f;
+        while (elapsed < retryWindow)
+        {
+            if (checklist.IsCurrentStep(groupIndex, objectiveIndex))
+            {
+                checklist.CompleteObjective(groupIndex, objectiveIndex);
+                Debug.Log("[TrashBin] Checklist step completed.");
+                yield break;
+            }
+            yield return new WaitForSeconds(retryInterval);
+            elapsed += retryInterval;
+        }
+
+        Debug.LogWarning("[TrashBin] Gave up waiting for checklist Group " + groupIndex
+            + "/Objective " + objectiveIndex + " to become current.");
     }
 }

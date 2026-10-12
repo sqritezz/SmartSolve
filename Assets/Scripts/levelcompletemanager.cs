@@ -32,13 +32,19 @@ public class LevelCompleteManager : MonoBehaviour
     [Tooltip("Seconds between each earned star popping in")]
     public float starPopDelay = 0.35f;
     [Tooltip("Optional: plays once per earned star")]
-    public AudioSource starSound;
+    public AudioClip starSound;
 
     [Header("Scoring")]
     [Tooltip("This level's tracker. If empty, uses the PerformanceTracker on this same object, or Stars Earned below.")]
     public PerformanceTracker performanceTracker;
     [Tooltip("Fallback only - used when there is no PerformanceTracker")]
     [Range(0, 3)] public int starsEarned = 3;
+
+    [Header("Progress Saving (level-select lock/star cards)")]
+    [Tooltip("Groups Easy/Medium/Hard together, e.g. \"RAM\", \"PSU\". Leave empty to skip saving.")]
+    public string levelCategory = "RAM";
+    [Tooltip("\"Easy\", \"Medium\", or \"Hard\"")]
+    public string levelDifficulty = "Easy";
 
     [Header("Reward")]
     [Tooltip("Must match RewardManager / AssemblyPiece names, e.g. Monitor, Mouse, Keyboard")]
@@ -58,7 +64,7 @@ public class LevelCompleteManager : MonoBehaviour
     public UnityEvent onNext;
     [Tooltip("The panel's BACK TO MAIN MENU button (shared by all levels)")]
     public Button backToMenuButton;
-    [Tooltip("What BACK TO MENU does for THIS level. The panel closes by itself.")]
+    [Tooltip("What BACK TO MAIN MENU does for THIS level. The panel closes by itself.")]
     public UnityEvent onBackToMenu;
 
     [Header("Audio")]
@@ -136,6 +142,11 @@ public class LevelCompleteManager : MonoBehaviour
         int stars = performanceTracker != null ? performanceTracker.CalculateStars() : starsEarned;
         stars = Mathf.Clamp(stars, 0, starImages != null ? starImages.Length : 3);
 
+        // Save completion + star count so the level-select screen can
+        // unlock the next difficulty and show the real star count.
+        if (!string.IsNullOrEmpty(levelCategory) && !string.IsNullOrEmpty(levelDifficulty))
+            LevelProgress.CompleteLevel(levelCategory, levelDifficulty, stars);
+
         // Reward text + icon
         if (rewardText != null && !string.IsNullOrEmpty(rewardPartName))
             rewardText.text = string.Format(rewardTextFormat, rewardPartName);
@@ -212,7 +223,7 @@ public class LevelCompleteManager : MonoBehaviour
 
             star.gameObject.SetActive(true);
             star.color = earnedStarColor;
-            if (starSound != null) starSound.Play();
+            if (audioSource != null && starSound != null) audioSource.PlayOneShot(starSound);
 
             Vector3 original = starOriginalScales != null && i < starOriginalScales.Length
                 ? starOriginalScales[i] : Vector3.one;
