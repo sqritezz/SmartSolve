@@ -11,6 +11,9 @@ using TMPro;
 // should have isActiveDialogue = true at any given moment -- otherwise
 // both will respond to the same click. A flow manager script flips this
 // flag when switching phases.
+//
+// Language: fill "Lines Filipino" (same order as "Lines").
+// Empty lines show the English version.
 [RequireComponent(typeof(XRSimpleInteractable))]
 public class NPCDialogue : MonoBehaviour
 {
@@ -21,6 +24,9 @@ public class NPCDialogue : MonoBehaviour
     [Header("Dialogue Content")]
     [TextArea(2, 4)]
     public string[] lines;
+    [Tooltip("Filipino version of each line above, same order. Leave empty to show English.")]
+    [TextArea(2, 4)]
+    public string[] linesFilipino;
 
     [Header("UI References")]
     [Tooltip("The dialogue canvas/panel that appears while talking")]
@@ -28,6 +34,8 @@ public class NPCDialogue : MonoBehaviour
     public TMP_Text dialogueText;
     public TMP_Text speakerNameText;
     public string speakerName = "NPC";
+    [Tooltip("Optional Filipino name/title. Empty = same as Speaker Name.")]
+    public string speakerNameFilipino;
 
     [Header("Animation (optional)")]
     [Tooltip("Leave empty if you don't have Talk/Idle animator triggers set up")]
@@ -63,6 +71,16 @@ public class NPCDialogue : MonoBehaviour
             dialoguePanel.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        LanguageManager.OnLanguageChanged += RefreshText;
+    }
+
+    private void OnDisable()
+    {
+        LanguageManager.OnLanguageChanged -= RefreshText;
+    }
+
     private void OnInteract(SelectEnterEventArgs args)
     {
         if (!isActiveDialogue) return; // this dialogue isn't the current phase -- ignore the click
@@ -87,7 +105,7 @@ public class NPCDialogue : MonoBehaviour
         currentLine = -1;
 
         if (dialoguePanel != null) dialoguePanel.SetActive(true);
-        if (speakerNameText != null) speakerNameText.text = speakerName;
+        if (speakerNameText != null) speakerNameText.text = LanguageManager.Pick(speakerName, speakerNameFilipino);
 
         if (animator != null && !string.IsNullOrEmpty(talkTriggerName))
             animator.SetTrigger(talkTriggerName);
@@ -106,8 +124,26 @@ public class NPCDialogue : MonoBehaviour
             return;
         }
 
+        RefreshText();
+    }
+
+    // English or Filipino version of the current line
+    private string CurrentLineText()
+    {
+        string fil = (linesFilipino != null && currentLine < linesFilipino.Length)
+                     ? linesFilipino[currentLine] : null;
+        return LanguageManager.Pick(lines[currentLine], fil);
+    }
+
+    // Also runs when the language is switched mid-conversation
+    private void RefreshText()
+    {
+        if (!isTalking || currentLine < 0 || lines == null || currentLine >= lines.Length) return;
+
         if (dialogueText != null)
-            dialogueText.text = lines[currentLine];
+            dialogueText.text = CurrentLineText();
+        if (speakerNameText != null)
+            speakerNameText.text = LanguageManager.Pick(speakerName, speakerNameFilipino);
     }
 
     public void EndDialogue()

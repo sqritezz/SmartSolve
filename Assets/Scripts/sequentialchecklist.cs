@@ -8,6 +8,9 @@ using System.Text;
 // Objectives are organized into GROUPS. Each group can contain one or
 // more objective lines, all shown together. A group only advances to
 // the next group once EVERY objective inside it has been completed.
+//
+// Language: fill "Objectives Filipino" in each group (same order as
+// "Objectives"). Empty = shows the English line.
 public class SequentialChecklist : MonoBehaviour
 {
     [System.Serializable]
@@ -15,6 +18,9 @@ public class SequentialChecklist : MonoBehaviour
     {
         [TextArea(1, 2)]
         public string[] objectives; // one or more lines shown together for this group
+        [Tooltip("Filipino version of each line above, same order. Leave empty to show English.")]
+        [TextArea(1, 2)]
+        public string[] objectivesFilipino;
         [System.NonSerialized] public bool[] completed;
     }
 
@@ -29,7 +35,7 @@ public class SequentialChecklist : MonoBehaviour
     public Group[] groups;
 
     [Header("Appearance")]
-    public string checkmarkSymbol = "\u2714"; // check mark
+    public string checkmarkSymbol = "✔"; // check mark
     public string normalColorHex = "#FFFFFF";
     public string completedColorHex = "#00FF00";
     public float delayBeforeNextGroup = 1.2f;
@@ -48,6 +54,16 @@ public class SequentialChecklist : MonoBehaviour
         // even before Start() runs, so IsCurrentStep/CompleteObjective never
         // hit a null reference no matter what order/state things load in.
         EnsureAllGroupsInitialized();
+    }
+
+    private void OnEnable()
+    {
+        LanguageManager.OnLanguageChanged += RenderText;
+    }
+
+    private void OnDisable()
+    {
+        LanguageManager.OnLanguageChanged -= RenderText;
     }
 
     private void Start()
@@ -89,12 +105,23 @@ public class SequentialChecklist : MonoBehaviour
         RenderText();
     }
 
+    // English or Filipino version of one line
+    private static string LineFor(Group g, int i)
+    {
+        string fil = (g.objectivesFilipino != null && i < g.objectivesFilipino.Length)
+                     ? g.objectivesFilipino[i] : null;
+        return LanguageManager.Pick(g.objectives[i], fil);
+    }
+
     private void RenderText()
     {
         if (stepText == null) return;
         if (groups == null || currentGroupIndex >= groups.Length) return;
 
         Group g = groups[currentGroupIndex];
+        if (g.completed == null || g.completed.Length != g.objectives.Length)
+            g.completed = new bool[g.objectives.Length];
+
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < g.objectives.Length; i++)
@@ -104,7 +131,7 @@ public class SequentialChecklist : MonoBehaviour
             string color = done ? completedColorHex : normalColorHex;
 
             sb.Append("<color=").Append(color).Append(">")
-              .Append(prefix).Append(" ").Append(g.objectives[i])
+              .Append(prefix).Append(" ").Append(LineFor(g, i))
               .Append("</color>");
 
             if (i < g.objectives.Length - 1)

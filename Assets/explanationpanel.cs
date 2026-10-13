@@ -22,6 +22,10 @@ public class ExplanationPanel : MonoBehaviour
     public string whyHeading = "Why did this happen?";
     public string fixHeading = "How to fix it";
     public string closeHint = "Click anywhere to continue";
+    [Tooltip("Filipino versions of the headings above")]
+    public string whyHeadingFilipino = "Bakit ito nangyari?";
+    public string fixHeadingFilipino = "Paano ito ayusin";
+    public string closeHintFilipino = "Pindutin kahit saan para magpatuloy";
 
     [Header("Placement (in front of the player)")]
     [Tooltip("Main Camera. Empty = finds it automatically")]
@@ -66,17 +70,7 @@ public class ExplanationPanel : MonoBehaviour
             Display(waiting.Dequeue());
     }
 
-    private void LateUpdate()
-    {
-        // Keep following the player every frame while visible, instead of
-        // only being placed once when it first appears.
-        if (IsShowing)
-            PlaceInFrontOfPlayer();
-    }
-
-    // Levels call this. Leave howToFix empty (as LevelExplanations already
-    // lets you do per entry) and the "How to fix it" heading just won't
-    // show - same for "why" if you ever only need a fix.
+    // Levels call this
     public void Show(string title, string why, string howToFix)
     {
         waiting.Enqueue(new Entry { title = title, why = why, fix = howToFix });
@@ -92,11 +86,12 @@ public class ExplanationPanel : MonoBehaviour
         {
             string body = "";
             if (!string.IsNullOrEmpty(e.why))
-                body += "<b>" + whyHeading + "</b>\n" + e.why + "\n\n";
+                body += "<b>" + LanguageManager.Pick(whyHeading, whyHeadingFilipino) + "</b>\n" + e.why + "\n\n";
             if (!string.IsNullOrEmpty(e.fix))
-                body += "<b>" + fixHeading + "</b>\n" + e.fix;
-            if (!string.IsNullOrEmpty(closeHint))
-                body += "\n\n<size=70%><i>" + closeHint + "</i></size>";
+                body += "<b>" + LanguageManager.Pick(fixHeading, fixHeadingFilipino) + "</b>\n" + e.fix;
+            string hint = LanguageManager.Pick(closeHint, closeHintFilipino);
+            if (!string.IsNullOrEmpty(hint))
+                body += "\n\n<size=70%><i>" + hint + "</i></size>";
             bodyText.text = body;
         }
 

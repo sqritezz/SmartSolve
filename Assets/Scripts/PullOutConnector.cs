@@ -2,21 +2,28 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-// Attach to a 24-pin connector (needs Rigidbody + XR Grab Interactable + Collider).
+// Attach to a 24-pin connector (needs Rigidbody + XR Grab Interactable + Box Collider).
 // Grab it and let go:
 //  - released near the motherboard socket -> plugs in (seated)
 //  - released anywhere else               -> rests at the "Unplugged Spot" (no falling)
 // Grabbing it while the PSU is ON is a safety mistake: dropped + wrong attempt.
 // It also can't be moved while a paperclip is inserted.
 //
-// PSU Medium: leave Seated Spot empty and Start Unplugged off (works as before).
+// PSU Medium: leave Seated Spot empty and Start Unplugged off.
 // PSU Hard (new PSU's connector): set Seated Spot to an empty object at the
 // motherboard socket and check Start Unplugged. PSUHardManager turns
 // "Allow Plug In" on once the new PSU is installed.
+//
+// Models whose pivot is far away from the mesh (e.g. a part cut out of a whole
+// PC model) are handled: the hand holds the CENTER of the collider, and the
+// plug-in check uses the collider center too.
+//
+// Audio: ONE Audio Source (leave empty = uses the one on this object),
+// and the sounds are clips you drag in.
 public class PullOutConnector : MonoBehaviour
 {
     [Header("Positions")]
-    [Tooltip("Empty object where the connector rests when unplugged")]
+    [Tooltip("Empty object where the connector rests when unplugged. NOT the socket - put it beside the case.")]
     public Transform unpluggedSpot;
     [Tooltip("Optional: empty object at the motherboard socket. Empty = where the connector starts.")]
     public Transform seatedSpot;
@@ -26,6 +33,12 @@ public class PullOutConnector : MonoBehaviour
     public float snapDistance = 0.08f;
     [Tooltip("Turned on/off by a manager. When off, it can't be plugged in.")]
     public bool allowPlugIn = true;
+
+    [Header("Grab Fix")]
+    [Tooltip("Hand holds the middle of the connector instead of the model's far-away pivot. Only used if the XR Grab Interactable has no Attach Transform.")]
+    public bool autoGrabPoint = true;
+    [Tooltip("ON = the Unplugged Spot marks where the MIDDLE of the connector rests. Turn on if the connector ends up floating away from the Unplugged Spot.")]
+    public bool placeByCenter = true;
 
     [Header("Safety")]
     public PSUSwitch1 psuSwitch;
@@ -39,9 +52,11 @@ public class PullOutConnector : MonoBehaviour
     public GameObject removeClipMessage;
 
     [Header("Audio")]
-    public AudioSource unplugSound;
-    public AudioSource plugSound;
-    public AudioSource warningSound;
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    public AudioClip unplugSound;
+    public AudioClip plugSound;
+    public AudioClip warningSound;
 
     [Header("Messages")]
     public float messageShowTime = 2.5f;
@@ -54,10 +69,13 @@ public class PullOutConnector : MonoBehaviour
     private Transform originalParent;
     private Vector3 seatedLocalPos;
     private Quaternion seatedLocalRot;
+    private Vector3 centerLocal;          // middle of the collider, in this object's local space
     private bool forceDropping = false;
 
     private void Awake()
     {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         grab = GetComponent<XRGrabInteractable>();
         rb = GetComponent<Rigidbody>();
 
@@ -65,10 +83,29 @@ public class PullOutConnector : MonoBehaviour
         seatedLocalPos = transform.localPosition;
         seatedLocalRot = transform.localRotation;
 
+        // Find the real middle of the connector
+        Collider col = GetComponent<Collider>();
+        if (col is BoxCollider box) centerLocal = box.center;
+        else if (col != null) centerLocal = transform.InverseTransformPoint(col.bounds.center);
+        else centerLocal = Vector3.zero;
+
         if (rb != null) { rb.isKinematic = true; rb.useGravity = false; }
 
         if (grab != null)
         {
+            // Hand holds the middle of the connector, not the far-away pivot
+            if (autoGrabPoint && grab.attachTransform == null)
+            {
+                Transform gp = new GameObject("Auto Grab Point").transform;
+                gp.SetParent(transform, false);
+                gp.localPosition = centerLocal;
+                gp.localRotation = Quaternion.identity;
+                grab.attachTransform = gp;
+            }
+
+            // Kinematic objects can't be thrown (removes the console warning)
+            grab.throwOnDetach = false;
+
             grab.selectEntered.AddListener(OnGrabbed);
             grab.selectExited.AddListener(OnReleased);
         }
@@ -90,7 +127,7 @@ public class PullOutConnector : MonoBehaviour
     {
         if (psuSwitch != null && !psuSwitch.IsOff)
         {
-            if (warningSound != null) warningSound.Play();
+            Play(warningSound);
             ShowMessage(powerOnWarning);
             if (performanceTracker != null) performanceTracker.RegisterWrongAttempt();
             StartCoroutine(ForceDrop());
@@ -114,17 +151,19 @@ public class PullOutConnector : MonoBehaviour
     {
         yield return null; // let XR Grab finish releasing
 
-        GetSeatedPose(out Vector3 seatedPos, out _);
+        GetSeatedPose(out Vector3 seatedPos, out Quaternion seatedRot);
+        Vector3 seatedCenter = CenterAt(seatedPos, seatedRot);
+        Vector3 currentCenter = transform.TransformPoint(centerLocal);
 
-        if (allowPlugIn && Vector3.Distance(transform.position, seatedPos) <= snapDistance)
+        if (allowPlugIn && Vector3.Distance(currentCenter, seatedCenter) <= snapDistance)
         {
             PlaceSeated();
-            if (!isSeated) { isSeated = true; if (plugSound != null) plugSound.Play(); }
+            if (!isSeated) { isSeated = true; Play(plugSound); }
         }
         else
         {
             PlaceUnplugged();
-            if (isSeated) { isSeated = false; if (unplugSound != null) unplugSound.Play(); }
+            if (isSeated) { isSeated = false; Play(unplugSound); }
         }
     }
 
@@ -136,6 +175,12 @@ public class PullOutConnector : MonoBehaviour
         grab.enabled = true;
         if (isSeated) PlaceSeated(); else PlaceUnplugged();
         forceDropping = false;
+    }
+
+    // Where the middle of the connector would be if the pivot were at pos/rot
+    private Vector3 CenterAt(Vector3 pos, Quaternion rot)
+    {
+        return pos + rot * Vector3.Scale(centerLocal, transform.lossyScale);
     }
 
     private void GetSeatedPose(out Vector3 pos, out Quaternion rot)
@@ -169,8 +214,24 @@ public class PullOutConnector : MonoBehaviour
     {
         if (rb != null) { rb.isKinematic = true; rb.useGravity = false; }
         transform.SetParent(originalParent, true);
-        if (unpluggedSpot != null)
-            transform.SetPositionAndRotation(unpluggedSpot.position, unpluggedSpot.rotation);
+        if (unpluggedSpot == null) return;
+
+        Quaternion rot = unpluggedSpot.rotation;
+        Vector3 pos = unpluggedSpot.position;
+        if (placeByCenter)
+            pos -= rot * Vector3.Scale(centerLocal, transform.lossyScale);
+
+        transform.SetPositionAndRotation(pos, rot);
+    }
+
+    private void Play(AudioClip clip)
+    {
+        if (audioSource == null || clip == null) return;
+        try { audioSource.PlayOneShot(clip); }
+        catch (System.Exception)
+        {
+            Debug.LogWarning("[PullOutConnector] A sound slot is broken. Set it to None and drag the clip in again.", this);
+        }
     }
 
     private void ShowMessage(GameObject message)

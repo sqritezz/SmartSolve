@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 // PSU MEDIUM TUTORIAL - "The doorbell won't ring"
-// Attach to the DOORBELL BUTTON (needs collider + XR Simple Interactable).
+// Attach to the DOORBELL BUTTON (needs collider + XR Simple Interactable + ClickOnly).
 // Reuses PaperclipSlot (test wire) and FrontPanelPlug (button wire plug).
 //
 // Steps (checked in order, like PSUMediumManager):
@@ -14,6 +15,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 //   4 Move the button's wire plug to the BELL terminals
 //   5 Press the doorbell button          - bell rings
 // When done, onTaskComplete fires (wire to TutorialFlowManager.OnCablePlugged()).
+//
+// Works with ClickOnly: the button is NOT grabbable. Point the ray at it and
+// pull the TRIGGER to press it. This script reads the trigger itself, so it
+// works even if TriggerClicker misses the button.
+// Audio: ONE Audio Source (leave empty = uses the one on this object), sounds are clips.
 public class DoorbellTutorialTask : MonoBehaviour
 {
     public enum Step { PressButtonFirst, ConnectTestWire, RemoveTestWire, FixButtonWires, PressButtonFinal, Done }
@@ -24,13 +30,17 @@ public class DoorbellTutorialTask : MonoBehaviour
     [Tooltip("FrontPanelPlug on the button's wire plug (LIGHT spot = start, BELL spot = correct)")]
     public FrontPanelPlug buttonWirePlug;
 
+    [Header("Audio")]
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    public AudioClip bellSound;
+    public AudioClip buttonClickSound;
+
     [Header("Bell Feedback")]
-    public AudioSource bellSound;
     [Tooltip("Optional: the bell (or its hammer) shakes while ringing")]
     public Transform bellToShake;
     public float shakeTime = 0.8f;
     public float shakeAngle = 8f;
-    public AudioSource buttonClickSound;
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
@@ -52,22 +62,42 @@ public class DoorbellTutorialTask : MonoBehaviour
     private bool lastClipState = false;
     private Coroutine shakeRoutine;
     private Quaternion bellStartRotation;
+    private float lastPressTime = -1f;
+    private bool leftWasDown, rightWasDown;
 
     private bool TestWireIn => testWireSlot != null && testWireSlot.hasClip;
     private bool WiresCorrect => buttonWirePlug != null && buttonWirePlug.IsCorrect;
 
     private void Awake()
     {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         button = GetComponent<XRBaseInteractable>();
+        if (button == null) button = GetComponentInParent<XRBaseInteractable>();
+
+        // ClickOnly fires selectEntered when the player trigger-clicks the button
         if (button != null)
-            button.selectEntered.AddListener(args => PressButton());
+            button.selectEntered.AddListener(OnSelected);
 
         if (bellToShake != null)
             bellStartRotation = bellToShake.localRotation;
     }
 
+    private void OnDestroy()
+    {
+        if (button != null)
+            button.selectEntered.RemoveListener(OnSelected);
+    }
+
+    private void OnSelected(SelectEnterEventArgs args)
+    {
+        PressButton();
+    }
+
     private void Update()
     {
+        CheckTriggerClick();
+
         // Test wire just connected -> the bell rings by itself
         bool clipIn = TestWireIn;
         if (clipIn && !lastClipState)
@@ -80,27 +110,68 @@ public class DoorbellTutorialTask : MonoBehaviour
         TryAdvance();
     }
 
+    // Ray pointing at the button + trigger pulled -> press it
+    private void CheckTriggerClick()
+    {
+        bool leftDown = TriggerDown(XRNode.LeftHand);
+        bool rightDown = TriggerDown(XRNode.RightHand);
+        bool newPress = (leftDown && !leftWasDown) || (rightDown && !rightWasDown);
+        leftWasDown = leftDown;
+        rightWasDown = rightDown;
+
+        if (newPress && button != null && button.isHovered)
+            PressButton();
+    }
+
+    private static bool TriggerDown(XRNode hand)
+    {
+        var device = InputDevices.GetDeviceAtXRNode(hand);
+        return device.isValid &&
+               device.TryGetFeatureValue(CommonUsages.triggerButton, out bool pressed) &&
+               pressed;
+    }
+
     // ---------- Doorbell button ----------
+    // Also callable from a UnityEvent if needed
     public void PressButton()
     {
-        if (buttonClickSound != null) buttonClickSound.Play();
+        // Ignore a double fire from the same click
+        if (Time.time - lastPressTime < 0.2f) return;
+        lastPressTime = Time.time;
+
+        Play(buttonClickSound);
         pressedOnce = true;
 
         if (WiresCorrect && !TestWireIn)
         {
             Ring();
-            if (currentStep == Step.PressButtonFinal) finalRing = true;
+            // Counts even if the checklist is still switching to step 5
+            finalRing = true;
         }
         // otherwise nothing happens - the symptom
     }
 
     private void Ring()
     {
-        if (bellSound != null) bellSound.Play();
+        Play(bellSound);
         if (bellToShake != null)
         {
             if (shakeRoutine != null) StopCoroutine(shakeRoutine);
             shakeRoutine = StartCoroutine(Shake());
+        }
+    }
+
+    private void Play(AudioClip clip)
+    {
+        if (audioSource == null || clip == null) return;
+        try
+        {
+            audioSource.PlayOneShot(clip);
+        }
+        catch (System.Exception)
+        {
+            // A broken sound slot (e.g. "Type mismatch") must never stop the button from working
+            Debug.LogWarning("[DoorbellTutorialTask] A sound slot is broken. Set it to None and drag the clip in again.", this);
         }
     }
 

@@ -18,6 +18,7 @@ TagManager:
   - CleaningBrush
   - Pliers
   - Screwdriver
+  - Bulb
   layers:
   - Default
   - TransparentFX

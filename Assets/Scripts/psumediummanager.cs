@@ -3,7 +3,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 // PSU MEDIUM - "Is it really the PSU?"
 // Attach to the PC POWER BUTTON (needs collider + XR Simple Interactable).
-// Replaces PowerButtonMedium on this object.
 //
 // Checks each step in order and ticks the checklist when it's done:
 //   1  Press the power button (nothing happens)
@@ -18,8 +17,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 //   10 Turn on the PSU switch
 //   11 Press the power button -> PC starts
 //
-// Steps are checked against the CURRENT state, so doing something early is fine:
-// it just ticks as soon as that step comes up.
+// Audio: ONE Audio Source (leave empty = uses the one on this object).
+// The fan hum loops on it; beep and success play on top as one-shots.
 // IMPORTANT: leave the PSU Switch's own Checklist field EMPTY.
 public class PSUMediumManager : MonoBehaviour
 {
@@ -45,12 +44,16 @@ public class PSUMediumManager : MonoBehaviour
     public Transform psuFan;
     public Vector3 spinAxis = Vector3.forward;
     public float spinSpeed = 900f;
-    [Tooltip("Optional looping fan sound (3D, Loop on, Play On Awake off)")]
-    public AudioSource fanSound;
 
     [Header("Audio")]
-    public AudioSource beepSound;
-    public AudioSource successSound;
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    [Tooltip("Looping fan hum while the PSU fan spins (optional)")]
+    public AudioClip fanSound;
+    [Tooltip("Plays every time the power button is pressed")]
+    public AudioClip beepSound;
+    [Tooltip("Plays when the PC finally starts")]
+    public AudioClip successSound;
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
@@ -68,6 +71,7 @@ public class PSUMediumManager : MonoBehaviour
     public bool psuTestPassed = false;
 
     private XRBaseInteractable interactable;
+    private bool fanPlaying = false;
 
     private bool SwitchOn => psuSwitch == null || !psuSwitch.IsOff;
     private bool Seated => connector24Pin == null || connector24Pin.isSeated;
@@ -78,6 +82,8 @@ public class PSUMediumManager : MonoBehaviour
 
     private void Awake()
     {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         interactable = GetComponent<XRBaseInteractable>();
         if (interactable != null)
             interactable.selectEntered.AddListener(args => PressPowerButton());
@@ -97,19 +103,40 @@ public class PSUMediumManager : MonoBehaviour
         bool spinning = FanSpinning;
         if (spinning && psuFan != null)
             psuFan.Rotate(spinAxis, spinSpeed * Time.deltaTime, Space.Self);
-        if (fanSound != null)
-        {
-            if (spinning && !fanSound.isPlaying) fanSound.Play();
-            else if (!spinning && fanSound.isPlaying) fanSound.Stop();
-        }
+        UpdateFanSound(spinning);
 
         TryAdvance();
+    }
+
+    private void UpdateFanSound(bool spinning)
+    {
+        if (audioSource == null || fanSound == null) return;
+
+        if (spinning && !fanPlaying)
+        {
+            audioSource.clip = fanSound;
+            audioSource.loop = true;
+            audioSource.Play();
+            fanPlaying = true;
+        }
+        else if (!spinning && fanPlaying)
+        {
+            audioSource.Stop();
+            audioSource.loop = false;
+            fanPlaying = false;
+        }
+    }
+
+    private void PlayOnce(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+            audioSource.PlayOneShot(clip);
     }
 
     // ---------- Power button ----------
     public void PressPowerButton()
     {
-        if (beepSound != null) beepSound.Play();
+        PlayOnce(beepSound);
         if (pcRunning) return;
 
         bool canStart = SwitchOn && Seated && !ClipIn &&
@@ -119,7 +146,7 @@ public class PSUMediumManager : MonoBehaviour
         {
             pcRunning = true;
             ShowScreen(true);
-            if (successSound != null) successSound.Play();
+            PlayOnce(successSound);
             return;
         }
 

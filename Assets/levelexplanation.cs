@@ -18,6 +18,11 @@ public class LevelExplanations : MonoBehaviour
         public string title = "What happened?";
         [TextArea(2, 5)] public string why;
         [TextArea(2, 5)] public string howToFix;
+
+        [Header("Filipino (leave empty to show English)")]
+        public string titleFilipino;
+        [TextArea(2, 5)] public string whyFilipino;
+        [TextArea(2, 5)] public string howToFixFilipino;
     }
 
     [Header("This level's checklist")]
@@ -68,7 +73,10 @@ public class LevelExplanations : MonoBehaviour
         if (e.delay > 0f) yield return new WaitForSeconds(e.delay);
 
         if (ExplanationPanel.Instance != null)
-            ExplanationPanel.Instance.Show(e.title, e.why, e.howToFix);
+            ExplanationPanel.Instance.Show(
+                LanguageManager.Pick(e.title, e.titleFilipino),
+                LanguageManager.Pick(e.why, e.whyFilipino),
+                LanguageManager.Pick(e.howToFix, e.howToFixFilipino));
         else
             Debug.LogWarning("[LevelExplanations] No ExplanationPanel in the scene.");
     }
