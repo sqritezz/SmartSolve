@@ -6,10 +6,10 @@ using UnityEngine.UI;
 // When the quiz is finished -> "Next Level" button appears in the quiz panel.
 // "Next Level" -> does exactly what the old "Next" button did (teleport).
 //
-// Which quiz?
-//   - Automatically: after each quiz's "Next Level", the gate moves on to the next quiz in the list.
-//   - Optional override: Checklist > On All Steps Complete () -> QuizGate.SetCurrentQuiz (0 = first quiz, 1 = second...)
-//     (Make sure the number typed in the event box is correct - it defaults to 0!)
+// Which quiz? It goes in order by itself: after a quiz is finished, the next
+// Quiz button press opens the next one (Easy -> Medium -> Hard...).
+// Optional: Checklist > On All Steps Complete () -> QuizGate.SetCurrentQuiz (number)
+// to force a specific quiz (e.g. when a level is picked from the menu).
 //
 // Put this on an object that is ALWAYS active (e.g. Reward Manager),
 // NOT on the RewardPanel itself (it gets hidden).
@@ -42,7 +42,6 @@ public class QuizGate : MonoBehaviour
     public int currentQuizIndex = 0;
 
     private LevelQuiz current;
-    private int openedIndex = -1;
     private bool finished;
 
     private void Start()
@@ -65,29 +64,52 @@ public class QuizGate : MonoBehaviour
             QuizFinished();
     }
 
-    // Optional: each level's checklist -> On All Steps Complete () -> SetCurrentQuiz(its number)
+    // Each level's checklist -> On All Steps Complete () -> SetCurrentQuiz(its number)
     public void SetCurrentQuiz(int index)
     {
-        Debug.Log($"[QuizGate] SetCurrentQuiz({index}) called (was {currentQuizIndex}).");
         currentQuizIndex = index;
+        forced = true;
+    }
+
+    private bool forced = false;
+
+    // A quiz counts as done when its Result is turned on
+    private static bool IsDone(LevelQuiz q)
+    {
+        return q.quizFinishedObject != null && q.quizFinishedObject.activeSelf;
+    }
+
+    // First quiz in the list that hasn't been finished yet
+    private int FirstUnfinished()
+    {
+        for (int i = 0; i < quizzes.Length; i++)
+            if (quizzes[i] != null && !IsDone(quizzes[i])) return i;
+        return -1;
     }
 
     // Quiz button -> On Click ()
     public void OpenQuiz()
     {
-        current = (quizzes != null && currentQuizIndex >= 0 && currentQuizIndex < quizzes.Length)
-                  ? quizzes[currentQuizIndex] : null;
+        if (quizzes == null) quizzes = new LevelQuiz[0];
+
+        // Use the forced number if a checklist set one, otherwise the first unfinished quiz
+        int index = forced ? currentQuizIndex : FirstUnfinished();
+        forced = false;
+        currentQuizIndex = index;
+
+        current = (index >= 0 && index < quizzes.Length) ? quizzes[index] : null;
+
+        // Make sure no other quiz panel is still showing
+        foreach (var q in quizzes)
+            if (q != null && q != current && q.quizPanel != null) q.quizPanel.SetActive(false);
 
         if (current == null || current.quizPanel == null)
         {
-            Debug.LogWarning($"[QuizGate] No quiz set for index {currentQuizIndex} - going to the next level instead.");
+            Debug.LogWarning("[QuizGate] No quiz set for this level - going to the next level instead.");
             GoToNextLevel();
             return;
         }
 
-        Debug.Log($"[QuizGate] Opening quiz {currentQuizIndex}: {current.name} ({current.quizPanel.name})");
-
-        openedIndex = currentQuizIndex;
         finished = false;
         if (rewardPanel != null) rewardPanel.SetActive(false);
         if (current.nextLevelButton != null) current.nextLevelButton.SetActive(false);
@@ -98,25 +120,20 @@ public class QuizGate : MonoBehaviour
     // (or let "Quiz Finished Object" do it automatically)
     public void QuizFinished()
     {
-        if (current == null) return;
+        if (current == null || finished) return;
         finished = true;
         if (current.nextLevelButton != null) current.nextLevelButton.SetActive(true);
+
+        // Next time the Quiz button is pressed, open the NEXT level's quiz
+        int i = System.Array.IndexOf(quizzes, current);
+        if (i >= 0) currentQuizIndex = i + 1;
     }
 
     // Next Level button -> On Click ()
     public void GoToNextLevel()
     {
         if (current != null && current.quizPanel != null) current.quizPanel.SetActive(false);
-
-        // Move on to the next quiz automatically, so the next level never reopens the old one
-        if (openedIndex >= 0)
-        {
-            currentQuizIndex = openedIndex + 1;
-            Debug.Log($"[QuizGate] Next level - next quiz will be index {currentQuizIndex}.");
-        }
-
         current = null;
-        openedIndex = -1;
         finished = false;
 
         // Do whatever the old Next button did (teleport to the next level)
