@@ -12,6 +12,8 @@ public class QuizManager : MonoBehaviour
     [Header("Result Panel")]
     public GameObject resultPanel;
 
+    public GameObject nextlvlbtn;
+
     [Header("Sound Effects")]
     public AudioSource audioSource;   // Drag an AudioSource component here (add one to this GameObject)
     public AudioClip wrongAnswerSound; // Drag your "wrong answer" sound clip here
@@ -32,6 +34,8 @@ public class QuizManager : MonoBehaviour
         // Hide result panel at start
         if (resultPanel != null)
             resultPanel.SetActive(false);
+
+        nextlvlbtn.SetActive(true);
 
         ShowQuestion(0);
         UpdateScore();
