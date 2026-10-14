@@ -24,10 +24,10 @@ public class TeleportToPoint : MonoBehaviour
     public Transform psuMediumPoint;
     public Transform psuHardPoint;
 
-    [Header("Stage3 Points (rename once decided)")]
-    public Transform stage3EasyPoint;
-    public Transform stage3MediumPoint;
-    public Transform stage3HardPoint;
+    [Header("GPU Points")]
+    public Transform gpuEasyPoint;
+    public Transform gpuMediumPoint;
+    public Transform gpuHardPoint;
 
     public GameObject mainMenu;
     public GameObject home;
@@ -142,7 +142,7 @@ public class TeleportToPoint : MonoBehaviour
             hintButton.SetActive(false);
     }
 
-    public void TeleportEasy()
+    public void TeleportRAMEasy()
     {
         xrRig.position = easyPoint.position;
         mainMenu.SetActive(false);
@@ -150,7 +150,7 @@ public class TeleportToPoint : MonoBehaviour
         ShowHintFor(easyRamTracker, easyRamHints);
     }
 
-    public void TeleportMedium()
+    public void TeleportRAMMedium()
     {
         xrRig.position = mediumPoint.position;
         mainMenu.SetActive(false);
@@ -158,7 +158,7 @@ public class TeleportToPoint : MonoBehaviour
         ShowHintFor(mediumRamTracker, mediumRamHints);
     }
 
-    public void TeleportHard()
+    public void TeleportRAMHard()
     {
         xrRig.position = hardPoint.position;
         mainMenu.SetActive(false);
@@ -166,7 +166,7 @@ public class TeleportToPoint : MonoBehaviour
         ShowHintFor(hardRamTracker, hardRamHints);
     }
 
-    public void TeleportPsuEasy()
+    public void TeleportPSUEasy()
     {
         xrRig.position = psuEasyPoint.position;
         mainMenu.SetActive(false);
@@ -174,7 +174,7 @@ public class TeleportToPoint : MonoBehaviour
         ShowHintFor(easyPsuTracker, easyPsuHints);
     }
 
-    public void TeleportPsuMedium()
+    public void TeleportPSUMedium()
     {
         xrRig.position = psuMediumPoint.position;
         mainMenu.SetActive(false);
@@ -182,7 +182,7 @@ public class TeleportToPoint : MonoBehaviour
         ShowHintFor(mediumPsuTracker, mediumPsuHints);
     }
 
-    public void TeleportPsuHard()
+    public void TeleportPSUHard()
     {
         xrRig.position = psuHardPoint.position;
         mainMenu.SetActive(false);
@@ -190,25 +190,25 @@ public class TeleportToPoint : MonoBehaviour
         ShowHintFor(hardPsuTracker, hardPsuHints);
     }
 
-    public void TeleportStage3Easy()
+    public void TeleportGPUEasy()
     {
-        xrRig.position = stage3EasyPoint.position;
+        xrRig.position = gpuEasyPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
         ShowHintFor(easyStage3Tracker, easyStage3Hints);
     }
 
-    public void TeleportStage3Medium()
+    public void TeleportGPUMedium()
     {
-        xrRig.position = stage3MediumPoint.position;
+        xrRig.position = gpuMediumPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
         ShowHintFor(mediumStage3Tracker, mediumStage3Hints);
     }
 
-    public void TeleportStage3Hard()
+    public void TeleportGPUHard()
     {
-        xrRig.position = stage3HardPoint.position;
+        xrRig.position = gpuHardPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
         ShowHintFor(hardStage3Tracker, hardStage3Hints);

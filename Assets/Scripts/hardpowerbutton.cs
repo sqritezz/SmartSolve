@@ -44,15 +44,17 @@ public class PSUHardManager : MonoBehaviour
 
     [Header("Effects")]
     [Tooltip("Sparks when pressing power while the dead PSU is still in")]
-    public ShortCircuitEffect shortCircuitEffect;
+    public ShortCircuitEffect1 shortCircuitEffect;
     [Tooltip("Optional: the NEW PSU's fan blades, spins when the PC runs")]
     public Transform newPsuFan;
     public Vector3 spinAxis = Vector3.up;
     public float spinSpeed = 900f;
 
     [Header("Audio")]
-    public AudioSource beepSound;
-    public AudioSource successSound;
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    public AudioClip beepSound;
+    public AudioClip successSound;
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
@@ -88,6 +90,8 @@ public class PSUHardManager : MonoBehaviour
 
     private void Awake()
     {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         interactable = GetComponent<XRBaseInteractable>();
         if (interactable != null)
             interactable.selectEntered.AddListener(args => PressPowerButton());
@@ -121,7 +125,7 @@ public class PSUHardManager : MonoBehaviour
     // ---------- Power button ----------
     public void PressPowerButton()
     {
-        if (beepSound != null) beepSound.Play();
+        Play(beepSound);
         if (pcRunning) return;
 
         if (!SwitchOn)
@@ -145,7 +149,7 @@ public class PSUHardManager : MonoBehaviour
         {
             pcRunning = true;
             ShowScreen(true);
-            if (successSound != null) successSound.Play();
+            Play(successSound);
             return;
         }
 
@@ -210,6 +214,16 @@ public class PSUHardManager : MonoBehaviour
             if (!removed && !s.IsFastened) return false;
         }
         return true;
+    }
+
+    private void Play(AudioClip clip)
+    {
+        if (audioSource == null || clip == null) return;
+        try { audioSource.PlayOneShot(clip); }
+        catch (System.Exception)
+        {
+            Debug.LogWarning("[PSUHardManager] A sound slot is broken. Set it to None and drag the clip in again.", this);
+        }
     }
 
     private void ShowScreen(bool on)

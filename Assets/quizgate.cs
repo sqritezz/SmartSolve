@@ -73,17 +73,14 @@ public class QuizGate : MonoBehaviour
 
     private bool forced = false;
 
-    // A quiz counts as done when its Result is turned on
-    private static bool IsDone(LevelQuiz q)
-    {
-        return q.quizFinishedObject != null && q.quizFinishedObject.activeSelf;
-    }
+    // Quizzes the player actually finished this session
+    private readonly System.Collections.Generic.HashSet<int> done = new System.Collections.Generic.HashSet<int>();
 
     // First quiz in the list that hasn't been finished yet
     private int FirstUnfinished()
     {
         for (int i = 0; i < quizzes.Length; i++)
-            if (quizzes[i] != null && !IsDone(quizzes[i])) return i;
+            if (quizzes[i] != null && !done.Contains(i)) return i;
         return -1;
     }
 
@@ -111,6 +108,8 @@ public class QuizGate : MonoBehaviour
         }
 
         finished = false;
+        // Ignore a Result that was already on before this quiz started
+        if (current.quizFinishedObject != null) current.quizFinishedObject.SetActive(false);
         if (rewardPanel != null) rewardPanel.SetActive(false);
         if (current.nextLevelButton != null) current.nextLevelButton.SetActive(false);
         current.quizPanel.SetActive(true);
@@ -126,7 +125,7 @@ public class QuizGate : MonoBehaviour
 
         // Next time the Quiz button is pressed, open the NEXT level's quiz
         int i = System.Array.IndexOf(quizzes, current);
-        if (i >= 0) currentQuizIndex = i + 1;
+        if (i >= 0) { done.Add(i); currentQuizIndex = i + 1; }
     }
 
     // Next Level button -> On Click ()

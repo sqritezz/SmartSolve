@@ -1,0 +1,42 @@
+newmtl PCB
+Kd 0.05 0.3 0.12
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 30
+
+newmtl Shroud
+Kd 0.12 0.12 0.14
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 30
+
+newmtl Fan
+Kd 0.03 0.03 0.035
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 30
+
+newmtl Metal
+Kd 0.7 0.7 0.72
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 30
+
+newmtl PortBlack
+Kd 0 0 0
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 30
+
+newmtl Gold
+Kd 0.85 0.65 0.15
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 30
+
+newmtl Black
+Kd 0.05 0.05 0.05
+Ka 0 0 0
+Ks 0.2 0.2 0.2
+Ns 30
+

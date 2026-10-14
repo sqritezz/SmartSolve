@@ -13,7 +13,9 @@ using UnityEditor;
 public class ShortCircuitEffect1 : MonoBehaviour
 {
     [Header("Sound")]
-    public AudioSource crackleSound;
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    public AudioClip crackleSound;
 
     [Header("Size")]
     [Tooltip("Scales the whole effect. Raise if it looks too small next to your PSU.")]
@@ -35,7 +37,8 @@ public class ShortCircuitEffect1 : MonoBehaviour
         if (arcFlash != null) arcFlash.Play(true);
         if (sparks != null) sparks.Play(true);
         if (smoke != null) smoke.Play(true);
-        if (crackleSound != null) crackleSound.Play();
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+        if (audioSource != null && crackleSound != null) audioSource.PlayOneShot(crackleSound);
     }
 
     [ContextMenu("Preview Effect")]

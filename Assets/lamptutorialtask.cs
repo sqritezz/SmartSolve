@@ -34,6 +34,9 @@ public class LampTutorialTask : MonoBehaviour
     public Transform bulbSocket;
     [Tooltip("How close (meters) any part of the new bulb must get to the socket to snap in")]
     public float snapDistance = 0.08f;
+    [Tooltip("ON = the socket moves to wherever you placed the Old Bulb in the editor, " +
+             "so the bulbs keep the exact position/rotation you set (recommended)")]
+    public bool useOldBulbPlacement = true;
 
     [Header("Light")]
     [Tooltip("The lamp's Light component (starts off)")]
@@ -104,6 +107,10 @@ public class LampTutorialTask : MonoBehaviour
     {
         if (lampLight != null) lampLight.enabled = false;
         if (switchOnWarning != null) switchOnWarning.SetActive(false);
+
+        // Use the Old Bulb's editor placement as the socket pose
+        if (useOldBulbPlacement && oldBulb != null && bulbSocket != null)
+            bulbSocket.SetPositionAndRotation(oldBulb.transform.position, oldBulb.transform.rotation);
 
         // Old bulb sits in the socket and doesn't fall
         if (oldBulb != null && bulbSocket != null)
@@ -335,7 +342,14 @@ public class LampTutorialTask : MonoBehaviour
         int group = i < stepGroupIndices.Length ? stepGroupIndices[i] : -1;
 
         if (checklist != null && group >= 0 && !checklist.IsCurrentStep(group, objectiveIndex))
+        {
+            // Another script (e.g. TrashBin) already ticked this step and the checklist
+            // moved on -> catch up instead of getting stuck here
+            int nextGroup = i + 1 < stepGroupIndices.Length ? stepGroupIndices[i + 1] : -1;
+            if (IsStepDone(currentStep) && nextGroup >= 0 && checklist.IsCurrentStep(nextGroup, objectiveIndex))
+                currentStep++;
             return;
+        }
 
         if (!IsStepDone(currentStep)) return;
 

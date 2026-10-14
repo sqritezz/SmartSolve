@@ -32,6 +32,10 @@ public class ExplanationPanel : MonoBehaviour
     public Transform playerHead;
     public float distanceFromPlayer = 1.2f;
     public float heightOffset = -0.05f;
+    [Tooltip("ON = the panel stays in front of the player while it's open (follows head turns)")]
+    public bool followPlayer = true;
+    [Tooltip("How fast it catches up when you turn your head (higher = snappier)")]
+    public float followSpeed = 5f;
 
     [Header("Closing")]
     [Tooltip("Optional: CanvasGroup on the panel, used for the quick fade out")]
@@ -139,19 +143,39 @@ public class ExplanationPanel : MonoBehaviour
         closing = false;
     }
 
-    private void PlaceInFrontOfPlayer()
+    private void LateUpdate()
     {
-        if (playerHead == null) return;
+        // Keep the panel in front of the player while it's open
+        if (!followPlayer || !IsShowing || playerHead == null) return;
+        if (!GetTargetPose(out Vector3 pos, out Quaternion rot)) return;
+
+        float t = 1f - Mathf.Exp(-followSpeed * Time.deltaTime);
+        panel.transform.position = Vector3.Lerp(panel.transform.position, pos, t);
+        panel.transform.rotation = Quaternion.Slerp(panel.transform.rotation, rot, t);
+    }
+
+    private bool GetTargetPose(out Vector3 pos, out Quaternion rot)
+    {
+        pos = Vector3.zero; rot = Quaternion.identity;
+        if (playerHead == null) return false;
 
         Vector3 forward = playerHead.forward;
         forward.y = 0f;
         if (forward.sqrMagnitude < 0.001f) forward = playerHead.up;
         forward.Normalize();
 
-        Vector3 pos = playerHead.position + forward * distanceFromPlayer;
+        pos = playerHead.position + forward * distanceFromPlayer;
         pos.y = playerHead.position.y + heightOffset;
+        rot = Quaternion.LookRotation(forward, Vector3.up);
+        return true;
+    }
+
+    private void PlaceInFrontOfPlayer()
+    {
+        if (playerHead == null && Camera.main != null) playerHead = Camera.main.transform;
+        if (!GetTargetPose(out Vector3 pos, out Quaternion rot)) return;
 
         panel.transform.position = pos;
-        panel.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+        panel.transform.rotation = rot;
     }
 }

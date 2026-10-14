@@ -7,6 +7,9 @@ using UnityEngine;
 //  - REMOVED  -> (only once the new PSU is installed) shows sticking out,
 //                touch it again -> spins in -> FASTENED
 // Unscrewing while the PSU switch is ON is a safety mistake.
+//
+// Audio: ONE Audio Source (leave empty = uses the one on this object),
+// and the sounds are clips you drag in. The screwing clip loops while turning.
 public class PSUScrew : MonoBehaviour
 {
     public enum ScrewState { Fastened, Removed }
@@ -32,9 +35,11 @@ public class PSUScrew : MonoBehaviour
     public float messageShowTime = 2.5f;
 
     [Header("Audio")]
-    public AudioSource screwingSound;   // loop while turning
-    public AudioSource doneSound;       // plays when off / tight
-    public AudioSource warningSound;
+    [Tooltip("Leave empty to use the Audio Source on this object")]
+    public AudioSource audioSource;
+    public AudioClip screwingSound;   // loops while turning
+    public AudioClip doneSound;       // plays when off / tight
+    public AudioClip warningSound;
 
     [Header("State (read-only)")]
     public ScrewState state = ScrewState.Fastened;
@@ -54,6 +59,8 @@ public class PSUScrew : MonoBehaviour
 
     private void Awake()
     {
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         fastenedLocalPos = transform.localPosition;
         fastenedLocalRot = transform.localRotation;
         renderers = GetComponentsInChildren<Renderer>();
@@ -88,7 +95,7 @@ public class PSUScrew : MonoBehaviour
                 if (Time.time - lastWarnTime > messageShowTime)
                 {
                     lastWarnTime = Time.time;
-                    if (warningSound != null) warningSound.Play();
+                    Play(warningSound);
                     if (performanceTracker != null) performanceTracker.RegisterWrongAttempt();
                     if (powerOnWarning != null) StartCoroutine(ShowMessage(powerOnWarning));
                 }
@@ -101,7 +108,7 @@ public class PSUScrew : MonoBehaviour
                 {
                     progress = 0f;
                     state = ScrewState.Removed;
-                    if (doneSound != null) doneSound.Play();
+                    StopLoop(); Play(doneSound);
                 }
             }
         }
@@ -113,17 +120,14 @@ public class PSUScrew : MonoBehaviour
             {
                 progress = 0f;
                 state = ScrewState.Fastened;
-                if (doneSound != null) doneSound.Play();
+                StopLoop(); Play(doneSound);
             }
         }
 
         if (working) spinAngle += spinSpeed * Time.deltaTime;
 
-        if (screwingSound != null)
-        {
-            if (working && !screwingSound.isPlaying) screwingSound.Play();
-            else if (!working && screwingSound.isPlaying) screwingSound.Stop();
-        }
+        if (working) StartLoop();
+        else StopLoop();
 
         ApplyPose();
     }
@@ -150,6 +154,35 @@ public class PSUScrew : MonoBehaviour
 
         foreach (var r in renderers)
             if (r != null) r.enabled = visible;
+    }
+
+    private bool looping = false;
+
+    private void StartLoop()
+    {
+        if (looping || audioSource == null || screwingSound == null) return;
+        audioSource.clip = screwingSound;
+        audioSource.loop = true;
+        audioSource.Play();
+        looping = true;
+    }
+
+    private void StopLoop()
+    {
+        if (!looping || audioSource == null) return;
+        audioSource.Stop();
+        audioSource.loop = false;
+        looping = false;
+    }
+
+    private void Play(AudioClip clip)
+    {
+        if (audioSource == null || clip == null) return;
+        try { audioSource.PlayOneShot(clip); }
+        catch (System.Exception)
+        {
+            Debug.LogWarning("[PSUScrew] A sound slot is broken. Set it to None and drag the clip in again.", this);
+        }
     }
 
     private IEnumerator ShowMessage(GameObject message)
