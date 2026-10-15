@@ -167,6 +167,53 @@ public class PullOutConnector : MonoBehaviour
         }
     }
 
+    // Snaps in while you're still holding it, as soon as it gets close to the socket
+    private bool snappingNow = false;
+    private void Update()
+    {
+        if (grab == null || !grab.isSelected || isSeated || !allowPlugIn || forceDropping || snappingNow) return;
+        if (psuSwitch != null && !psuSwitch.IsOff) return;
+
+        GetSeatedPose(out Vector3 seatedPos, out Quaternion seatedRot);
+        Vector3 seatedCenter = CenterAt(seatedPos, seatedRot);
+        Vector3 currentCenter = transform.TransformPoint(centerLocal);
+        if (Vector3.Distance(currentCenter, seatedCenter) > snapDistance) return;
+
+        StartCoroutine(SnapInNow());
+    }
+
+    private IEnumerator SnapInNow()
+    {
+        snappingNow = true;
+        forceDropping = true;           // skip the normal release logic
+        grab.enabled = false;           // makes the hand let go
+        yield return null;
+        grab.enabled = true;
+        PlaceSeated();
+        isSeated = true;
+        Play(plugSound);
+        forceDropping = false;
+        snappingNow = false;
+    }
+
+    // In the Inspector: put the connector exactly in the socket (Play mode stopped),
+    // then click the 3 dots on this component -> "Save Seated Pose Here".
+    [ContextMenu("Save Seated Pose Here")]
+    private void SaveSeatedPoseHere()
+    {
+        Transform parent = seatedSpot != null ? seatedSpot.parent
+                          : (transform.parent != null && transform.parent.parent != null ? transform.parent.parent : null);
+        var spot = new GameObject(name + " Seated Spot").transform;
+        spot.SetParent(parent, false);
+        spot.SetPositionAndRotation(transform.position, transform.rotation);
+        seatedSpot = spot;
+#if UNITY_EDITOR
+        UnityEditor.Undo.RegisterCreatedObjectUndo(spot.gameObject, "Save Seated Pose");
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+        Debug.Log("[PullOutConnector] Saved seated pose as '" + spot.name + "' and set it as Seated Spot.", spot);
+    }
+
     private IEnumerator ForceDrop()
     {
         forceDropping = true;

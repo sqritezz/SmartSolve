@@ -1,0 +1,9 @@
+newmtl Black
+Kd 0.05 0.05 0.06
+
+newmtl Grey
+Kd 0.4 0.4 0.42
+
+newmtl Metal
+Kd 0.75 0.75 0.78
+

@@ -39,6 +39,9 @@ public class PSUHardManager : MonoBehaviour
     public PullOutConnector oldConnector24Pin;
     public PSUScrew[] screws;
     public PSUOldUnit oldPsu;
+    [Tooltip("Hidden at start, shown once the old PSU is actually out of the case (e.g. the New PSU). Untick them in the Hierarchy.")]
+    public GameObject[] showWhenOldRemoved;
+    private bool shownNew = false;
     public PSUSlot psuSlot;
     public PullOutConnector newConnector24Pin;
 
@@ -67,6 +70,8 @@ public class PSUHardManager : MonoBehaviour
 
     [Header("State (read-only)")]
     public Step currentStep = Step.PressPowerFirst;
+    [Tooltip("What this script is waiting for right now")]
+    public string status = "";
     public bool pressedOnce = false;
     public bool pcRunning = false;
 
@@ -85,7 +90,8 @@ public class PSUHardManager : MonoBehaviour
             return OldSwitchOn;
         }
     }
-    private bool NewInstalled => psuSlot != null && psuSlot.isInstalled;
+    // New PSU counts as installed only after the old one is really out (ignores a wrong saved value)
+    private bool NewInstalled => psuSlot != null && psuSlot.isInstalled && (oldPsu == null || oldPsu.isRemoved);
     private bool NewPlugged => newConnector24Pin != null && newConnector24Pin.isSeated;
 
     private void Awake()
@@ -104,6 +110,11 @@ public class PSUHardManager : MonoBehaviour
 
     private void Start()
     {
+        // Fresh start every time (ignores values saved in the Inspector)
+        currentStep = Step.PressPowerFirst;
+        pressedOnce = false;
+        pcRunning = false;
+        shownNew = false;
         ShowScreen(false);
         if (newConnector24Pin != null) newConnector24Pin.allowPlugIn = false;
     }
@@ -111,6 +122,14 @@ public class PSUHardManager : MonoBehaviour
     private void Update()
     {
         // New PSU unlocks the screws going back in and its cable plugging in
+        // Old PSU out of the case -> reveal the new one
+        if (!shownNew && oldPsu != null && oldPsu.isRemoved)
+        {
+            shownNew = true;
+            if (showWhenOldRemoved != null)
+                foreach (var g in showWhenOldRemoved) if (g != null) g.SetActive(true);
+        }
+
         bool installed = NewInstalled;
         if (screws != null)
             foreach (var s in screws) if (s != null) s.canFasten = installed;
@@ -172,18 +191,58 @@ public class PSUHardManager : MonoBehaviour
     {
         if (currentStep == Step.Done) return;
 
-        int i = (int)currentStep;
-        int group = i < stepGroupIndices.Length ? stepGroupIndices[i] : -1;
-
-        if (checklist != null && group >= 0 && !checklist.IsCurrentStep(group, objectiveIndex))
+        if (checklist == null)
+        {
+            if (IsStepDone(currentStep)) currentStep++;
+            status = Describe(currentStep);
             return;
+        }
 
-        if (!IsStepDone(currentStep)) return;
+        // Follow whatever step the checklist is showing right now, so this script
+        // can never fall out of sync (other scripts may tick steps too).
+        for (int j = 0; j < stepGroupIndices.Length && j < (int)Step.Done; j++)
+        {
+            int g = stepGroupIndices[j];
+            if (g < 0 || !checklist.IsCurrentStep(g, objectiveIndex)) continue;
 
-        if (checklist != null && group >= 0)
-            checklist.CompleteObjective(group, objectiveIndex);
+            currentStep = (Step)j;
+            status = Describe(currentStep);
+            if (IsStepDone(currentStep))
+            {
+                checklist.CompleteObjective(g, objectiveIndex);
+                currentStep = (Step)(j + 1);
+            }
+            return;
+        }
 
-        currentStep++;
+        status = "Checklist is on a step this script doesn't handle (talk to NPC / open or close cover)";
+    }
+
+    // Shown in the Inspector (State -> Status) so you can see what it's waiting for
+    private string Describe(Step step)
+    {
+        switch (step)
+        {
+            case Step.PressPowerFirst: return pressedOnce ? "Done" : "Waiting: press the power button (old PSU must have power: Old switch ON)";
+            case Step.SwitchOff: return OldSwitchOn ? "Waiting: turn the OLD PSU switch off" : "Done";
+            case Step.UnplugOld24Pin: return (oldConnector24Pin != null && oldConnector24Pin.isSeated) ? "Waiting: unplug the OLD 24-pin" : "Done";
+            case Step.Unscrew:
+                {
+                    int n = 0, total = 0;
+                    if (screws != null) foreach (var s in screws) if (s != null) { total++; if (s.IsRemoved) n++; }
+                    return "Unscrew: " + n + "/" + total + " screws removed";
+                }
+            case Step.RemoveOldPsu: return (oldPsu != null && !oldPsu.isRemoved) ? "Waiting: pull the old PSU out" : "Done";
+            case Step.InstallNewPsu: return NewInstalled ? "Done" : "Waiting: put the new PSU in the slot";
+            case Step.ScrewIn:
+                {
+                    int n = 0, total = 0;
+                    if (screws != null) foreach (var s in screws) if (s != null) { total++; if (s.IsFastened) n++; }
+                    return "Screw in: " + n + "/" + total + " screws fastened";
+                }
+            case Step.PlugNew24Pin: return NewPlugged ? "Done" : "Waiting: plug in the NEW 24-pin";
+            default: return "Waiting: " + step;
+        }
     }
 
     private bool IsStepDone(Step step)

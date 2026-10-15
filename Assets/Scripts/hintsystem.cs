@@ -2,12 +2,17 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 
-// ONE in the whole scene. Attach this to the "Call for Help" button object
-// (needs an XRSimpleInteractable + Collider), or hook UseHint() to a UI
-// Button's OnClick() instead.
+// ONE in the whole scene (on Hint Manager). The controller's B button calls UseHint().
 //
 // Per-level hint content comes from TeleportToPoint, which calls SetHints()
 // with that stage's tracker + hint list every time you teleport into it.
+//
+// Flow when B is pressed:
+//   1. Confirm panel: "Use a hint? It will cost you 1 star."  ->  YES / NO
+//      (leave Confirm Panel empty to skip this and show the hint right away)
+//   2. YES -> the hint shows and STAYS until B is pressed again (or a Close button)
+//   B while the confirm panel is open = NO. B while a hint is showing = close it.
+// Outside a level / Final stage (no tracker) -> just shows the message, costs nothing.
 public class HintSystem : MonoBehaviour
 {
     public static HintSystem Instance { get; private set; }
@@ -24,7 +29,17 @@ public class HintSystem : MonoBehaviour
     [Header("Display")]
     public GameObject hintPanel;
     public TMP_Text hintText;
-    public float displayDuration = 4f;
+    [Tooltip("0 = the hint stays until B is pressed again. Above 0 = hides after that many seconds.")]
+    public float displayDuration = 0f;
+
+    [Header("Confirm (Yes / No)")]
+    [Tooltip("Panel with the question + YES and NO buttons. YES OnClick -> HintSystem.ConfirmUseHint, NO OnClick -> HintSystem.CancelUseHint")]
+    public GameObject confirmPanel;
+    public TMP_Text confirmText;
+    [TextArea(1, 3)]
+    public string confirmMessage = "Use a hint? It will cost you 1 star.";
+    [TextArea(1, 3)]
+    public string confirmMessageFilipino = "Gagamit ng hint? Mababawasan ka ng 1 star.";
 
     [Header("Placement (in front of the player)")]
     [Tooltip("Main Camera. Empty = finds it automatically")]
@@ -44,8 +59,8 @@ public class HintSystem : MonoBehaviour
 
         if (playerHead == null && Camera.main != null) playerHead = Camera.main.transform;
 
-        if (hintPanel != null)
-            hintPanel.SetActive(false);
+        if (hintPanel != null) hintPanel.SetActive(false);
+        if (confirmPanel != null) confirmPanel.SetActive(false);
 
         XRSimpleInteractable interactable = GetComponent<XRSimpleInteractable>();
         if (interactable != null)
@@ -54,14 +69,15 @@ public class HintSystem : MonoBehaviour
         UpdateRemainingText();
     }
 
-    // Call this instead of setting performanceTracker/hintMessages directly
-    // (TeleportToPoint.ShowHintFor uses this) - it also resets the hint
-    // count, so arriving at a new stage always starts with a fresh "Hints left".
+    // TeleportToPoint.ShowHintFor uses this - it also resets the hint count,
+    // so arriving at a new stage always starts with a fresh "Hints left".
     public void SetHints(PerformanceTracker tracker, string[] hints)
     {
         performanceTracker = tracker;
         hintMessages = hints;
         hintsUsed = 0;
+        HideMessage();
+        CloseConfirm();
         UpdateRemainingText();
     }
 
@@ -70,19 +86,59 @@ public class HintSystem : MonoBehaviour
         UseHint();
     }
 
-    // Call this directly from a UI Button's OnClick() if you're not using
-    // an XRSimpleInteractable.
+    // B button / hint button
     public void UseHint()
     {
-        if (hintsUsed >= maxHints)
+        // B while asking = NO
+        if (confirmPanel != null && confirmPanel.activeSelf) { CancelUseHint(); return; }
+
+        // B while a hint is showing = close it
+        if (hintPanel != null && hintPanel.activeSelf) { HideMessage(); return; }
+
+        // Not in a scored level (menu room, Final stage without hints): free message
+        if (performanceTracker == null)
         {
-            ShowMessage("No hints left -- you've got this!");
+            ShowMessage(hintMessages != null && hintMessages.Length > 0
+                ? hintMessages[0]
+                : LanguageManager.Pick("Try checking each part carefully.", "Suriin nang mabuti ang bawat piyesa."));
             return;
         }
 
+        if (hintsUsed >= maxHints)
+        {
+            ShowMessage(LanguageManager.Pick("No hints left -- you've got this!", "Wala ka nang hint -- kaya mo 'yan!"));
+            return;
+        }
+
+        if (confirmPanel != null) { OpenConfirm(); return; }
+
+        GiveHint();
+    }
+
+    // YES button
+    public void ConfirmUseHint()
+    {
+        CloseConfirm();
+        GiveHint();
+    }
+
+    // NO button
+    public void CancelUseHint()
+    {
+        CloseConfirm();
+    }
+
+    // Optional Close / OK button on the hint panel
+    public void CloseHint()
+    {
+        HideMessage();
+    }
+
+    private void GiveHint()
+    {
         string message = (hintMessages != null && hintMessages.Length > 0)
             ? hintMessages[Mathf.Min(hintsUsed, hintMessages.Length - 1)]
-            : "Try checking each part carefully.";
+            : LanguageManager.Pick("Try checking each part carefully.", "Suriin nang mabuti ang bawat piyesa.");
 
         ShowMessage(message);
 
@@ -93,22 +149,41 @@ public class HintSystem : MonoBehaviour
         UpdateRemainingText();
     }
 
+    private void OpenConfirm()
+    {
+        if (confirmText != null)
+        {
+            int left = maxHints - hintsUsed;
+            confirmText.text = LanguageManager.Pick(confirmMessage, confirmMessageFilipino) + "\n" +
+                               LanguageManager.Pick("Hints left: ", "Natitirang hint: ") + left;
+        }
+        PlaceInFrontOfPlayer(confirmPanel);
+        confirmPanel.SetActive(true);
+    }
+
+    private void CloseConfirm()
+    {
+        if (confirmPanel != null) confirmPanel.SetActive(false);
+    }
+
     private void ShowMessage(string message)
     {
         if (hintText != null) hintText.text = message;
 
         if (hintPanel != null)
         {
-            PlaceInFrontOfPlayer();
+            PlaceInFrontOfPlayer(hintPanel);
             hintPanel.SetActive(true);
         }
 
         CancelInvoke(nameof(HideMessage));
-        Invoke(nameof(HideMessage), displayDuration);
+        if (displayDuration > 0f)
+            Invoke(nameof(HideMessage), displayDuration);
     }
 
     private void HideMessage()
     {
+        CancelInvoke(nameof(HideMessage));
         if (hintPanel != null)
             hintPanel.SetActive(false);
     }
@@ -116,12 +191,13 @@ public class HintSystem : MonoBehaviour
     private void UpdateRemainingText()
     {
         if (hintsRemainingText != null)
-            hintsRemainingText.text = "Hints left: " + (maxHints - hintsUsed);
+            hintsRemainingText.text = LanguageManager.Pick("Hints left: ", "Natitirang hint: ") + (maxHints - hintsUsed);
     }
 
-    private void PlaceInFrontOfPlayer()
+    private void PlaceInFrontOfPlayer(GameObject panel)
     {
-        if (playerHead == null || hintPanel == null) return;
+        if (playerHead == null && Camera.main != null) playerHead = Camera.main.transform;
+        if (playerHead == null || panel == null) return;
 
         Vector3 forward = playerHead.forward;
         forward.y = 0f;
@@ -131,7 +207,7 @@ public class HintSystem : MonoBehaviour
         Vector3 pos = playerHead.position + forward * distanceFromPlayer;
         pos.y = playerHead.position.y + heightOffset;
 
-        hintPanel.transform.position = pos;
-        hintPanel.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+        panel.transform.position = pos;
+        panel.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
     }
 }

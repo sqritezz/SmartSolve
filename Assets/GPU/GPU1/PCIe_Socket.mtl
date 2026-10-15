@@ -1,0 +1,9 @@
+newmtl Black
+Kd 0.03 0.03 0.035
+
+newmtl Gold
+Kd 0.85 0.65 0.15
+
+newmtl Yellow
+Kd 0.95 0.8 0.1
+

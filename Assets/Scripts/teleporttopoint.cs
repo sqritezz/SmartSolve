@@ -29,6 +29,9 @@ public class TeleportToPoint : MonoBehaviour
     public Transform gpuMediumPoint;
     public Transform gpuHardPoint;
 
+    [Header("Final Stage Point")]
+    public Transform finalPoint;
+
     public GameObject mainMenu;
     public GameObject home;
 
@@ -55,7 +58,7 @@ public class TeleportToPoint : MonoBehaviour
     public PerformanceTracker hardPsuTracker;
     public string[] hardPsuHints;
 
-    [Header("Stage3 Hint Data (rename once decided)")]
+    [Header("GPU Hint Data (Stage3 = GPU)")]
     public PerformanceTracker easyStage3Tracker;
     public string[] easyStage3Hints;
 
@@ -65,6 +68,18 @@ public class TeleportToPoint : MonoBehaviour
     public PerformanceTracker hardStage3Tracker;
     public string[] hardStage3Hints;
 
+    [Header("Final Stage Hint Data")]
+    [Tooltip("OFF = no hints in the Final stage: pressing B only shows the message below and costs no star")]
+    public bool finalAllowHints = false;
+    public PerformanceTracker finalTracker;
+    public string[] finalHints;
+    [TextArea(1, 3)]
+    public string finalNoHintMessage = "No hints in the Final Challenge. Trust your skills!";
+
+    [Header("Outside a level (menu room / PC room)")]
+    [TextArea(1, 3)]
+    public string noLevelHintMessage = "Hints only work inside a level.";
+
     void Start()
     {
         home.SetActive(true);
@@ -72,6 +87,8 @@ public class TeleportToPoint : MonoBehaviour
 
         if (hintButton != null)
             hintButton.SetActive(false);
+
+        ClearHints();
 
         if (goToMenuRoomOnStart && menuRoomPoint != null)
             StartCoroutine(GoToMenuRoomAfterIntro());
@@ -93,6 +110,7 @@ public class TeleportToPoint : MonoBehaviour
         MoveRig(menuRoomPoint);
         home.SetActive(false);
         mainMenu.SetActive(true);
+        ClearHints();
 
         if (hintButton != null)
             hintButton.SetActive(false);
@@ -118,9 +136,17 @@ public class TeleportToPoint : MonoBehaviour
     {
         home.SetActive(false);
         mainMenu.SetActive(true);
+        ClearHints();
 
         if (hintButton != null)
             hintButton.SetActive(false);
+    }
+
+    // Outside a level: B still works, but only shows a message and costs nothing
+    private void ClearHints()
+    {
+        if (hintSystem != null)
+            hintSystem.SetHints(null, new string[] { noLevelHintMessage });
     }
 
     private void ShowHintFor(PerformanceTracker tracker, string[] hints)
@@ -137,6 +163,7 @@ public class TeleportToPoint : MonoBehaviour
         xrRig.position = pcRoom.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
+        ClearHints();
 
         if (hintButton != null)
             hintButton.SetActive(false);
@@ -212,5 +239,17 @@ public class TeleportToPoint : MonoBehaviour
         mainMenu.SetActive(false);
         home.SetActive(false);
         ShowHintFor(hardStage3Tracker, hardStage3Hints);
+    }
+
+    public void TeleportFinal()
+    {
+        MoveRig(finalPoint);
+        mainMenu.SetActive(false);
+        home.SetActive(false);
+
+        if (finalAllowHints)
+            ShowHintFor(finalTracker, finalHints);
+        else
+            ShowHintFor(null, new string[] { finalNoHintMessage }); // no tracker = no star lost
     }
 }
