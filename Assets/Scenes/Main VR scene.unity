@@ -845135,7 +845135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1339088304
 RectTransform:
   m_ObjectHideFlags: 0
@@ -845144,7 +845144,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1339088303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.099}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -845154,8 +845154,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 435.404, y: 229.763}
-  m_SizeDelta: {x: 603.7762, y: 364.0712}
+  m_AnchoredPosition: {x: 4.943, y: 1.715}
+  m_SizeDelta: {x: 603.7762, y: 338.0852}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1339088305
 MonoBehaviour:
@@ -845238,7 +845238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1339088711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -845310,7 +845310,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1339088710}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.099}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -845322,7 +845322,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 436.16382, y: 229.75143}
+  m_AnchoredPosition: {x: 5.588, y: 1.71}
   m_SizeDelta: {x: 603.7762, y: 320.752}
   m_Pivot: {x: 0.51546663, y: 0.5}
 --- !u!1 &1339446139
@@ -1308782,7 +1308782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 4.34, y: 1.699}
+  m_AnchoredPosition: {x: 5.17, y: 2.077}
   m_SizeDelta: {x: 808.714, y: 161.8129}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2072386977
@@ -1308799,8 +1308799,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HintSystem
   maxHints: 2
   hintMessages: []
-  hintPanel: {fileID: 539841379}
-  hintText: {fileID: 1796001801}
+  hintPanel: {fileID: 1831622145}
+  hintText: {fileID: 1015565499}
   displayDuration: 4
   confirmPanel: {fileID: 1339088710}
   confirmText: {fileID: 1772381815}
