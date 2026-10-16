@@ -12,17 +12,18 @@ using UnityEngine.XR.Interaction.Toolkit;
 //
 // Steps (checked in order, ticks the checklist):
 //   1 Press the power button                 - PC runs, monitor shows "No Signal"
-//   2 Check the ports at the back of the PC  - point the ray at a port (or grab the cable)
-//   3 Unplug the monitor cable               - grab it out of the motherboard port
-//   4 Plug it into the graphics card port    - touch the plug to the GPU port, it snaps in
-//   5 Check the monitor                      - PC on + cable in GPU port -> desktop appears
+//   2 Look inside the system unit            - point at the fans / GPU: everything is running
+//   3 Check the ports at the back of the PC  - point the ray at a port (or grab the cable)
+//   4 Unplug the monitor cable               - grab it out of the motherboard port
+//   5 Plug it into the graphics card port    - touch the plug to the GPU port, it snaps in
+//   6 Check the monitor                      - PC on + cable in GPU port -> desktop appears
 // Plugging it back into the motherboard port counts as a wrong attempt.
 // No need to turn the PC off: video cables are safe to plug in while it runs.
 //
 // Audio: ONE Audio Source (leave empty = uses the one on this object).
 public class GPUEasyManager : MonoBehaviour
 {
-    public enum Step { PressPower, CheckPorts, Unplug, PlugGPU, CheckMonitor, Done }
+    public enum Step { PressPower, CheckInside, CheckPorts, Unplug, PlugGPU, CheckMonitor, Done }
 
     [Header("Monitor screens")]
     [Tooltip("Quad with Monitor_NoSignal.png (shown while the PC runs without a picture)")]
@@ -50,7 +51,11 @@ public class GPUEasyManager : MonoBehaviour
     [Tooltip("How close (meters) any part of the plug must get to a port to snap in")]
     public float snapDistance = 0.05f;
 
-    [Header("Ports to check (step 2)")]
+    [Header("Look inside (step 2)")]
+    [Tooltip("XR Simple Interactables inside the case (GPU, CPU fan...). Pointing at one while the PC runs = checked.")]
+    public XRBaseInteractable[] insideToCheck;
+
+    [Header("Ports to check (step 3)")]
     [Tooltip("The ports' XR Simple Interactables (optional). Pointing the ray at one counts as checking.")]
     public XRBaseInteractable[] portsToCheck;
 
@@ -66,8 +71,8 @@ public class GPUEasyManager : MonoBehaviour
 
     [Header("Checklist Integration")]
     public SequentialChecklist checklist;
-    [Tooltip("Group index for each step 1-5 (group 0 is 'talk to the NPC')")]
-    public int[] stepGroupIndices = { 1, 2, 3, 4, 5 };
+    [Tooltip("Group index for each step 1-6 (group 0 is 'talk to the NPC')")]
+    public int[] stepGroupIndices = { 1, 2, 3, 4, 5, 6 };
     public int objectiveIndex = 0;
 
     [Header("Scoring")]
@@ -79,6 +84,7 @@ public class GPUEasyManager : MonoBehaviour
     [Header("State (read-only)")]
     public Step currentStep = Step.PressPower;
     public bool pcOn = false;
+    public bool insideChecked = false;
     public bool portsChecked = false;
     public bool unplugged = false;
     public int pluggedPort = 1;   // 0 = not plugged, 1 = motherboard, 2 = graphics card
@@ -113,7 +119,7 @@ public class GPUEasyManager : MonoBehaviour
     {
         // Fresh start every time (ignores values saved in the Inspector)
         currentStep = Step.PressPower;
-        pcOn = false; portsChecked = false; unplugged = false; pictureShown = false;
+        pcOn = false; insideChecked = false; portsChecked = false; unplugged = false; pictureShown = false;
         pluggedPort = 1;
         PlacePlug();
         UpdatePC();
@@ -127,6 +133,8 @@ public class GPUEasyManager : MonoBehaviour
     private void Update()
     {
         CheckTriggerClick();
+        if (!insideChecked && pcOn && insideToCheck != null)
+            foreach (var t in insideToCheck) if (t != null && t.isHovered) { insideChecked = true; break; }
         CheckPortsHover();
         CheckPlugTouch();
 
@@ -194,7 +202,7 @@ public class GPUEasyManager : MonoBehaviour
     // ---------- Step 2: look at the ports ----------
     private void CheckPortsHover()
     {
-        if (portsChecked || !pcOn || portsToCheck == null) return;
+        if (portsChecked || !pcOn || portsToCheck == null || currentStep < Step.CheckPorts) return;
         foreach (var p in portsToCheck)
             if (p != null && p.isHovered) { portsChecked = true; return; }
     }
@@ -322,6 +330,7 @@ public class GPUEasyManager : MonoBehaviour
         switch (step)
         {
             case Step.PressPower: return pcOn;
+            case Step.CheckInside: return insideChecked || insideToCheck == null || insideToCheck.Length == 0;
             case Step.CheckPorts: return portsChecked;
             case Step.Unplug: return unplugged;
             case Step.PlugGPU: return pluggedPort == 2;

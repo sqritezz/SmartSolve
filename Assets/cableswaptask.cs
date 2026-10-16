@@ -139,9 +139,10 @@ public class CableSwapTutorialTask : MonoBehaviour
 
     public void PressPower()
     {
-        if (Time.time - lastPressTime < 0.2f) return;
+        if (tvOn) return;                              // already on: extra clicks do nothing
+        if (Time.time - lastPressTime < 0.5f) return;
         lastPressTime = Time.time;
-        tvOn = !tvOn;
+        tvOn = true;
         Play(powerSound);
         UpdateScreen();
     }

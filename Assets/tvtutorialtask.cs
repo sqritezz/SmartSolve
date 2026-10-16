@@ -143,10 +143,13 @@ public class TVTutorialTask : MonoBehaviour
     // Also callable from a UnityEvent
     public void PressPower()
     {
-        if (Time.time - lastPressTime < 0.2f) return; // ignore double fire
+        if (tvOn) return;                              // already on: extra clicks do nothing
+        if (Time.time - lastPressTime < 0.5f) return;  // ignore double fire
         lastPressTime = Time.time;
 
-        tvOn = !tvOn;
+        tvOn = true;
+        if (noSignalScreen == null && pictureScreen == null)
+            Debug.LogWarning("[TVTutorialTask] TV turned on, but No Signal Screen and Picture Screen are empty - nothing to show!", this);
         Play(powerSound);
         UpdateScreen();
     }

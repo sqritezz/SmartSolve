@@ -54,6 +54,10 @@ public class LampTutorialTask : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip switchSound;
     public AudioClip popSound;       // e.g. "short circuit"
+    [Tooltip("Cut the flicker/pop sound after this many seconds (0 = play it fully)")]
+    public float popMaxLength = 0.6f;
+    [Tooltip("Fade-out time (seconds) at the cut")]
+    public float popFadeOut = 0.1f;
     public AudioClip insertSound;    // e.g. "screwing" or "snap sound"
     public AudioClip warningSound;
 
@@ -202,7 +206,7 @@ public class LampTutorialTask : MonoBehaviour
             if (lampLight != null) lampLight.enabled = false;
             yield return new WaitForSeconds(0.06f);
         }
-        Play(popSound);
+        PlayCut(popSound, popMaxLength, popFadeOut);
         if (sparkEffect != null) sparkEffect.Play();
         bulbBlown = true;
     }
@@ -309,6 +313,44 @@ public class LampTutorialTask : MonoBehaviour
         if (!rb.isKinematic) { rb.linearVelocity = Vector3.zero; rb.angularVelocity = Vector3.zero; }
         rb.isKinematic = true;
         rb.useGravity = false;
+    }
+
+    // Plays one clip on its own extra Audio Source and cuts it off early (only that sound)
+    private AudioSource cutSource;
+    private Coroutine cutRoutine;
+    private void PlayCut(AudioClip clip, float maxLength, float fade)
+    {
+        if (clip == null) return;
+        if (maxLength <= 0f || audioSource == null) { Play(clip); return; }
+
+        if (cutSource == null)
+        {
+            cutSource = gameObject.AddComponent<AudioSource>();
+            cutSource.playOnAwake = false;
+            cutSource.spatialBlend = audioSource.spatialBlend;
+            cutSource.minDistance = audioSource.minDistance;
+            cutSource.maxDistance = audioSource.maxDistance;
+            cutSource.rolloffMode = audioSource.rolloffMode;
+            cutSource.outputAudioMixerGroup = audioSource.outputAudioMixerGroup;
+        }
+        if (cutRoutine != null) StopCoroutine(cutRoutine);
+        cutSource.volume = audioSource.volume;
+        cutSource.clip = clip;
+        cutSource.Play();
+        cutRoutine = StartCoroutine(CutAfter(maxLength, fade));
+    }
+
+    private IEnumerator CutAfter(float maxLength, float fade)
+    {
+        float startVol = cutSource.volume;
+        yield return new WaitForSeconds(Mathf.Max(0f, maxLength - fade));
+        for (float t = 0f; t < fade; t += Time.deltaTime)
+        {
+            cutSource.volume = Mathf.Lerp(startVol, 0f, t / fade);
+            yield return null;
+        }
+        cutSource.Stop();
+        cutSource.volume = startVol;
     }
 
     private void Play(AudioClip clip)

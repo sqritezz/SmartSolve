@@ -52,6 +52,8 @@ public class GPUMediumManager : MonoBehaviour
     public XRGrabInteractable newGpu;
     [Tooltip("Empty object where a graphics card sits in the slot (same position/rotation as the old card)")]
     public Transform gpuSlotSpot;
+    [Tooltip("Hidden at start, shown once the broken GPU is pulled out (e.g. the New GPU). Untick them in the Hierarchy.")]
+    public GameObject[] showWhenOldRemoved;
     [Tooltip("How close (meters) any part of the new card must get to the slot to snap in")]
     public float snapDistance = 0.08f;
     [Tooltip("How far (meters) the old card must be pulled from the slot to count as removed")]
@@ -160,6 +162,8 @@ public class GPUMediumManager : MonoBehaviour
         {
             oldRemoved = true;
             Play(removeSound);
+            if (showWhenOldRemoved != null)
+                foreach (var g in showWhenOldRemoved) if (g != null) g.SetActive(true);
         }
 
         CheckNewGpuSnap();
@@ -197,7 +201,8 @@ public class GPUMediumManager : MonoBehaviour
 
     public void PressPower()
     {
-        if (Time.time - lastPressTime < 0.2f) return;
+        if (currentStep == Step.Done) return;   // fixed: button does nothing more
+        if (Time.time - lastPressTime < 0.5f) return;
         lastPressTime = Time.time;
 
         if (!SwitchOn) return;              // no power at all

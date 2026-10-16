@@ -27,6 +27,8 @@ public class PullOutConnector : MonoBehaviour
     public Transform unpluggedSpot;
     [Tooltip("Optional: empty object at the motherboard socket. Empty = where the connector starts.")]
     public Transform seatedSpot;
+    [Tooltip("Optional: the point you must touch to plug in (e.g. the old connector's 24Pin Seated Spot). Empty = uses Seated Spot.")]
+    public Transform detectSpot;
     [Tooltip("Starts unplugged (e.g. the new PSU's connector)")]
     public bool startUnplugged = false;
     [Tooltip("How close (meters) to the socket it must be released to plug in")]
@@ -63,6 +65,8 @@ public class PullOutConnector : MonoBehaviour
 
     [Header("State (read-only)")]
     public bool isSeated = true;
+    [Tooltip("While holding it: how far (meters) the connector is from the socket. Must go below Snap Distance.")]
+    public float distanceToSocket = -1f;
 
     private XRGrabInteractable grab;
     private Rigidbody rb;
@@ -151,11 +155,10 @@ public class PullOutConnector : MonoBehaviour
     {
         yield return null; // let XR Grab finish releasing
 
-        GetSeatedPose(out Vector3 seatedPos, out Quaternion seatedRot);
-        Vector3 seatedCenter = CenterAt(seatedPos, seatedRot);
+        Vector3 seatedCenter = DetectPoint();
         Vector3 currentCenter = transform.TransformPoint(centerLocal);
 
-        if (allowPlugIn && Vector3.Distance(currentCenter, seatedCenter) <= snapDistance)
+        if (allowPlugIn && DistanceTo(seatedCenter, currentCenter) <= snapDistance)
         {
             PlaceSeated();
             if (!isSeated) { isSeated = true; Play(plugSound); }
@@ -171,15 +174,35 @@ public class PullOutConnector : MonoBehaviour
     private bool snappingNow = false;
     private void Update()
     {
-        if (grab == null || !grab.isSelected || isSeated || !allowPlugIn || forceDropping || snappingNow) return;
-        if (psuSwitch != null && !psuSwitch.IsOff) return;
+        if (grab == null || !grab.isSelected || isSeated || forceDropping || snappingNow) return;
 
-        GetSeatedPose(out Vector3 seatedPos, out Quaternion seatedRot);
-        Vector3 seatedCenter = CenterAt(seatedPos, seatedRot);
+        Vector3 seatedCenter = DetectPoint();
         Vector3 currentCenter = transform.TransformPoint(centerLocal);
-        if (Vector3.Distance(currentCenter, seatedCenter) > snapDistance) return;
+        distanceToSocket = DistanceTo(seatedCenter, currentCenter);
+
+        if (!allowPlugIn) return;
+        if (psuSwitch != null && !psuSwitch.IsOff) return;
+        if (distanceToSocket > snapDistance) return;
 
         StartCoroutine(SnapInNow());
+    }
+
+    // Called by ConnectorSocketZone when the connector touches the socket
+    private float lastBlockLog = -10f;
+    public void SnapIn()
+    {
+        if (isSeated || forceDropping || snappingNow) return;
+        string why = null;
+        if (!allowPlugIn) why = "Allow Plug In is OFF (the new PSU doesn't count as installed yet - check PSU Slot -> Is Installed)";
+        else if (psuSwitch != null && !psuSwitch.IsOff) why = "the PSU switch '" + psuSwitch.name + "' is ON - turn it off";
+        if (why != null)
+        {
+            if (Time.time - lastBlockLog > 2f) { lastBlockLog = Time.time; Debug.LogWarning("[PullOutConnector] " + name + " touched the socket but can't plug in: " + why, this); }
+            return;
+        }
+        Debug.Log("[PullOutConnector] " + name + " plugged in.", this);
+        if (grab != null && grab.isSelected) StartCoroutine(SnapInNow());
+        else { PlaceSeated(); isSeated = true; Play(plugSound); }
     }
 
     private IEnumerator SnapInNow()
@@ -194,6 +217,38 @@ public class PullOutConnector : MonoBehaviour
         Play(plugSound);
         forceDropping = false;
         snappingNow = false;
+    }
+
+    private Vector3 DetectPoint()
+    {
+        if (detectSpot != null) return detectSpot.position;
+        GetSeatedPose(out Vector3 p, out Quaternion r);
+        return CenterAt(p, r);
+    }
+
+    // Closest distance from ANY part of the connector to the socket point (more forgiving in VR)
+    private float DistanceTo(Vector3 socketPoint, Vector3 currentCenter)
+    {
+        float best = Vector3.Distance(currentCenter, socketPoint);
+        foreach (var c in GetComponentsInChildren<Collider>())
+        {
+            if (!c.enabled) continue;
+            float d = Mathf.Sqrt(c.bounds.SqrDistance(socketPoint));
+            if (d < best) best = d;
+        }
+        return best;
+    }
+
+    // Scene view (select the connector): yellow ball = where its middle must go to plug in
+    private void OnDrawGizmosSelected()
+    {
+        if (seatedSpot == null) return;
+        Vector3 c = Application.isPlaying
+            ? CenterAt(seatedSpot.position, seatedSpot.rotation)
+            : seatedSpot.position + seatedSpot.rotation * Vector3.Scale(
+                  (GetComponent<BoxCollider>() != null ? GetComponent<BoxCollider>().center : Vector3.zero), transform.lossyScale);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(c, snapDistance);
     }
 
     // In the Inspector: put the connector exactly in the socket (Play mode stopped),
