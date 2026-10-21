@@ -81,6 +81,20 @@ public class LevelExplanations : MonoBehaviour
             Debug.LogWarning("[LevelExplanations] No ExplanationPanel in the scene.");
     }
 
+    // For levels WITHOUT a checklist (Final stage): call from a UnityEvent
+    // (e.g. FinalChallengeManager -> On All Fixed) to show the first explanation.
+    public void ShowNow()
+    {
+        ShowIndex(0);
+    }
+
+    // Shows explanation number 'index' from the list (0 = first)
+    public void ShowIndex(int index)
+    {
+        if (explanations == null || index < 0 || index >= explanations.Count || explanations[index] == null) return;
+        StartCoroutine(SendAfterDelay(explanations[index]));
+    }
+
     private int GetCurrentGroup()
     {
         for (int g = 0; g < MaxGroups; g++)
