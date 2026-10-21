@@ -16,7 +16,6 @@ UserSettings/
 *.pidb
 *.booproj
 *.svd
-*.obj
 *.blend
 
 .DS_Store
