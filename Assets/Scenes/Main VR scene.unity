@@ -232477,7 +232477,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1820320884, guid: 189c7c8f05c1ac74b918cf40febbc3e7, type: 3}
+  m_Sprite: {fileID: -97967214, guid: bdf4a39fa6388b44b97d0bc0b6d1b779, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -357576,7 +357576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelCardUI
   category: GPU
   difficulty: medium
-  requiredPreviousDifficulty: 
+  requiredPreviousDifficulty: Medium
   cardImage: {fileID: 50813702}
   placeholderSprite: {fileID: 2040058871, guid: 2cd830ef7fa90c843a48d0ba6434b5b4, type: 3}
   completedSprite: {fileID: 0}
@@ -428895,7 +428895,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelCardUI
   category: GPU
   difficulty: hard
-  requiredPreviousDifficulty: 
+  requiredPreviousDifficulty: Hard
   cardImage: {fileID: 753824942}
   placeholderSprite: {fileID: 2040058871, guid: 2cd830ef7fa90c843a48d0ba6434b5b4, type: 3}
   completedSprite: {fileID: 0}
@@ -573159,7 +573159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1896320064, guid: 95157c1a100f13947ac2b54b6984111f, type: 3}
+  m_Sprite: {fileID: 1955359623, guid: 7ee95dce11626c54989eab6c223c21f6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -813037,7 +813037,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -493349361, guid: e244b0ecd311f4a4fbc2b3d337ef7fce, type: 3}
+  m_Sprite: {fileID: 1358822293, guid: 6c9277e95c337bf48987e3bb01962f45, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -893431,7 +893431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelCardUI
   category: PSU
   difficulty: Hard
-  requiredPreviousDifficulty: 
+  requiredPreviousDifficulty: Hard
   cardImage: {fileID: 1839986810}
   placeholderSprite: {fileID: 2040058871, guid: 2cd830ef7fa90c843a48d0ba6434b5b4, type: 3}
   completedSprite: {fileID: 0}
