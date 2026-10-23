@@ -12620,10 +12620,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1498618636}
+  - {fileID: 1507561502}
   - {fileID: 770176903}
   - {fileID: 16377820}
   - {fileID: 234056765}
-  - {fileID: 1507561502}
   - {fileID: 422704641}
   - {fileID: 1601625721}
   m_Father: {fileID: 121682176}
@@ -57642,7 +57642,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: "C. Remove the graphics card\u2019s power cable"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -68292,8 +68292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 26, y: -12}
-  m_SizeDelta: {x: 766.4, y: 104.2}
+  m_AnchoredPosition: {x: 36.7, y: -4.4}
+  m_SizeDelta: {x: 787.8, y: 89}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &103202024
 MonoBehaviour:
@@ -68315,8 +68315,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: What does a beeping sound during startup commonly indicate in your VR troubleshooting
-    scenario?
+  m_text: What is the term for the colored lines and flickering blocks that show
+    up on the display?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -68343,7 +68343,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.25
+  m_fontSize: 30.65
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -93914,7 +93914,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. Reinstall the operating system
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -113060,15 +113060,14 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1964329760}
+  m_Children: []
   m_Father: {fileID: 424336825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -166, y: -198}
-  m_SizeDelta: {x: 280.2, y: 54.4}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -0.000038184226, y: 58.79}
+  m_SizeDelta: {x: 286.18, y: 79.84}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &176484872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113145,8 +113144,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 524378138, guid: 93247f0cc24c5e643b3170d066693975, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -132348,9 +132347,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1457701742}
-  - {fileID: 1911929407}
   - {fileID: 697323735}
   - {fileID: 506815980}
+  - {fileID: 1911929407}
   - {fileID: 1525351338}
   - {fileID: 1280285251}
   m_Father: {fileID: 1722847283}
@@ -142025,7 +142024,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: D. The RAM is not seated properly
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -144281,7 +144280,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: B. Replace the graphics card
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -145047,7 +145046,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. The speaker volume
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -159919,7 +159918,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: D. Replace the monitor cable
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -175228,7 +175227,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -267, y: -177}
+  m_AnchoredPosition: {x: -267, y: -66.00003}
   m_SizeDelta: {x: 385.7393, y: 80.4993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &278128193
@@ -175414,7 +175413,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: "C. The monitor\u2019s brightness is set too low"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -185759,7 +185758,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -267, y: -66}
+  m_AnchoredPosition: {x: 266, y: -66}
   m_SizeDelta: {x: 385.7393, y: 80.4993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &296648962
@@ -195354,8 +195353,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: What does a beeping sound during startup commonly indicate in your VR troubleshooting
-    scenario?
+  m_text: "Based on the scenario, what mainly causes the \u201CNo Signal\u201D message
+    on the screen?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -195382,7 +195381,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.25
+  m_fontSize: 35.55
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -209904,9 +209903,9 @@ RectTransform:
   m_Children:
   - {fileID: 1567117368}
   - {fileID: 781884912}
+  - {fileID: 1802647863}
   - {fileID: 794231790}
   - {fileID: 20840629}
-  - {fileID: 1802647863}
   - {fileID: 54422529}
   - {fileID: 221458969}
   m_Father: {fileID: 1722847283}
@@ -210223,7 +210222,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: "D. The monitor\u2019s input source setting"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -215677,8 +215676,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1678109034}
-  - {fileID: 1643653198}
   - {fileID: 278128192}
+  - {fileID: 1643653198}
   - {fileID: 347944321}
   - {fileID: 1748446105}
   - {fileID: 1812223906}
@@ -232386,8 +232385,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -190.5, y: -150}
-  m_SizeDelta: {x: 292.8, y: 84.7}
+  m_AnchoredPosition: {x: -214.95, y: -79.35004}
+  m_SizeDelta: {x: 275.68, y: 71}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &369413800
 MonoBehaviour:
@@ -235125,7 +235124,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. The monitor cable is connected to the wrong port
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -235152,10 +235151,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
+  m_fontSize: 26.95
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -243968,7 +243967,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: B. The power supply is too weak
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -256499,7 +256498,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: D. The power supply is too weak
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -271634,8 +271633,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: What does a beeping sound during startup commonly indicate in your VR troubleshooting
-    scenario?
+  m_text: "The cable is already in the correct port, but the monitor still says \u201CNo
+    Signal.\u201D What should you check next?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -271662,7 +271661,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.25
+  m_fontSize: 27.95
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -271744,10 +271743,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 658460853}
+  - {fileID: 697540562}
   - {fileID: 1277783153}
   - {fileID: 896473033}
   - {fileID: 369413799}
-  - {fileID: 697540562}
   - {fileID: 176484871}
   m_Father: {fileID: 2016251082}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -285105,7 +285104,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: D. Backplate
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -295981,7 +295980,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: C. Ghosting
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -301243,7 +301242,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Turn off the computer and unplug power
+  m_text: A. A loose cable or wrong port
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -326075,9 +326074,9 @@ RectTransform:
   m_Children:
   - {fileID: 1194797718}
   - {fileID: 168974111}
-  - {fileID: 1001698219}
   - {fileID: 1332524755}
   - {fileID: 864844276}
+  - {fileID: 1001698219}
   - {fileID: 111212288}
   - {fileID: 675108643}
   m_Father: {fileID: 121682176}
@@ -359769,7 +359768,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Keyboard connection
+  m_text: "C. The motherboard\u2019s video port"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -361529,7 +361528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 571693492}
   m_Layer: 5
-  m_Name: ResultHard (PSU)
+  m_Name: ResultHard (GPU)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364786,7 +364785,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. Artifacts
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -416039,7 +416038,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000026703, y: 164}
+  m_AnchoredPosition: {x: 0.000026703, y: 191}
   m_SizeDelta: {x: 521.2, y: 98.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &658460854
@@ -448202,7 +448201,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -167, y: -23}
+  m_AnchoredPosition: {x: -156.4, y: 3.2}
   m_SizeDelta: {x: 282.2, y: 242.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &697540563
@@ -450918,7 +450917,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: D. Dead pixels
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -486362,7 +486361,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. The PCIe slot is too old
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -505056,8 +505055,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -63.6, y: 0}
-  m_SizeDelta: {x: -127.2, y: 0}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &788964506
 MonoBehaviour:
@@ -505079,7 +505078,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. RAM seating
+  m_text: "A. The graphics card\u2019s video port"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -539065,7 +539064,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: B. RJ-45
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -566599,7 +566598,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: B. Screen tearing
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -573068,8 +573067,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -190.50006, y: -42.325005}
-  m_SizeDelta: {x: 292.8, y: 84.65}
+  m_AnchoredPosition: {x: -214.95, y: 3.3499653}
+  m_SizeDelta: {x: 275.68, y: 71}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &896473034
 MonoBehaviour:
@@ -591543,7 +591542,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: C. The card most likely has a damaged chip or memory
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -591570,10 +591569,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
+  m_fontSize: 27.1
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -594582,7 +594581,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. Uninstall the graphics card drivers
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -650431,7 +650430,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 266, y: -66}
+  m_AnchoredPosition: {x: -267, y: -177}
   m_SizeDelta: {x: 385.7393, y: 80.4993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1020261446
@@ -696771,9 +696770,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2044991797}
+  - {fileID: 785369325}
   - {fileID: 857338563}
   - {fileID: 2035919330}
-  - {fileID: 785369325}
   - {fileID: 972474939}
   - {fileID: 1736371895}
   - {fileID: 1865395369}
@@ -697085,7 +697084,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Remove the graphics card
+  m_text: 'B. Faulty power supply
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -697112,7 +697113,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.75
+  m_fontSize: 34.8
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -726346,7 +726347,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Wallpaper settings
+  m_text: D. The PCIe x1 slot
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -727041,7 +727042,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: B. PCIe bracket
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -746213,7 +746214,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. Cooling fan
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -749235,8 +749236,8 @@ RectTransform:
   - {fileID: 1629597932}
   - {fileID: 993379286}
   - {fileID: 264560545}
-  - {fileID: 1060247627}
   - {fileID: 275517751}
+  - {fileID: 1060247627}
   - {fileID: 384293774}
   - {fileID: 2021680726}
   m_Father: {fileID: 1722847283}
@@ -793694,8 +793695,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: What does a beeping sound during startup commonly indicate in your VR troubleshooting
-    scenario?
+  m_text: What is the first step to take before reseating a graphics card?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -793722,7 +793722,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.25
+  m_fontSize: 35.9
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -794701,7 +794701,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: B. The Wi-Fi connection
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -796586,7 +796586,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: C. VRAM (video memory)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -812946,8 +812946,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -190.5, y: 55.8}
-  m_SizeDelta: {x: 292.8, y: 84.7}
+  m_AnchoredPosition: {x: -214.95, y: 89}
+  m_SizeDelta: {x: 275.68, y: 71}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1277783154
 MonoBehaviour:
@@ -839176,8 +839176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: What does a beeping sound during startup commonly indicate in your VR troubleshooting
-    scenario?
+  m_text: Which port is usually found on a graphics card for connecting a display?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -839204,7 +839203,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.25
+  m_fontSize: 35.9
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -864695,7 +864694,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Mouse battery
+  m_text: B. Any available HDMI port
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -907254,7 +907253,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: B. Press the PCIe slot latch
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -907775,9 +907774,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1066273756}
+  - {fileID: 1144173808}
   - {fileID: 1856919338}
   - {fileID: 38259155}
-  - {fileID: 1144173808}
   - {fileID: 2051526185}
   - {fileID: 498935126}
   - {fileID: 863531467}
@@ -924427,8 +924426,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: What does a beeping sound during startup commonly indicate in your VR troubleshooting
-    scenario?
+  m_text: Which graphics card component holds graphics data and can produce artifacts
+    when it fails?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -924455,7 +924454,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.25
+  m_fontSize: 31.75
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -944777,8 +944776,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: What does a beeping sound during startup commonly indicate in your VR troubleshooting
-    scenario?
+  m_text: The computer works fine, but artifacts keep appearing on the screen. What
+    is the right action?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -944805,7 +944804,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.25
+  m_fontSize: 30.8
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -971375,7 +971374,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Install software updates
+  m_text: C. Corrupted operating system
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -975919,7 +975918,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A. Internet problem
+  m_text: A. SATA
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1009004,8 +1009003,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1017275986}
-  - {fileID: 1885825448}
   - {fileID: 1481768080}
+  - {fileID: 1885825448}
   - {fileID: 1403301404}
   - {fileID: 1108669068}
   - {fileID: 1244732881}
@@ -1011794,7 +1011793,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 266, y: -66}
+  m_AnchoredPosition: {x: -267, y: -66}
   m_SizeDelta: {x: 385.7393, y: 80.4993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1588452250
@@ -1023077,7 +1023076,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: C. HDMI
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1031456,7 +1031455,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Shake the PC
+  m_text: D. Overheating processor
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1031483,7 +1031482,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.95
+  m_fontSize: 27.65
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1051116,7 +1051115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -267, y: -66}
+  m_AnchoredPosition: {x: -267, y: -177.00005}
   m_SizeDelta: {x: 385.7393, y: 80.4993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1643653199
@@ -1077886,7 +1077885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1691008691
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1078806,7 +1078805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1692224950
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1151325,9 +1151324,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'What should you do before handling a computer''s RAM?
-
-'
+  m_text: A monitor is powered on but displays nothing. What is the usual cause?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1151354,7 +1151351,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 27.65
+  m_fontSize: 25.15
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1164142,7 +1164139,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: B. Low speaker volume
+  m_text: B. The graphics card drivers are outdated
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1246887,7 +1246884,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: D. Shut down the PC and unplug the power cable
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1250947,145 +1250944,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1964325091}
   m_Mesh: {fileID: -695913708381944475, guid: 4932b126dfd833f4ca43a010d55b845b, type: 3}
---- !u!1 &1964329759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1964329760}
-  - component: {fileID: 1964329762}
-  - component: {fileID: 1964329761}
-  m_Layer: 5
-  m_Name: Text (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1964329760
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964329759}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 176484871}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1964329761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964329759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 'finalstage
-
-'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_characterHorizontalScale: 1
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &1964329762
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1964329759}
-  m_CullTransparentMesh: 1
 --- !u!1 &1964625551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263225,7 +1263083,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -267, y: -177}
+  m_AnchoredPosition: {x: 266.00006, y: -65.999954}
   m_SizeDelta: {x: 385.7393, y: 80.4993}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1984901169
@@ -1305072,8 +1304930,8 @@ RectTransform:
   m_Children:
   - {fileID: 2079397621}
   - {fileID: 1847475056}
-  - {fileID: 1984901168}
   - {fileID: 1020261445}
+  - {fileID: 1984901168}
   - {fileID: 1637089762}
   - {fileID: 1407131210}
   - {fileID: 1549056873}
@@ -1316074,9 +1315932,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1460401753}
+  - {fileID: 1588452249}
   - {fileID: 296648961}
   - {fileID: 995606057}
-  - {fileID: 1588452249}
   - {fileID: 481228807}
   - {fileID: 350007505}
   - {fileID: 1967479731}
@@ -1341710,7 +1341568,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: C. Lower the screen resolution
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1346928,7 +1346786,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D. Loose or faulty RAM
+  m_text: D. PS/2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
@@ -1351549,7 +1351407,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: C. Broken monitor cable
+  m_text: C. The keyboard connection
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
   m_sharedMaterial: {fileID: 9129303395208296658, guid: 1e10c8665f939154cbe8d3c4c366486c, type: 2}
