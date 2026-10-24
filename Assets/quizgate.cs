@@ -84,13 +84,27 @@ public class QuizGate : MonoBehaviour
         return -1;
     }
 
+    private int QuizForCurrentLevel()
+    {
+        string level = TeleportToPoint.CurrentLevel;
+        if (string.IsNullOrEmpty(level) || quizzes == null) return -1;
+        for (int i = 0; i < quizzes.Length; i++)
+            if (quizzes[i] != null && quizzes[i].name != null &&
+                string.Equals(quizzes[i].name.Trim(), level.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                return i;
+        Debug.LogWarning("[QuizGate] No quiz named '" + level + "'. Check the Name fields.");
+        return -1;
+    }
+
     // Quiz button -> On Click ()
     public void OpenQuiz()
     {
         if (quizzes == null) quizzes = new LevelQuiz[0];
 
-        // Use the forced number if a checklist set one, otherwise the first unfinished quiz
-        int index = forced ? currentQuizIndex : FirstUnfinished();
+        // 1) forced number, 2) the quiz named like the level the player is in now
+        //    (set by TeleportToPoint, e.g. "RAM Medium"), 3) first unfinished quiz
+        int index = forced ? currentQuizIndex : QuizForCurrentLevel();
+        if (index < 0) index = FirstUnfinished();
         forced = false;
         currentQuizIndex = index;
 

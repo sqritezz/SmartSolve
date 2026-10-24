@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -69,12 +68,10 @@ public class PSUSwitch1 : MonoBehaviour
     [TextArea(1, 2)]
     public string blockedMessage = "Talk to the NPC first before touching the PSU switch.";
 
-    [Header("Retry (fixes needing a second click)")]
-    [Tooltip("If the checklist isn't ready for this step yet at the moment of the click (e.g. still transitioning from the previous group), keep trying for this many seconds instead of requiring another click.")]
-    public float retryWindow = 2f;
-    public float retryInterval = 0.1f;
-
     private XRSimpleInteractable interactable;
+    private Quaternion startRot;
+    private bool startedOn;
+    private bool visualReady = false;
 
     private void Awake()
     {
@@ -114,9 +111,8 @@ public class PSUSwitch1 : MonoBehaviour
 
         if (checklist == null) return;
 
-        // Every step that matches this direction (on/off) gets attempted.
-        // If the checklist isn't on that step YET (e.g. mid-transition),
-        // we keep retrying in the background instead of needing another click.
+        // Every step that is the CURRENT checklist step and matches
+        // this direction (on/off) gets completed
         TryComplete(completeOnTurningOn, groupIndex, objectiveIndex);
 
         if (useSecondStep)
@@ -130,37 +126,9 @@ public class PSUSwitch1 : MonoBehaviour
 
     private void TryComplete(bool onTurningOn, int group, int objective)
     {
-        // Did THIS toggle produce the direction this step cares about?
-        // (Decided once, right now, based on the state we just switched to.)
         bool matches = onTurningOn ? isOn : !isOn;
-        if (!matches) return;
-
-        if (checklist.IsCurrentStep(group, objective))
-        {
+        if (matches && checklist.IsCurrentStep(group, objective))
             checklist.CompleteObjective(group, objective);
-        }
-        else
-        {
-            // Not ready yet (probably mid-transition from the previous group).
-            // Keep checking for a little while instead of making the player
-            // click the switch again.
-            StartCoroutine(RetryComplete(group, objective));
-        }
-    }
-
-    private IEnumerator RetryComplete(int group, int objective)
-    {
-        float elapsed = 0f;
-        while (elapsed < retryWindow)
-        {
-            if (checklist != null && checklist.IsCurrentStep(group, objective))
-            {
-                checklist.CompleteObjective(group, objective);
-                yield break;
-            }
-            yield return new WaitForSeconds(retryInterval);
-            elapsed += retryInterval;
-        }
     }
 
     // Call this from NPCDialogue once the conversation finishes
@@ -169,9 +137,19 @@ public class PSUSwitch1 : MonoBehaviour
         npcTalkedTo = true;
     }
 
+    // Tilts the switch RELATIVE to how you placed it in the editor
+    // (so it never jumps out of the PSU, whatever its starting rotation is)
     private void ApplyVisual()
     {
         if (switchVisual == null) return;
-        switchVisual.localEulerAngles = isOn ? onRotation : offRotation;
+        if (!visualReady)
+        {
+            startRot = switchVisual.localRotation;
+            startedOn = isOn;
+            visualReady = true;
+        }
+        Vector3 from = startedOn ? onRotation : offRotation;
+        Vector3 to = isOn ? onRotation : offRotation;
+        switchVisual.localRotation = startRot * Quaternion.Euler(to - from);
     }
 }

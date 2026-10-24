@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TeleportToPoint : MonoBehaviour
 {
+    // Name of the level the player is in now (matches QuizGate quiz names, e.g. "RAM Medium")
+    public static string CurrentLevel = "";
+
     public Transform xrRig;
     public Transform pcRoom;
 
@@ -107,6 +110,7 @@ public class TeleportToPoint : MonoBehaviour
     // Use this for the Hard levels' NEXT button (or any Back to Menu).
     public void TeleportMenuRoom()
     {
+        CurrentLevel = "";
         MoveRig(menuRoomPoint);
         home.SetActive(false);
         mainMenu.SetActive(true);
@@ -160,6 +164,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportPCRoom()
     {
+        CurrentLevel = "";
         xrRig.position = pcRoom.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -171,6 +176,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportRAMEasy()
     {
+        CurrentLevel = "RAM Easy";
         xrRig.position = easyPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -179,6 +185,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportRAMMedium()
     {
+        CurrentLevel = "RAM Medium";
         xrRig.position = mediumPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -187,6 +194,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportRAMHard()
     {
+        CurrentLevel = "RAM Hard";
         xrRig.position = hardPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -195,6 +203,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportPSUEasy()
     {
+        CurrentLevel = "PSU Easy";
         xrRig.position = psuEasyPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -203,6 +212,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportPSUMedium()
     {
+        CurrentLevel = "PSU Medium";
         xrRig.position = psuMediumPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -211,6 +221,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportPSUHard()
     {
+        CurrentLevel = "PSU Hard";
         xrRig.position = psuHardPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -219,6 +230,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportGPUEasy()
     {
+        CurrentLevel = "GPU Easy";
         xrRig.position = gpuEasyPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -227,6 +239,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportGPUMedium()
     {
+        CurrentLevel = "GPU Medium";
         xrRig.position = gpuMediumPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -235,6 +248,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportGPUHard()
     {
+        CurrentLevel = "GPU Hard";
         xrRig.position = gpuHardPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
@@ -243,6 +257,7 @@ public class TeleportToPoint : MonoBehaviour
 
     public void TeleportFinal()
     {
+        CurrentLevel = "Final";
         MoveRig(finalPoint);
         mainMenu.SetActive(false);
         home.SetActive(false);
