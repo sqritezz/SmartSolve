@@ -10,6 +10,9 @@ using UnityEngine.XR;
 //   Near EasySpawnPoint (RAM)  -> opens RamTesting
 //   Near a PSU spawn point     -> opens PSUTroubleshooting
 //   ...and so on for whatever you add to the list.
+//
+// PAUSE MENU: leave Levels empty and put the pause panel (Ypanelbtn) in
+// Fallback Panel -> Y opens/closes the pause panel everywhere.
 public class LevelMenuButton : MonoBehaviour
 {
     [System.Serializable]
@@ -39,6 +42,12 @@ public class LevelMenuButton : MonoBehaviour
     public float maxDistance = 30f;
     [Tooltip("Shown when the player isn't near any level (optional, e.g. selectlearningpath)")]
     public GameObject fallbackPanel;
+
+    [Header("Placement (optional)")]
+    [Tooltip("Put the opened panel in front of the player's face")]
+    public bool placeInFrontOfPlayer = true;
+    public float distance = 1.0f;
+    public float heightOffset = -0.1f;
 
     [Header("Audio (optional)")]
     public AudioSource openSound;
@@ -77,6 +86,7 @@ public class LevelMenuButton : MonoBehaviour
         foreach (var p in allPanels)
             if (p != null) p.SetActive(false);
 
+        if (placeInFrontOfPlayer) PlaceInFront(target.transform);
         target.SetActive(true);
         currentPanel = target;
 
@@ -90,6 +100,18 @@ public class LevelMenuButton : MonoBehaviour
         currentPanel = null;
 
         if (closeSound) closeSound.Play();
+    }
+
+    private void PlaceInFront(Transform t)
+    {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+        Vector3 fwd = cam.transform.forward; fwd.y = 0f;
+        if (fwd.sqrMagnitude < 0.001f) fwd = cam.transform.up;
+        fwd.Normalize();
+        Vector3 pos = cam.transform.position + fwd * distance;
+        pos.y = cam.transform.position.y + heightOffset;
+        t.SetPositionAndRotation(pos, Quaternion.LookRotation(fwd, Vector3.up));
     }
 
     private GameObject FindPanelForCurrentLevel()

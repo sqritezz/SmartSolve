@@ -39,6 +39,11 @@ public class ExplanationPanel : MonoBehaviour
     [Tooltip("e.g. RewardPanel. If one of these opens while an explanation is showing, it waits and opens after the explanation is closed.")]
     public GameObject[] showAfterClosing;
     private readonly List<GameObject> held = new List<GameObject>();
+    [Tooltip("Keep the released panel (e.g. reward) in front of the player while it's open")]
+    public bool releasedPanelsFollow = true;
+    [Tooltip("Distance of the released panel from the player")]
+    public float releasedDistance = 1.2f;
+    private readonly List<GameObject> following = new List<GameObject>();
     [Tooltip("ON = the panel stays in front of the player while it's open (follows head turns)")]
     public bool followPlayer = true;
     [Tooltip("How fast it catches up when you turn your head (higher = snappier)")]
@@ -84,7 +89,13 @@ public class ExplanationPanel : MonoBehaviour
         // Explanations done -> release the held panels
         if (!IsShowing && !closing && waiting.Count == 0 && held.Count > 0)
         {
-            foreach (var g in held) if (g != null) g.SetActive(true);
+            foreach (var g in held)
+            {
+                if (g == null) continue;
+                PlaceAt(g.transform, releasedDistance, true);
+                g.SetActive(true);
+                if (releasedPanelsFollow && !following.Contains(g)) following.Add(g);
+            }
             held.Clear();
         }
 
@@ -164,6 +175,14 @@ public class ExplanationPanel : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Released panels (reward) keep following the player until they are closed
+        for (int i = following.Count - 1; i >= 0; i--)
+        {
+            var g = following[i];
+            if (g == null || !g.activeInHierarchy) { following.RemoveAt(i); continue; }
+            PlaceAt(g.transform, releasedDistance, false);
+        }
+
         // Keep the panel in front of the player while it's open
         if (!followPlayer || !IsShowing || playerHead == null) return;
         if (!GetTargetPose(out Vector3 pos, out Quaternion rot)) return;
@@ -171,6 +190,22 @@ public class ExplanationPanel : MonoBehaviour
         float t = 1f - Mathf.Exp(-followSpeed * Time.deltaTime);
         panel.transform.position = Vector3.Lerp(panel.transform.position, pos, t);
         panel.transform.rotation = Quaternion.Slerp(panel.transform.rotation, rot, t);
+    }
+
+    private void PlaceAt(Transform t, float distance, bool instant)
+    {
+        if (playerHead == null && Camera.main != null) playerHead = Camera.main.transform;
+        if (playerHead == null) return;
+        Vector3 forward = playerHead.forward; forward.y = 0f;
+        if (forward.sqrMagnitude < 0.001f) forward = playerHead.up;
+        forward.Normalize();
+        Vector3 pos = playerHead.position + forward * distance + Vector3.Cross(Vector3.up, forward) * sideOffset;
+        pos.y = playerHead.position.y + heightOffset;
+        Quaternion rot = Quaternion.LookRotation(forward, Vector3.up);
+        if (instant) { t.SetPositionAndRotation(pos, rot); return; }
+        float k = 1f - Mathf.Exp(-followSpeed * Time.deltaTime);
+        t.position = Vector3.Lerp(t.position, pos, k);
+        t.rotation = Quaternion.Slerp(t.rotation, rot, k);
     }
 
     private bool GetTargetPose(out Vector3 pos, out Quaternion rot)

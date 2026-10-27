@@ -30,6 +30,8 @@ public class PSUScrew : MonoBehaviour
     [Tooltip("How far (local units) it backs out before coming off")]
     public float backOutDistance = 0.02f;
     public float spinSpeed = 720f;
+    [Tooltip("Spin the screw while turning. OFF = it only slides in/out and always stays straight.")]
+    public bool spinVisual = false;
 
     [Header("Drop when removed")]
     [Tooltip("ON = the screw falls to the ground when it comes out (a copy with physics)")]
@@ -229,7 +231,9 @@ public class PSUScrew : MonoBehaviour
         }
 
         transform.localPosition = fastenedLocalPos + outParent * backOutDistance * outAmount;
-        transform.localRotation = fastenedLocalRot * Quaternion.AngleAxis(spinAngle, outLocal);
+        transform.localRotation = spinVisual
+            ? fastenedLocalRot * Quaternion.AngleAxis(spinAngle, outLocal)
+            : fastenedLocalRot;
 
         foreach (var r in renderers)
             if (r != null) r.enabled = visible;

@@ -20,17 +20,31 @@ public class QuitGame : MonoBehaviour
     {
         if (quitting) return;
         quitting = true;
-        StartCoroutine(QuitRoutine());
-    }
 
-    private IEnumerator QuitRoutine()
-    {
         if (audioSource != null && quitSound != null)
             audioSource.PlayOneShot(quitSound);
 
-        // Realtime, so it still works if the game is paused (timeScale = 0)
-        if (delay > 0f) yield return new WaitForSecondsRealtime(delay);
+        // Runs on a helper object that never gets hidden, so it still works
+        // even if the Yes button / quit panel is turned off by its own On Click.
+        var runner = new GameObject("QuitRunner").AddComponent<QuitRunner>();
+        DontDestroyOnLoad(runner.gameObject);
+        runner.Begin(delay);
+    }
 
+    private class QuitRunner : MonoBehaviour
+    {
+        public void Begin(float delay) { StartCoroutine(Run(delay)); }
+
+        private IEnumerator Run(float delay)
+        {
+            // Realtime, so it still works if the game is paused (timeScale = 0)
+            if (delay > 0f) yield return new WaitForSecondsRealtime(delay);
+            DoQuit();
+        }
+    }
+
+    private static void DoQuit()
+    {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

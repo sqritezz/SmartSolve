@@ -13,6 +13,9 @@ public class TutorialFlowManager : MonoBehaviour
     public TMP_Text tutorialPanelText;
     [TextArea(1, 2)]
     public string taskDoneMessage = "TUTORIAL - Great! Now go speak to the NPC again.";
+    [TextArea(1, 2)]
+    [Tooltip("Shown instead when the game language is Filipino")]
+    public string taskDoneMessageFilipino = "Ayos! Ngayon, kausapin muli ang iyong kaibigan.";
 
     [Header("Azer's three dialogue components")]
     public NPCDialogue introDialogue;
@@ -23,6 +26,9 @@ public class TutorialFlowManager : MonoBehaviour
     // skipped around, and OnTutorialComplete can never fire more than once.
     private bool practiceTaskDone = false;
     private bool tutorialFullyComplete = false;
+
+    private void OnEnable() { LanguageManager.OnLanguageChanged += RefreshText; }
+    private void OnDisable() { LanguageManager.OnLanguageChanged -= RefreshText; }
 
     private void Start()
     {
@@ -45,8 +51,15 @@ public class TutorialFlowManager : MonoBehaviour
         if (introDialogue != null) introDialogue.isActiveDialogue = false;
         if (followUpDialogue != null) followUpDialogue.isActiveDialogue = true;
 
-        if (tutorialPanelText != null)
-            tutorialPanelText.text = taskDoneMessage;
+        RefreshText();
+    }
+
+    // Shows the "task done" message in the current language
+    // (also updates if the language is changed while it's showing)
+    private void RefreshText()
+    {
+        if (!practiceTaskDone || tutorialFullyComplete || tutorialPanelText == null) return;
+        tutorialPanelText.text = LanguageManager.Pick(taskDoneMessage, taskDoneMessageFilipino);
     }
 
     // Wire this ONLY to the follow-up dialogue's onDialogueFinished.

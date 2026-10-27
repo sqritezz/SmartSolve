@@ -4,6 +4,10 @@ using UnityEngine;
 // The timer, mistakes and hints are only counted AFTER the real level starts,
 // so the tutorial no longer costs you stars.
 //
+// The timer also STOPS while:
+//  - an explanation panel is open (so players have time to read)
+//  - the game is paused (pause panel)
+//
 // How the real level starts (pick one):
 //  A) Drag the REAL level's checklist panel (or any object that turns on when the
 //     real level begins) into "Start When Active". Tracking starts the moment it
@@ -31,13 +35,19 @@ public class PerformanceTracker : MonoBehaviour
     [Tooltip("Start counting when this object turns on (e.g. the real level's checklist panel)")]
     public GameObject startWhenActive;
 
+    [Header("Timer stops while")]
+    [Tooltip("Stop the timer while an explanation is on screen")]
+    public bool pauseDuringExplanations = true;
+    [Tooltip("Optional: any other panels that should also stop the timer while open")]
+    public GameObject[] alsoPauseWhileOpen;
+
     [Header("Live Tracking (read-only)")]
     public bool isTracking = false;
     public int wrongAttempts = 0;
     public int hintsUsed = 0;
     public float elapsedTime = 0f;
+    public bool timerPaused = false;
 
-    private float startTime;
     private bool finished = false;
 
     private void Start()
@@ -50,8 +60,21 @@ public class PerformanceTracker : MonoBehaviour
         if (!isTracking && !finished && startWhenActive != null && startWhenActive.activeInHierarchy)
             StartTracking();
 
-        if (isTracking && !finished)
-            elapsedTime = Time.time - startTime;
+        if (!isTracking || finished) return;
+
+        timerPaused = ShouldPause();
+        // Time.deltaTime is already 0 while the game is paused (pause panel)
+        if (!timerPaused) elapsedTime += Time.deltaTime;
+    }
+
+    private bool ShouldPause()
+    {
+        if (pauseDuringExplanations && ExplanationPanel.Instance != null && ExplanationPanel.Instance.IsShowing)
+            return true;
+        if (alsoPauseWhileOpen != null)
+            foreach (var g in alsoPauseWhileOpen)
+                if (g != null && g.activeInHierarchy) return true;
+        return false;
     }
 
     // Call this when the REAL level begins (after the tutorial).
@@ -64,7 +87,6 @@ public class PerformanceTracker : MonoBehaviour
         wrongAttempts = 0;
         hintsUsed = 0;
         elapsedTime = 0f;
-        startTime = Time.time;
     }
 
     // Call this whenever the player does something wrong.
@@ -93,11 +115,7 @@ public class PerformanceTracker : MonoBehaviour
             return 3;
         }
 
-        if (!finished)
-        {
-            elapsedTime = Time.time - startTime;
-            finished = true;
-        }
+        finished = true;   // timer stops here
 
         // 1. Stars from time + mistakes
         int stars;
