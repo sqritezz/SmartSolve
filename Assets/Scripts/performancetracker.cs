@@ -95,6 +95,8 @@ public class PerformanceTracker : MonoBehaviour
     {
         if (!isTracking || finished) return;
         wrongAttempts++;
+        // Click this log in the Console: the lines under it show WHICH script counted the mistake
+        Debug.Log("[PerformanceTracker] " + name + ": mistake #" + wrongAttempts + " counted", this);
     }
 
     // Call this whenever a hint is used. Ignored during the tutorial.
@@ -102,6 +104,7 @@ public class PerformanceTracker : MonoBehaviour
     {
         if (!isTracking || finished) return;
         hintsUsed++;
+        Debug.Log("[PerformanceTracker] " + name + ": hint #" + hintsUsed + " counted", this);
     }
 
     // Called once when the level completes. Also freezes the timer.
@@ -129,6 +132,9 @@ public class PerformanceTracker : MonoBehaviour
         // 2. Every hint used costs 1 star
         stars -= hintsUsed * starsLostPerHint;
 
-        return Mathf.Clamp(stars, minimumStars, 3);
+        int final = Mathf.Clamp(stars, minimumStars, 3);
+        Debug.Log("[PerformanceTracker] " + name + " finished: time " + elapsedTime.ToString("0.0") +
+                  "s, mistakes " + wrongAttempts + ", hints " + hintsUsed + " -> " + final + " stars", this);
+        return final;
     }
 }

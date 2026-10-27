@@ -55658,6 +55658,7 @@ GameObject:
   - component: {fileID: 87337634}
   - component: {fileID: 87337637}
   - component: {fileID: 87337636}
+  - component: {fileID: 87337638}
   - component: {fileID: 87337635}
   m_Layer: 0
   m_Name: PCMonitor
@@ -55697,10 +55698,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &87337636
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -55761,6 +55764,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87337633}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &87337638
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87337633}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &87424691
 GameObject:
   m_ObjectHideFlags: 0
@@ -80652,8 +80676,8 @@ GameObject:
   - component: {fileID: 126731783}
   - component: {fileID: 126731787}
   - component: {fileID: 126731786}
-  - component: {fileID: 126731785}
   - component: {fileID: 126731784}
+  - component: {fileID: 126731788}
   m_Layer: 5
   m_Name: Ram
   m_TagString: Untagged
@@ -80694,23 +80718,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickOnly
   interactable: {fileID: 0}
---- !u!114 &126731785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126731782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &126731786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80757,6 +80764,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &126731788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126731782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &126837036
 GameObject:
   m_ObjectHideFlags: 0
@@ -92652,8 +92678,8 @@ GameObject:
   - component: {fileID: 149714555}
   - component: {fileID: 149714559}
   - component: {fileID: 149714558}
-  - component: {fileID: 149714557}
   - component: {fileID: 149714556}
+  - component: {fileID: 149714560}
   m_Layer: 5
   m_Name: TutorialChecklistMedium (RAM)
   m_TagString: Untagged
@@ -92730,23 +92756,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &149714557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 149714554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &149714558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92793,6 +92802,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &149714560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149714554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &149770770
 GameObject:
   m_ObjectHideFlags: 0
@@ -92911,8 +92939,8 @@ GameObject:
   - component: {fileID: 149826873}
   - component: {fileID: 149826872}
   - component: {fileID: 149826871}
-  - component: {fileID: 149826870}
   - component: {fileID: 149826874}
+  - component: {fileID: 149826875}
   m_Layer: 5
   m_Name: ChecklistEasy (PSU Easy)
   m_TagString: Untagged
@@ -92920,23 +92948,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &149826870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 149826869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &149826871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93078,6 +93089,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &149826875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149826869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &149898322
 GameObject:
   m_ObjectHideFlags: 0
@@ -140440,8 +140470,8 @@ GameObject:
   - component: {fileID: 225027979}
   - component: {fileID: 225027982}
   - component: {fileID: 225027981}
-  - component: {fileID: 225027980}
   - component: {fileID: 225027983}
+  - component: {fileID: 225027984}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -140473,23 +140503,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.669, y: 1.411}
   m_SizeDelta: {x: 892.0923, y: 244.2268}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &225027980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 225027978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &225027981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140558,6 +140571,25 @@ MonoBehaviour:
   minDistanceToPlayer: 0.4
   step: 0.03
   smooth: 12
+--- !u!114 &225027984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 225027978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &225310095
 GameObject:
   m_ObjectHideFlags: 0
@@ -145524,8 +145556,8 @@ GameObject:
   - component: {fileID: 234896967}
   - component: {fileID: 234896971}
   - component: {fileID: 234896970}
-  - component: {fileID: 234896969}
   - component: {fileID: 234896968}
+  - component: {fileID: 234896972}
   m_Layer: 5
   m_Name: TutorialEasyChecklist (RAM)
   m_TagString: Untagged
@@ -145590,23 +145622,6 @@ MonoBehaviour:
   onAllStepsComplete:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &234896969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 234896966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &234896970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145653,6 +145668,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &234896972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234896966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &235027131
 GameObject:
   m_ObjectHideFlags: 0
@@ -191584,6 +191618,7 @@ GameObject:
   - component: {fileID: 315643831}
   - component: {fileID: 315643834}
   - component: {fileID: 315643833}
+  - component: {fileID: 315643835}
   - component: {fileID: 315643832}
   m_Layer: 0
   m_Name: PcMonitor
@@ -191622,10 +191657,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &315643833
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -191686,6 +191723,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315643830}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &315643835
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 315643830}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &315685996
 GameObject:
   m_ObjectHideFlags: 0
@@ -203338,7 +203396,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -207335,7 +207393,7 @@ GameObject:
   - component: {fileID: 343669861}
   - component: {fileID: 343669860}
   - component: {fileID: 343669859}
-  - component: {fileID: 343669858}
+  - component: {fileID: 343669862}
   m_Layer: 5
   m_Name: OptionalUI
   m_TagString: Untagged
@@ -207343,23 +207401,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &343669858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 343669857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &343669859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207427,6 +207468,25 @@ RectTransform:
   m_AnchoredPosition: {x: 434.60004, y: 229.7}
   m_SizeDelta: {x: 869.2001, y: 459.4}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &343669862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343669857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &343744599
 GameObject:
   m_ObjectHideFlags: 0
@@ -227585,8 +227645,8 @@ GameObject:
   - component: {fileID: 377563309}
   - component: {fileID: 377563308}
   - component: {fileID: 377563307}
-  - component: {fileID: 377563306}
   - component: {fileID: 377563310}
+  - component: {fileID: 377563311}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -227594,23 +227654,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &377563306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377563305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &377563307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227703,6 +227746,25 @@ MonoBehaviour:
   minDistanceToPlayer: 0.4
   step: 0.03
   smooth: 12
+--- !u!114 &377563311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377563305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &377606860
 GameObject:
   m_ObjectHideFlags: 0
@@ -238516,6 +238578,7 @@ GameObject:
   m_Component:
   - component: {fileID: 396177982}
   - component: {fileID: 396177983}
+  - component: {fileID: 396177987}
   - component: {fileID: 396177985}
   - component: {fileID: 396177986}
   - component: {fileID: 396177984}
@@ -238721,6 +238784,108 @@ MonoBehaviour:
   description: For PSU cable.
   partNameFilipino: PSU Port
   descriptionFilipino: Para sa cable ng PSU.
+--- !u!114 &396177987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396177981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &396197720
 GameObject:
   m_ObjectHideFlags: 0
@@ -247342,8 +247507,8 @@ GameObject:
   - component: {fileID: 409845869}
   - component: {fileID: 409845867}
   - component: {fileID: 409845866}
-  - component: {fileID: 409845865}
   - component: {fileID: 409845868}
+  - component: {fileID: 409845870}
   m_Layer: 5
   m_Name: TVTutorialChecklistEasy (GPU)
   m_TagString: Untagged
@@ -247351,23 +247516,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &409845865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 409845864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &409845866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247483,6 +247631,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &409845870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 409845864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &409949500
 GameObject:
   m_ObjectHideFlags: 0
@@ -260253,8 +260420,8 @@ GameObject:
   - component: {fileID: 423678909}
   - component: {fileID: 423678908}
   - component: {fileID: 423678907}
-  - component: {fileID: 423678906}
   - component: {fileID: 423678910}
+  - component: {fileID: 423678911}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -260262,23 +260429,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &423678906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 423678905}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &423678907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260371,6 +260521,25 @@ MonoBehaviour:
   minDistanceToPlayer: 0.4
   step: 0.03
   smooth: 12
+--- !u!114 &423678911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423678905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &423691891
 GameObject:
   m_ObjectHideFlags: 0
@@ -267607,6 +267776,7 @@ GameObject:
   m_Component:
   - component: {fileID: 435996532}
   - component: {fileID: 435996536}
+  - component: {fileID: 435996537}
   - component: {fileID: 435996535}
   - component: {fileID: 435996534}
   - component: {fileID: 435996533}
@@ -267812,6 +267982,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &435996537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435996531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &436221528
 GameObject:
   m_ObjectHideFlags: 0
@@ -372624,7 +372896,7 @@ GameObject:
   - component: {fileID: 614912057}
   - component: {fileID: 614912056}
   - component: {fileID: 614912055}
-  - component: {fileID: 614912054}
+  - component: {fileID: 614912058}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -372632,23 +372904,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &614912054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 614912053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &614912055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372719,6 +372974,25 @@ RectTransform:
   m_AnchoredPosition: {x: -0.669, y: 1.411}
   m_SizeDelta: {x: 892.0923, y: 244.2268}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &614912058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614912053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &615523375
 GameObject:
   m_ObjectHideFlags: 0
@@ -386762,8 +387036,8 @@ GameObject:
   - component: {fileID: 639649718}
   - component: {fileID: 639649721}
   - component: {fileID: 639649720}
-  - component: {fileID: 639649719}
   - component: {fileID: 639649722}
+  - component: {fileID: 639649723}
   m_Layer: 5
   m_Name: Tutorial Easy Checklist (PSU Easy)
   m_TagString: Untagged
@@ -386794,23 +387068,6 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &639649719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639649717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &639649720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386911,6 +387168,25 @@ MonoBehaviour:
   onAllStepsComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &639649723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 639649717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &639760476
 GameObject:
   m_ObjectHideFlags: 0
@@ -392879,6 +393155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 651039254}
   - component: {fileID: 651039258}
+  - component: {fileID: 651039259}
   - component: {fileID: 651039257}
   - component: {fileID: 651039256}
   - component: {fileID: 651039255}
@@ -393084,6 +393361,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &651039259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651039253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &651153622
 GameObject:
   m_ObjectHideFlags: 0
@@ -395109,8 +395488,8 @@ GameObject:
   - component: {fileID: 653248757}
   - component: {fileID: 653248756}
   - component: {fileID: 653248755}
-  - component: {fileID: 653248754}
   - component: {fileID: 653248758}
+  - component: {fileID: 653248759}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -395118,23 +395497,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &653248754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 653248753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &653248755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395227,6 +395589,25 @@ MonoBehaviour:
   minDistanceToPlayer: 0.4
   step: 0.03
   smooth: 12
+--- !u!114 &653248759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653248753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &653396012
 GameObject:
   m_ObjectHideFlags: 0
@@ -410989,6 +411370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 671138874}
   - component: {fileID: 671138878}
+  - component: {fileID: 671138879}
   - component: {fileID: 671138877}
   - component: {fileID: 671138876}
   - component: {fileID: 671138875}
@@ -411194,6 +411576,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &671138879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671138873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &671175340
 GameObject:
   m_ObjectHideFlags: 0
@@ -440401,8 +440885,8 @@ GameObject:
   - component: {fileID: 715286281}
   - component: {fileID: 715286279}
   - component: {fileID: 715286278}
-  - component: {fileID: 715286277}
   - component: {fileID: 715286280}
+  - component: {fileID: 715286282}
   m_Layer: 5
   m_Name: TVTutorialChecklistMedium (GPU)
   m_TagString: Untagged
@@ -440410,23 +440894,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &715286277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 715286276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &715286278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440542,6 +441009,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &715286282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715286276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &715481041
 GameObject:
   m_ObjectHideFlags: 0
@@ -444766,7 +445252,8 @@ MonoBehaviour:
   startImmediately: 0
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
-  alsoPauseWhileOpen: []
+  alsoPauseWhileOpen:
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -454312,8 +454799,8 @@ GameObject:
   - component: {fileID: 737930830}
   - component: {fileID: 737930829}
   - component: {fileID: 737930828}
-  - component: {fileID: 737930827}
   - component: {fileID: 737930826}
+  - component: {fileID: 737930831}
   m_Layer: 5
   m_Name: TutorialHardChecklist (RAM)
   m_TagString: Untagged
@@ -454369,23 +454856,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &737930827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 737930825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &737930828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454455,6 +454925,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &737930831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737930825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &737964962
 GameObject:
   m_ObjectHideFlags: 0
@@ -465784,10 +466273,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1339088710}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2072386977}
+        m_TargetAssemblyTypeName: HintSystem, Assembly-CSharp
+        m_MethodName: CancelUseHint
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -468129,6 +468618,7 @@ GameObject:
   - component: {fileID: 762724363}
   - component: {fileID: 762724366}
   - component: {fileID: 762724365}
+  - component: {fileID: 762724367}
   - component: {fileID: 762724364}
   m_Layer: 0
   m_Name: PCMonitor
@@ -468168,10 +468658,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &762724365
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -468232,6 +468724,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762724362}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &762724367
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762724362}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &762814193
 GameObject:
   m_ObjectHideFlags: 0
@@ -469034,6 +469547,7 @@ GameObject:
   - component: {fileID: 764119509}
   - component: {fileID: 764119512}
   - component: {fileID: 764119511}
+  - component: {fileID: 764119513}
   - component: {fileID: 764119510}
   m_Layer: 0
   m_Name: PcMonitor
@@ -469072,10 +469586,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &764119511
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -469136,6 +469652,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764119508}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &764119513
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764119508}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &764405488
 GameObject:
   m_ObjectHideFlags: 0
@@ -482640,6 +483177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 785858574}
   - component: {fileID: 785858578}
+  - component: {fileID: 785858579}
   - component: {fileID: 785858577}
   - component: {fileID: 785858576}
   - component: {fileID: 785858575}
@@ -482845,6 +483383,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &785858579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785858573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &786101089
 GameObject:
   m_ObjectHideFlags: 0
@@ -491114,7 +491754,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -562322,6 +562962,7 @@ GameObject:
   m_Component:
   - component: {fileID: 917990781}
   - component: {fileID: 917990785}
+  - component: {fileID: 917990786}
   - component: {fileID: 917990784}
   - component: {fileID: 917990783}
   - component: {fileID: 917990782}
@@ -562527,6 +563168,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &917990786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917990780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &918011351
 GameObject:
   m_ObjectHideFlags: 0
@@ -573125,7 +573868,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -583601,6 +584344,7 @@ GameObject:
   - component: {fileID: 957451507}
   - component: {fileID: 957451510}
   - component: {fileID: 957451509}
+  - component: {fileID: 957451511}
   - component: {fileID: 957451508}
   m_Layer: 0
   m_Name: PCMonitor
@@ -583640,10 +584384,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &957451509
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -583704,6 +584450,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957451506}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &957451511
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957451506}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &957575803
 GameObject:
   m_ObjectHideFlags: 0
@@ -587865,6 +588632,7 @@ GameObject:
   - component: {fileID: 964286821}
   - component: {fileID: 964286824}
   - component: {fileID: 964286823}
+  - component: {fileID: 964286825}
   - component: {fileID: 964286822}
   m_Layer: 0
   m_Name: PCMonitor
@@ -587904,10 +588672,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &964286823
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -587968,6 +588738,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964286820}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &964286825
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964286820}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &964332975
 GameObject:
   m_ObjectHideFlags: 0
@@ -604073,7 +604864,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -617461,6 +618252,7 @@ GameObject:
   - component: {fileID: 1012392997}
   - component: {fileID: 1012393000}
   - component: {fileID: 1012392999}
+  - component: {fileID: 1012393001}
   - component: {fileID: 1012392998}
   m_Layer: 0
   m_Name: PcMonitor (RAM Hard)
@@ -617499,10 +618291,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &1012392999
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -617563,6 +618357,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1012392996}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &1012393001
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012392996}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &1012416023
 GameObject:
   m_ObjectHideFlags: 0
@@ -663459,7 +664274,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -673168,8 +673983,8 @@ GameObject:
   - component: {fileID: 1101813228}
   - component: {fileID: 1101813227}
   - component: {fileID: 1101813226}
-  - component: {fileID: 1101813225}
   - component: {fileID: 1101813224}
+  - component: {fileID: 1101813229}
   m_Layer: 5
   m_Name: ChecklistMedium (RAM)
   m_TagString: Untagged
@@ -673250,23 +674065,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1101813225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1101813223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1101813226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673337,6 +674135,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1101813229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1101813223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1102004415
 GameObject:
   m_ObjectHideFlags: 0
@@ -675113,7 +675930,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -702987,7 +703804,7 @@ GameObject:
   - component: {fileID: 1151876677}
   - component: {fileID: 1151876676}
   - component: {fileID: 1151876675}
-  - component: {fileID: 1151876674}
+  - component: {fileID: 1151876678}
   m_Layer: 5
   m_Name: PowerOnWarning
   m_TagString: Untagged
@@ -702995,23 +703812,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1151876674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1151876673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1151876675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -703079,6 +703879,25 @@ RectTransform:
   m_AnchoredPosition: {x: 418.92902, y: 192.1}
   m_SizeDelta: {x: 871.6, y: 384.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1151876678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151876673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1151982134
 GameObject:
   m_ObjectHideFlags: 0
@@ -721077,7 +721896,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -728878,7 +729697,7 @@ GameObject:
   - component: {fileID: 1193306890}
   - component: {fileID: 1193306889}
   - component: {fileID: 1193306888}
-  - component: {fileID: 1193306887}
+  - component: {fileID: 1193306891}
   m_Layer: 5
   m_Name: warningWrongTool
   m_TagString: Untagged
@@ -728886,23 +729705,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1193306887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1193306886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1193306888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728970,6 +729772,25 @@ RectTransform:
   m_AnchoredPosition: {x: 420.79382, y: 192.09612}
   m_SizeDelta: {x: 871.6, y: 384.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1193306891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193306886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1193435899
 GameObject:
   m_ObjectHideFlags: 0
@@ -729847,6 +730668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1194329116}
   - component: {fileID: 1194329120}
+  - component: {fileID: 1194329121}
   - component: {fileID: 1194329119}
   - component: {fileID: 1194329118}
   - component: {fileID: 1194329117}
@@ -730052,6 +730874,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &1194329121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194329115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1194381680
 GameObject:
   m_ObjectHideFlags: 0
@@ -733279,7 +734203,7 @@ GameObject:
   - component: {fileID: 1199177093}
   - component: {fileID: 1199177092}
   - component: {fileID: 1199177091}
-  - component: {fileID: 1199177090}
+  - component: {fileID: 1199177094}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -733287,23 +734211,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1199177090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1199177089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1199177091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733374,6 +734281,25 @@ RectTransform:
   m_AnchoredPosition: {x: -0.669, y: 1.411}
   m_SizeDelta: {x: 892.0923, y: 244.2268}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1199177094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199177089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1199208433
 GameObject:
   m_ObjectHideFlags: 0
@@ -743118,7 +744044,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -773911,7 +774837,7 @@ MonoBehaviour:
   startWhenActive: {fileID: 0}
   pauseDuringExplanations: 1
   alsoPauseWhileOpen:
-  - {fileID: 2072386972}
+  - {fileID: 539841379}
   isTracking: 0
   wrongAttempts: 0
   hintsUsed: 0
@@ -778103,8 +779029,8 @@ GameObject:
   - component: {fileID: 1275294591}
   - component: {fileID: 1275294590}
   - component: {fileID: 1275294589}
-  - component: {fileID: 1275294588}
   - component: {fileID: 1275294587}
+  - component: {fileID: 1275294592}
   m_Layer: 5
   m_Name: ChecklistMedium (GPU)
   m_TagString: Untagged
@@ -778190,23 +779116,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1275294588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1275294586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1275294589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778277,6 +779186,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1275294592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275294586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1276096265
 GameObject:
   m_ObjectHideFlags: 0
@@ -784469,8 +785397,8 @@ GameObject:
   - component: {fileID: 1285849513}
   - component: {fileID: 1285849512}
   - component: {fileID: 1285849511}
-  - component: {fileID: 1285849510}
   - component: {fileID: 1285849509}
+  - component: {fileID: 1285849514}
   m_Layer: 5
   m_Name: TutorialMediumChecklist (PSU)
   m_TagString: Untagged
@@ -784528,23 +785456,6 @@ MonoBehaviour:
   onAllStepsComplete:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1285849510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1285849508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1285849511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -784614,6 +785525,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1285849514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285849508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1286240959
 GameObject:
   m_ObjectHideFlags: 0
@@ -794610,8 +795540,8 @@ GameObject:
   - component: {fileID: 1299524120}
   - component: {fileID: 1299524123}
   - component: {fileID: 1299524122}
-  - component: {fileID: 1299524121}
   - component: {fileID: 1299524124}
+  - component: {fileID: 1299524125}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -794643,23 +795573,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.669, y: 1.411}
   m_SizeDelta: {x: 892.0923, y: 244.2268}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1299524121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299524119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1299524122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794728,6 +795641,25 @@ MonoBehaviour:
   minDistanceToPlayer: 0.4
   step: 0.03
   smooth: 12
+--- !u!114 &1299524125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299524119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1299672850
 GameObject:
   m_ObjectHideFlags: 0
@@ -801163,8 +802095,8 @@ GameObject:
   - component: {fileID: 1309665671}
   - component: {fileID: 1309665670}
   - component: {fileID: 1309665669}
-  - component: {fileID: 1309665668}
   - component: {fileID: 1309665667}
+  - component: {fileID: 1309665672}
   m_Layer: 5
   m_Name: ChecklistHard (GPU)
   m_TagString: Untagged
@@ -801246,23 +802178,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1309665668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1309665666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1309665669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -801333,6 +802248,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1309665672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309665666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1309779994
 GameObject:
   m_ObjectHideFlags: 0
@@ -814662,6 +815596,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1330728906}
   - component: {fileID: 1330728910}
+  - component: {fileID: 1330728911}
   - component: {fileID: 1330728909}
   - component: {fileID: 1330728908}
   - component: {fileID: 1330728907}
@@ -814867,6 +815802,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &1330728911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330728905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1330766890
 GameObject:
   m_ObjectHideFlags: 0
@@ -819037,7 +820074,7 @@ GameObject:
   - component: {fileID: 1339088714}
   - component: {fileID: 1339088713}
   - component: {fileID: 1339088712}
-  - component: {fileID: 1339088711}
+  - component: {fileID: 1339088715}
   m_Layer: 5
   m_Name: Yesorno
   m_TagString: Untagged
@@ -819045,23 +820082,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1339088711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1339088710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1339088712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819131,6 +820151,25 @@ RectTransform:
   m_AnchoredPosition: {x: 822.3567, y: -211.19347}
   m_SizeDelta: {x: 603.7762, y: 470.5616}
   m_Pivot: {x: 0.51546663, y: 0.5}
+--- !u!114 &1339088715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339088710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1339446139
 GameObject:
   m_ObjectHideFlags: 0
@@ -839437,7 +840476,7 @@ GameObject:
   - component: {fileID: 1366935424}
   - component: {fileID: 1366935423}
   - component: {fileID: 1366935422}
-  - component: {fileID: 1366935421}
+  - component: {fileID: 1366935425}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -839445,23 +840484,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1366935421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1366935420}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1366935422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839532,6 +840554,25 @@ RectTransform:
   m_AnchoredPosition: {x: -0.669, y: 1.411}
   m_SizeDelta: {x: 892.0923, y: 244.2268}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1366935425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366935420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1366982165
 GameObject:
   m_ObjectHideFlags: 0
@@ -859094,8 +860135,8 @@ GameObject:
   - component: {fileID: 1398303448}
   - component: {fileID: 1398303447}
   - component: {fileID: 1398303446}
-  - component: {fileID: 1398303445}
   - component: {fileID: 1398303444}
+  - component: {fileID: 1398303449}
   m_Layer: 5
   m_Name: ChecklistFinal
   m_TagString: Untagged
@@ -859161,23 +860202,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1398303445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398303443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1398303446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859248,6 +860272,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.44}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1398303449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398303443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1398309591
 GameObject:
   m_ObjectHideFlags: 0
@@ -859259,8 +860302,8 @@ GameObject:
   - component: {fileID: 1398309595}
   - component: {fileID: 1398309594}
   - component: {fileID: 1398309593}
-  - component: {fileID: 1398309592}
   - component: {fileID: 1398309596}
+  - component: {fileID: 1398309597}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -859268,23 +860311,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1398309592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1398309591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1398309593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -859377,6 +860403,25 @@ MonoBehaviour:
   minDistanceToPlayer: 0.4
   step: 0.03
   smooth: 12
+--- !u!114 &1398309597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398309591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1398594858
 GameObject:
   m_ObjectHideFlags: 0
@@ -903976,7 +905021,7 @@ GameObject:
   - component: {fileID: 1476936162}
   - component: {fileID: 1476936161}
   - component: {fileID: 1476936160}
-  - component: {fileID: 1476936159}
+  - component: {fileID: 1476936163}
   m_Layer: 5
   m_Name: warning
   m_TagString: Untagged
@@ -903984,23 +905029,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1476936159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1476936158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1476936160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904068,6 +905096,25 @@ RectTransform:
   m_AnchoredPosition: {x: 421.723, y: 192.098}
   m_SizeDelta: {x: 871.6, y: 384.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1476936163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1476936158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1477005651
 GameObject:
   m_ObjectHideFlags: 0
@@ -913602,8 +914649,8 @@ GameObject:
   - component: {fileID: 1489533039}
   - component: {fileID: 1489533038}
   - component: {fileID: 1489533037}
-  - component: {fileID: 1489533036}
   - component: {fileID: 1489533035}
+  - component: {fileID: 1489533040}
   m_Layer: 5
   m_Name: ChecklistMedium (PSU)
   m_TagString: Untagged
@@ -913698,23 +914745,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1489533036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489533034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1489533037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -913785,6 +914815,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1489533040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489533034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1489643270
 GameObject:
   m_ObjectHideFlags: 0
@@ -930030,6 +931079,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1514041371}
   - component: {fileID: 1514041375}
+  - component: {fileID: 1514041376}
   - component: {fileID: 1514041374}
   - component: {fileID: 1514041373}
   - component: {fileID: 1514041372}
@@ -930235,6 +931285,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &1514041376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514041370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1514239976
 GameObject:
   m_ObjectHideFlags: 0
@@ -936854,10 +938006,10 @@ GameObject:
   - component: {fileID: 1526562568}
   - component: {fileID: 1526562567}
   - component: {fileID: 1526562566}
-  - component: {fileID: 1526562565}
   - component: {fileID: 1526562569}
   - component: {fileID: 1526562571}
   - component: {fileID: 1526562570}
+  - component: {fileID: 1526562572}
   m_Layer: 5
   m_Name: explanationpanel
   m_TagString: Untagged
@@ -936865,23 +938017,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1526562565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1526562564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1526562566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -937002,6 +938137,25 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1526562572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526562564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1526703971
 GameObject:
   m_ObjectHideFlags: 0
@@ -973219,8 +974373,8 @@ GameObject:
   - component: {fileID: 1593331103}
   - component: {fileID: 1593331102}
   - component: {fileID: 1593331101}
-  - component: {fileID: 1593331100}
   - component: {fileID: 1593331099}
+  - component: {fileID: 1593331104}
   m_Layer: 5
   m_Name: TutorialChecklistHard (PSU)
   m_TagString: Untagged
@@ -973290,23 +974444,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1593331100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1593331098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1593331101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -973376,6 +974513,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1593331104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593331098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1593696180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010465,34 +1011621,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Toggle
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1339088710}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2072386977}
+        m_TargetAssemblyTypeName: HintSystem, Assembly-CSharp
+        m_MethodName: ConfirmUseHint
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1031060,8 +1032192,8 @@ GameObject:
   - component: {fileID: 1688260395}
   - component: {fileID: 1688260394}
   - component: {fileID: 1688260393}
-  - component: {fileID: 1688260392}
   - component: {fileID: 1688260391}
+  - component: {fileID: 1688260396}
   m_Layer: 5
   m_Name: ChecklistHard
   m_TagString: Untagged
@@ -1031161,23 +1032293,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1688260392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1688260390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1688260393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1031248,6 +1032363,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1688260396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688260390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1688388133
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058354,7 +1059488,7 @@ GameObject:
   - component: {fileID: 1734112204}
   - component: {fileID: 1734112207}
   - component: {fileID: 1734112206}
-  - component: {fileID: 1734112205}
+  - component: {fileID: 1734112208}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -1058386,23 +1059520,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.669, y: 1.411}
   m_SizeDelta: {x: 892.0923, y: 244.2268}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1734112205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734112203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1734112206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1058449,6 +1059566,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1734112208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734112203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1734160809
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077239,8 +1078375,8 @@ GameObject:
   - component: {fileID: 1764858934}
   - component: {fileID: 1764858932}
   - component: {fileID: 1764858931}
-  - component: {fileID: 1764858930}
   - component: {fileID: 1764858933}
+  - component: {fileID: 1764858935}
   m_Layer: 5
   m_Name: TVTutorialChecklistHard (GPU)
   m_TagString: Untagged
@@ -1077248,23 +1078384,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1764858930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1764858929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1764858931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077376,6 +1078495,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1764858935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764858929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1764996004
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078699,32 +1079837,15 @@ GameObject:
   - component: {fileID: 1767544736}
   - component: {fileID: 1767544735}
   - component: {fileID: 1767544734}
-  - component: {fileID: 1767544733}
   - component: {fileID: 1767544737}
+  - component: {fileID: 1767544738}
   m_Layer: 5
   m_Name: CheckListEasy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1767544733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1767544732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
+  m_IsActive: 0
 --- !u!114 &1767544734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078860,6 +1079981,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1767544738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767544732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1767603236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085368,14 +1086508,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1778159870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1778277991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128024,7 +1129166,7 @@ GameObject:
   - component: {fileID: 1853113833}
   - component: {fileID: 1853113832}
   - component: {fileID: 1853113831}
-  - component: {fileID: 1853113830}
+  - component: {fileID: 1853113834}
   m_Layer: 5
   m_Name: NotReadyWarning
   m_TagString: Untagged
@@ -1128032,23 +1129174,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1853113830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1853113829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1853113831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1128116,6 +1129241,25 @@ RectTransform:
   m_AnchoredPosition: {x: 419.84, y: 192.1}
   m_SizeDelta: {x: 871.6, y: 384.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1853113834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853113829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1853582241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129376,8 +1130520,8 @@ GameObject:
   - component: {fileID: 1855666711}
   - component: {fileID: 1855666710}
   - component: {fileID: 1855666709}
-  - component: {fileID: 1855666708}
   - component: {fileID: 1855666712}
+  - component: {fileID: 1855666713}
   m_Layer: 5
   m_Name: DialoguePanel
   m_TagString: Untagged
@@ -1129385,23 +1130529,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1855666708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1855666707}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1855666709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129494,6 +1130621,25 @@ MonoBehaviour:
   minDistanceToPlayer: 0.4
   step: 0.03
   smooth: 12
+--- !u!114 &1855666713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855666707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1855748351
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133521,12 +1134667,12 @@ GameObject:
   - component: {fileID: 1861637889}
   - component: {fileID: 1861637888}
   - component: {fileID: 1861637887}
-  - component: {fileID: 1861637886}
   - component: {fileID: 1861637885}
   - component: {fileID: 1861637884}
   - component: {fileID: 1861637891}
   - component: {fileID: 1861637890}
   - component: {fileID: 1861637892}
+  - component: {fileID: 1861637893}
   m_Layer: 5
   m_Name: WarningCanvas
   m_TagString: Untagged
@@ -1133565,23 +1134711,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &1861637886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1861637883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1861637887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1133786,6 +1134915,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickOnly
   interactable: {fileID: 0}
+--- !u!114 &1861637893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861637883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1861879154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157864,7 +1159012,7 @@ GameObject:
   - component: {fileID: 1897503982}
   - component: {fileID: 1897503981}
   - component: {fileID: 1897503980}
-  - component: {fileID: 1897503979}
+  - component: {fileID: 1897503983}
   m_Layer: 5
   m_Name: inventorypanel
   m_TagString: Untagged
@@ -1157872,23 +1159020,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1897503979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1897503978}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1897503980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1157964,6 +1159095,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0.68, y: 2.65}
   m_SizeDelta: {x: 799.6, y: 375.4}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1897503983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897503978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1897504504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178189,6 +1179339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1933714509}
   - component: {fileID: 1933714513}
+  - component: {fileID: 1933714514}
   - component: {fileID: 1933714512}
   - component: {fileID: 1933714511}
   - component: {fileID: 1933714510}
@@ -1178394,6 +1179545,108 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
   m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+--- !u!114 &1933714514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933714508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1933790451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210781,6 +1212034,7 @@ GameObject:
   - component: {fileID: 1990174484}
   - component: {fileID: 1990174487}
   - component: {fileID: 1990174486}
+  - component: {fileID: 1990174488}
   - component: {fileID: 1990174485}
   m_Layer: 0
   m_Name: PcMonitor
@@ -1210819,10 +1212073,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Monitor - hardware device that displays visual information like text,
-    images, and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!23 &1990174486
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1210883,6 +1212139,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990174483}
   m_Mesh: {fileID: -5495902117074765545, guid: be8f0825c738a35469718faad2cdd7b3, type: 3}
+--- !u!65 &1990174488
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990174483}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!1 &1990249821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211467,8 +1212744,8 @@ GameObject:
   - component: {fileID: 1991181460}
   - component: {fileID: 1991181459}
   - component: {fileID: 1991181458}
-  - component: {fileID: 1991181457}
   - component: {fileID: 1991181456}
+  - component: {fileID: 1991181461}
   m_Layer: 5
   m_Name: ChecklistHard (PSU)
   m_TagString: Untagged
@@ -1211567,23 +1212844,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1991181457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1991181455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1991181458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1211654,6 +1212914,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1991181461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1991181455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &1991390608
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222259,8 +1223538,8 @@ GameObject:
   - component: {fileID: 2016251082}
   - component: {fileID: 2016251081}
   - component: {fileID: 2016251080}
-  - component: {fileID: 2016251079}
   - component: {fileID: 2016251083}
+  - component: {fileID: 2016251084}
   m_Layer: 5
   m_Name: Mainnnn
   m_TagString: Untagged
@@ -1222268,23 +1223547,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &2016251079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2016251078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &2016251080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222356,6 +1223618,25 @@ RectTransform:
   m_SizeDelta: {x: 1106, y: 530}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2016251083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016251078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
+--- !u!114 &2016251084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1238620,8 +1239901,8 @@ GameObject:
   - component: {fileID: 2041865426}
   - component: {fileID: 2041865425}
   - component: {fileID: 2041865424}
-  - component: {fileID: 2041865423}
   - component: {fileID: 2041865422}
+  - component: {fileID: 2041865427}
   m_Layer: 5
   m_Name: ChecklistEasy (GPU)
   m_TagString: Untagged
@@ -1238693,23 +1239974,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2041865423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2041865421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &2041865424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1238780,6 +1240044,25 @@ RectTransform:
   m_AnchoredPosition: {x: 4.934, y: 2.7}
   m_SizeDelta: {x: 582.1492, y: 347}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2041865427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041865421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &2041871352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1262342,9 +1263625,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HintSystem
   maxHints: 2
   hintMessages: []
-  hintPanel: {fileID: 0}
-  hintText: {fileID: 0}
-  displayDuration: 4
+  hintPanel: {fileID: 539841379}
+  hintText: {fileID: 1796001801}
+  displayDuration: 5
   confirmPanel: {fileID: 1339088710}
   confirmText: {fileID: 1772381815}
   confirmMessage: Use a hint? It will cost you 1 star.
@@ -1294651,7 +1295934,7 @@ GameObject:
   - component: {fileID: 2134424668}
   - component: {fileID: 2134424671}
   - component: {fileID: 2134424670}
-  - component: {fileID: 2134424669}
+  - component: {fileID: 2134424672}
   m_Layer: 5
   m_Name: warning
   m_TagString: Untagged
@@ -1294680,23 +1295963,6 @@ RectTransform:
   m_AnchoredPosition: {x: 421.723, y: 192.098}
   m_SizeDelta: {x: 871.6, y: 384.2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2134424669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2134424667}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &2134424670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1294743,6 +1296009,25 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &2134424672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134424667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.TrackedDeviceGraphicRaycaster
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &2134534869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367099,7 +1368384,7 @@ GameObject:
   - component: {fileID: 1577329351435527304}
   - component: {fileID: 2130762885813747305}
   - component: {fileID: 4760761321952283653}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1430805,7 +1432090,7 @@ GameObject:
   - component: {fileID: 4282542050435287474}
   - component: {fileID: 3682981804446405459}
   - component: {fileID: 7826401612433219903}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1453687,10 +1454972,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartInfo
   partName: Monitor
-  description: Hardware device that displays visual information like text, images,
-    and videos received from a computer's graphics card.
-  partNameFilipino: 
-  descriptionFilipino: 
+  description: "An output device that shows the computer\u2019s picture, such as
+    text, images, videos and programs, so the user can see and work with the computer."
+  partNameFilipino: Monitor
+  descriptionFilipino: Isang output device na nagpapakita ng larawan mula sa computer,
+    tulad ng teksto, larawan, video at mga programa, para makita at magamit ng user
+    ang computer.
 --- !u!65 &2988695130912829821
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1453710,8 +1454997,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.04135515, y: 0.019999994, z: 0.024318552}
-  m_Center: {x: -0.010742347, y: -0.0000012945251, z: -0.0021596611}
+  m_Size: {x: 0.02041164, y: 0.019999994, z: 0.020094857}
+  m_Center: {x: 0.00026941122, y: 0.00000055755726, z: 0.00004755162}
 --- !u!23 &2988776328391232874
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1462297,7 +1463584,7 @@ GameObject:
   - component: {fileID: 3979230658798427701}
   - component: {fileID: 4560774290040489172}
   - component: {fileID: 6974741777776916154}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1503555,7 +1504842,7 @@ GameObject:
   - component: {fileID: 1838896814334380890}
   - component: {fileID: 6807814865238665773}
   - component: {fileID: 6807814865238665774}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallDoorway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1515533,7 +1516820,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3748253556088414548}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1545089,7 +1546376,7 @@ GameObject:
   - component: {fileID: 6254133892851511145}
   - component: {fileID: 6825509378267428232}
   - component: {fileID: 6825509378267428233}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1570703,7 +1571990,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6458716216478779279}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1599617,7 +1600904,7 @@ Transform:
   m_GameObject: {fileID: 6566390086999258362}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: -0.5}
-  m_LocalPosition: {x: 1.175235, y: 0.14091676, z: 0.9834137}
+  m_LocalPosition: {x: 1.175235, y: 0.14091676, z: 1.022}
   m_LocalScale: {x: 0.0150000015, y: 0.016279273, z: 0.01627927}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1600440,7 +1601727,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6194222245160521736}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1662956,7 +1664243,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9117803994547936825}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallDoorway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1679683,7 +1680970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8587398928830769845}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: wallCorner (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
