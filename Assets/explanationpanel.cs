@@ -32,6 +32,13 @@ public class ExplanationPanel : MonoBehaviour
     public Transform playerHead;
     public float distanceFromPlayer = 1.2f;
     public float heightOffset = -0.05f;
+    [Tooltip("Move the panel to the side (meters). Negative = left, positive = right")]
+    public float sideOffset = 0f;
+
+    [Header("Hold other panels until this one closes")]
+    [Tooltip("e.g. RewardPanel. If one of these opens while an explanation is showing, it waits and opens after the explanation is closed.")]
+    public GameObject[] showAfterClosing;
+    private readonly List<GameObject> held = new List<GameObject>();
     [Tooltip("ON = the panel stays in front of the player while it's open (follows head turns)")]
     public bool followPlayer = true;
     [Tooltip("How fast it catches up when you turn your head (higher = snappier)")]
@@ -69,6 +76,18 @@ public class ExplanationPanel : MonoBehaviour
 
     private void Update()
     {
+        // Another panel (e.g. the reward) tried to open while the explanation is up -> hold it
+        if (showAfterClosing != null && (IsShowing || waiting.Count > 0))
+            foreach (var g in showAfterClosing)
+                if (g != null && g.activeSelf) { g.SetActive(false); if (!held.Contains(g)) held.Add(g); }
+
+        // Explanations done -> release the held panels
+        if (!IsShowing && !closing && waiting.Count == 0 && held.Count > 0)
+        {
+            foreach (var g in held) if (g != null) g.SetActive(true);
+            held.Clear();
+        }
+
         // If two explanations come at once, show them one after another
         if (!IsShowing && !closing && waiting.Count > 0)
             Display(waiting.Dequeue());
@@ -164,7 +183,8 @@ public class ExplanationPanel : MonoBehaviour
         if (forward.sqrMagnitude < 0.001f) forward = playerHead.up;
         forward.Normalize();
 
-        pos = playerHead.position + forward * distanceFromPlayer;
+        Vector3 right = Vector3.Cross(Vector3.up, forward);
+        pos = playerHead.position + forward * distanceFromPlayer + right * sideOffset;
         pos.y = playerHead.position.y + heightOffset;
         rot = Quaternion.LookRotation(forward, Vector3.up);
         return true;

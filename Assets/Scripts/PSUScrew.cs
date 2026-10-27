@@ -142,6 +142,7 @@ public class PSUScrew : MonoBehaviour
                     progress = 0f;
                     state = ScrewState.Removed;
                     waitForRelease = true;
+                    spinAngle = 0f;
                     if (dropToGround) DropCopy();
                     StopLoop(); Play(doneSound);
                 }

@@ -91,8 +91,23 @@ public class AssemblySlot : MonoBehaviour
         }
     }
 
+    private Collider myCol;
+
     private void Update()
     {
+        // Backup: touching check by distance (in case trigger events don't fire)
+        if (!isFilled && blueprintPiece != null && blueprintPiece.gameObject.activeInHierarchy &&
+            !blueprintPiece.isSnapped && RequirementsMet())
+        {
+            if (myCol == null) myCol = GetComponent<Collider>();
+            foreach (var pc in blueprintPiece.GetComponentsInChildren<Collider>())
+                if (pc.enabled && myCol.bounds.Intersects(pc.bounds))
+                {
+                    SnapPiece(blueprintPiece, blueprintPiece.GetComponent<XRGrabInteractable>());
+                    break;
+                }
+        }
+
         if (ghostRoot == null) return;
 
         bool unlocked = !onlyShowWhenUnlocked ||
@@ -124,16 +139,18 @@ public class AssemblySlot : MonoBehaviour
         AssemblyPiece piece = other.GetComponentInParent<AssemblyPiece>();
         if (piece == null || piece.partName != expectedPartName || piece.isSnapped) return;
 
-        // Only snap once the player has let go of it (not mid-grab)
+        // Snaps the moment it touches (like the lamp bulb) - the hand lets go by itself
         XRGrabInteractable grab = piece.GetComponent<XRGrabInteractable>();
-        if (grab != null && grab.isSelected) return;
-
         SnapPiece(piece, grab);
     }
 
     private void SnapPiece(AssemblyPiece piece, XRGrabInteractable grab)
     {
         isFilled = true;
+
+        // Make the hand drop it first
+        if (grab != null && grab.isSelected && grab.interactionManager != null && grab.firstInteractorSelecting != null)
+            grab.interactionManager.SelectExit(grab.firstInteractorSelecting, grab);
 
         Rigidbody rb = piece.GetComponent<Rigidbody>();
         if (rb != null)

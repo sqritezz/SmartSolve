@@ -18,19 +18,19 @@ public class TeleportToPoint : MonoBehaviour
     public float menuRoomStartDelay = 5f;
 
     [Header("RAM Points")]
-    public Transform easyPoint;
-    public Transform mediumPoint;
-    public Transform hardPoint;
+    public Transform easyRAMPoint;
+    public Transform mediumRAMPoint;
+    public Transform hardRAMPoint;
 
     [Header("PSU Points")]
-    public Transform psuEasyPoint;
-    public Transform psuMediumPoint;
-    public Transform psuHardPoint;
+    public Transform easyPSUPoint;
+    public Transform mediumPSUPoint;
+    public Transform hardPSUPoint;
 
     [Header("GPU Points")]
-    public Transform gpuEasyPoint;
-    public Transform gpuMediumPoint;
-    public Transform gpuHardPoint;
+    public Transform easyGPUPoint;
+    public Transform mediumGPUPoint;
+    public Transform hardGPUPoint;
 
     [Header("Final Stage Point")]
     public Transform finalPoint;
@@ -42,34 +42,35 @@ public class TeleportToPoint : MonoBehaviour
     public GameObject hintButton;
     public HintSystem hintSystem;
 
-    [Header("Per-Stage Hint Data")]
-    public PerformanceTracker easyRamTracker;
-    public string[] easyRamHints;
+    [Header("RAM Hint Data")]
+    public PerformanceTracker easyRAMTracker;
+    public string[] easyRAMHints;
 
-    public PerformanceTracker mediumRamTracker;
-    public string[] mediumRamHints;
+    public PerformanceTracker mediumRAMTracker;
+    public string[] mediumRAMHints;
 
-    public PerformanceTracker hardRamTracker;
-    public string[] hardRamHints;
+    public PerformanceTracker hardRAMTracker;
+    public string[] hardRAMHints;
 
-    public PerformanceTracker easyPsuTracker;
-    public string[] easyPsuHints;
+    [Header("PSU Hint Data")]
+    public PerformanceTracker easyPSUTracker;
+    public string[] easyPSUHints;
 
-    public PerformanceTracker mediumPsuTracker;
-    public string[] mediumPsuHints;
+    public PerformanceTracker mediumPSUTracker;
+    public string[] mediumPSUHints;
 
-    public PerformanceTracker hardPsuTracker;
-    public string[] hardPsuHints;
+    public PerformanceTracker hardPSUTracker;
+    public string[] hardPSUHints;
 
-    [Header("GPU Hint Data (Stage3 = GPU)")]
-    public PerformanceTracker easyStage3Tracker;
-    public string[] easyStage3Hints;
+    [Header("GPU Hint Data")]
+    public PerformanceTracker easyGPUTracker;
+    public string[] easyGPUHints;
 
-    public PerformanceTracker mediumStage3Tracker;
-    public string[] mediumStage3Hints;
+    public PerformanceTracker mediumGPUTracker;
+    public string[] mediumGPUHints;
 
-    public PerformanceTracker hardStage3Tracker;
-    public string[] hardStage3Hints;
+    public PerformanceTracker hardGPUTracker;
+    public string[] hardGPUHints;
 
     [Header("Final Stage Hint Data")]
     [Tooltip("OFF = no hints in the Final stage: pressing B only shows the message below and costs no star")]
@@ -177,82 +178,82 @@ public class TeleportToPoint : MonoBehaviour
     public void TeleportRAMEasy()
     {
         CurrentLevel = "RAM Easy";
-        xrRig.position = easyPoint.position;
+        xrRig.position = easyRAMPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(easyRamTracker, easyRamHints);
+        ShowHintFor(easyRAMTracker, easyRAMHints);
     }
 
     public void TeleportRAMMedium()
     {
         CurrentLevel = "RAM Medium";
-        xrRig.position = mediumPoint.position;
+        xrRig.position = mediumRAMPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(mediumRamTracker, mediumRamHints);
+        ShowHintFor(mediumRAMTracker, mediumRAMHints);
     }
 
     public void TeleportRAMHard()
     {
         CurrentLevel = "RAM Hard";
-        xrRig.position = hardPoint.position;
+        xrRig.position = hardRAMPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(hardRamTracker, hardRamHints);
+        ShowHintFor(hardRAMTracker, hardRAMHints);
     }
 
     public void TeleportPSUEasy()
     {
         CurrentLevel = "PSU Easy";
-        xrRig.position = psuEasyPoint.position;
+        xrRig.position = easyPSUPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(easyPsuTracker, easyPsuHints);
+        ShowHintFor(easyPSUTracker, easyPSUHints);
     }
 
     public void TeleportPSUMedium()
     {
         CurrentLevel = "PSU Medium";
-        xrRig.position = psuMediumPoint.position;
+        xrRig.position = mediumPSUPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(mediumPsuTracker, mediumPsuHints);
+        ShowHintFor(mediumPSUTracker, mediumPSUHints);
     }
 
     public void TeleportPSUHard()
     {
         CurrentLevel = "PSU Hard";
-        xrRig.position = psuHardPoint.position;
+        xrRig.position = hardPSUPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(hardPsuTracker, hardPsuHints);
+        ShowHintFor(hardPSUTracker, hardPSUHints);
     }
 
     public void TeleportGPUEasy()
     {
         CurrentLevel = "GPU Easy";
-        xrRig.position = gpuEasyPoint.position;
+        xrRig.position = easyGPUPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(easyStage3Tracker, easyStage3Hints);
+        ShowHintFor(easyGPUTracker, easyGPUHints);
     }
 
     public void TeleportGPUMedium()
     {
         CurrentLevel = "GPU Medium";
-        xrRig.position = gpuMediumPoint.position;
+        xrRig.position = mediumGPUPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(mediumStage3Tracker, mediumStage3Hints);
+        ShowHintFor(mediumGPUTracker, mediumGPUHints);
     }
 
     public void TeleportGPUHard()
     {
         CurrentLevel = "GPU Hard";
-        xrRig.position = gpuHardPoint.position;
+        xrRig.position = hardGPUPoint.position;
         mainMenu.SetActive(false);
         home.SetActive(false);
-        ShowHintFor(hardStage3Tracker, hardStage3Hints);
+        ShowHintFor(hardGPUTracker, hardGPUHints);
     }
 
     public void TeleportFinal()

@@ -41,27 +41,45 @@ public class HoverInfoDisplay : MonoBehaviour
         }
     }
 
+    // Parts we already listen to
+    private readonly System.Collections.Generic.HashSet<XRBaseInteractable> registered =
+        new System.Collections.Generic.HashSet<XRBaseInteractable>();
+    private float nextScan;
+
     private void OnEnable()
     {
-        var interactables = FindObjectsByType<XRBaseInteractable>(FindObjectsSortMode.None);
+        Scan();
+    }
+
+    // Finds parts with PartInfo - INCLUDING hidden ones (e.g. inside NPCBelongings)
+    private void Scan()
+    {
+        var interactables = FindObjectsByType<XRBaseInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var interactable in interactables)
         {
-            if (interactable.GetComponent<PartInfo>() != null)
-            {
-                interactable.hoverEntered.AddListener(OnHoverEntered);
-                interactable.hoverExited.AddListener(OnHoverExited);
-            }
+            if (interactable == null || registered.Contains(interactable)) continue;
+            if (interactable.GetComponent<PartInfo>() == null) continue;
+            interactable.hoverEntered.AddListener(OnHoverEntered);
+            interactable.hoverExited.AddListener(OnHoverExited);
+            registered.Add(interactable);
         }
+    }
+
+    private void Update()
+    {
+        // Also picks up parts created or added later
+        if (Time.time >= nextScan) { nextScan = Time.time + 2f; Scan(); }
     }
 
     private void OnDisable()
     {
-        var interactables = FindObjectsByType<XRBaseInteractable>(FindObjectsSortMode.None);
-        foreach (var interactable in interactables)
+        foreach (var interactable in registered)
         {
+            if (interactable == null) continue;
             interactable.hoverEntered.RemoveListener(OnHoverEntered);
             interactable.hoverExited.RemoveListener(OnHoverExited);
         }
+        registered.Clear();
     }
 
     private void OnHoverEntered(HoverEnterEventArgs args)
