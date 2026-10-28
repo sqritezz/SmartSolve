@@ -37,6 +37,8 @@ public class GPUMediumManager : MonoBehaviour
 
     [Header("PC running feedback (optional)")]
     public Transform[] fans;
+    [Tooltip("Each fan finds its own spin axis (its thinnest side). Untick to use Fan Axis for all.")]
+    public bool autoFanAxis = true;
     public Vector3 fanAxis = Vector3.forward;
     public float fanSpeed = 900f;
     public GameObject[] runningLights;
@@ -169,7 +171,10 @@ public class GPUMediumManager : MonoBehaviour
         CheckNewGpuSnap();
 
         if (pcOn && fans != null)
-            foreach (var f in fans) if (f != null) f.Rotate(fanAxis, fanSpeed * Time.deltaTime, Space.Self);
+            foreach (var f in fans)
+                if (f == null) continue;
+                else if (autoFanAxis) FanAxisFinder.Spin(f, fanSpeed * Time.deltaTime);
+                else f.Rotate(fanAxis, fanSpeed * Time.deltaTime, Space.Self);
 
         TryAdvance();
     }

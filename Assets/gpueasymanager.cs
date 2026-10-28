@@ -36,6 +36,8 @@ public class GPUEasyManager : MonoBehaviour
     [Header("PC running feedback (optional)")]
     [Tooltip("Fan blades that spin while the PC runs (CPU fan, case fan, GPU fans...)")]
     public Transform[] fans;
+    [Tooltip("Each fan finds its own spin axis (its thinnest side). Untick to use Fan Axis for all.")]
+    public bool autoFanAxis = true;
     public Vector3 fanAxis = Vector3.forward;
     public float fanSpeed = 900f;
     [Tooltip("Power LED / lights turned on while the PC runs")]
@@ -139,7 +141,10 @@ public class GPUEasyManager : MonoBehaviour
         CheckPlugTouch();
 
         if (pcOn && fans != null)
-            foreach (var f in fans) if (f != null) f.Rotate(fanAxis, fanSpeed * Time.deltaTime, Space.Self);
+            foreach (var f in fans)
+                if (f == null) continue;
+                else if (autoFanAxis) FanAxisFinder.Spin(f, fanSpeed * Time.deltaTime);
+                else f.Rotate(fanAxis, fanSpeed * Time.deltaTime, Space.Self);
 
         TryAdvance();
     }

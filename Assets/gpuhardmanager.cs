@@ -36,6 +36,8 @@ public class GPUHardManager : MonoBehaviour
     public Transform[] pcFans;
     [Tooltip("The graphics card's fans - only spin once the PCIe cable is plugged in")]
     public Transform[] gpuFans;
+    [Tooltip("Each fan finds its own spin axis (its thinnest side). Untick to use Fan Axis for all.")]
+    public bool autoFanAxis = true;
     public Vector3 fanAxis = Vector3.forward;
     public float fanSpeed = 900f;
     [Tooltip("Power LED etc. on while the PC runs")]
@@ -155,7 +157,10 @@ public class GPUHardManager : MonoBehaviour
     private void Spin(Transform[] fans)
     {
         if (fans == null) return;
-        foreach (var f in fans) if (f != null) f.Rotate(fanAxis, fanSpeed * Time.deltaTime, Space.Self);
+        foreach (var f in fans)
+            if (f == null) continue;
+            else if (autoFanAxis) FanAxisFinder.Spin(f, fanSpeed * Time.deltaTime);
+            else f.Rotate(fanAxis, fanSpeed * Time.deltaTime, Space.Self);
     }
 
     private static bool AnyHovered(XRBaseInteractable[] list)

@@ -37,6 +37,11 @@ public class PauseWhileOpen : MonoBehaviour
 
         FreezeAnimators();
         if (grayScreen) ShowGray(true);
+
+        // The pause menu's own animations (button highlight, Option / PC Room panels
+        // opening and closing) must keep playing while the game is frozen
+        foreach (var a in GetComponentsInChildren<Animator>(true))
+            a.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     private void OnDisable()

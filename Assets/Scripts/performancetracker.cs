@@ -79,9 +79,10 @@ public class PerformanceTracker : MonoBehaviour
 
     // Call this when the REAL level begins (after the tutorial).
     // Resets everything, so anything done during the tutorial is forgotten.
+    // Calling it again (e.g. from On Tutorial Complete) RESTARTS the timer from 0,
+    // so time that leaked in during the tutorial is thrown away.
     public void StartTracking()
     {
-        if (isTracking) return;
         isTracking = true;
         finished = false;
         wrongAttempts = 0;
