@@ -23,6 +23,10 @@ public class PerformanceTracker : MonoBehaviour
     [Tooltip("Finish within this time for 2 stars (max 1 mistake and 1 hint)")]
     public float twoStarTime = 120f;
 
+    [Header("Level menu")]
+    [Tooltip("Name used to save this level's best time for the level menu, e.g. RAM Easy (must match the card's LevelResultText)")]
+    public string levelName = "";
+
     [Header("Hints")]
     [Tooltip("Stars taken away for EACH hint used")]
     public int starsLostPerHint = 1;
@@ -120,6 +124,7 @@ public class PerformanceTracker : MonoBehaviour
         }
 
         finished = true;   // timer stops here
+        LevelResults.SaveTime(levelName, elapsedTime);   // best time for the level menu
 
         // 1. Stars from time + mistakes
         int stars;
