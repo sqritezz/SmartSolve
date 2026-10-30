@@ -38,8 +38,21 @@ public class HoverInfoDisplay : MonoBehaviour
             panelRect = infoPanel.GetComponent<RectTransform>();
             if (panelRect == null) panelRect = infoPanel.GetComponentInChildren<RectTransform>();
             infoPanel.SetActive(false);
+
+            // The panel must never catch the ray - otherwise pointing at it ends the
+            // hover on the part, the panel hides, the part is hovered again... = flicker
+            foreach (var gr in infoPanel.GetComponentsInChildren<UnityEngine.UI.GraphicRaycaster>(true)) gr.enabled = false;
+            foreach (var col in infoPanel.GetComponentsInChildren<Collider>(true)) col.enabled = false;
+            var cg = infoPanel.GetComponent<CanvasGroup>();
+            if (cg == null) cg = infoPanel.AddComponent<CanvasGroup>();
+            cg.blocksRaycasts = false;
+            cg.interactable = false;
         }
     }
+
+    [Tooltip("Seconds the panel stays after the ray leaves the part (stops flicker)")]
+    public float hideDelay = 0.2f;
+    private float hideAt = -1f;
 
     // Parts we already listen to
     private readonly System.Collections.Generic.HashSet<XRBaseInteractable> registered =
@@ -69,6 +82,13 @@ public class HoverInfoDisplay : MonoBehaviour
     {
         // Also picks up parts created or added later
         if (Time.time >= nextScan) { nextScan = Time.time + 2f; Scan(); }
+
+        if (hideAt > 0f && Time.unscaledTime >= hideAt)
+        {
+            var xi = hoveredPart != null ? hoveredPart.GetComponent<XRBaseInteractable>() : null;
+            if (xi != null && xi.isHovered) hideAt = -1f;   // came back in time
+            else HideNow();
+        }
     }
 
     private void OnDisable()
@@ -87,6 +107,10 @@ public class HoverInfoDisplay : MonoBehaviour
         var info = args.interactableObject.transform.GetComponent<PartInfo>();
         if (info == null) return;
 
+        hideAt = -1f;
+        if (hoveredPart == args.interactableObject.transform && infoPanel != null && infoPanel.activeSelf)
+            return; // same part again - keep the panel where it is
+
         hoveredPart = args.interactableObject.transform;
         currentSpot = -1; // pick a fresh spot
 
@@ -99,13 +123,19 @@ public class HoverInfoDisplay : MonoBehaviour
 
     private void OnHoverExited(HoverExitEventArgs args)
     {
-        if (args.interactableObject.transform == hoveredPart)
-        {
-            hoveredPart = null;
-            currentSpot = -1;
-            if (infoPanel != null)
-                infoPanel.SetActive(false);
-        }
+        if (args.interactableObject.transform != hoveredPart) return;
+        // Other hand still pointing at it? Keep showing.
+        if (args.interactableObject is XRBaseInteractable xi && xi.isHovered) return;
+        hideAt = Time.unscaledTime + hideDelay;   // hide a moment later (ray flickering at edges)
+    }
+
+    private void HideNow()
+    {
+        hideAt = -1f;
+        hoveredPart = null;
+        currentSpot = -1;
+        if (infoPanel != null)
+            infoPanel.SetActive(false);
     }
 
     private void LateUpdate()

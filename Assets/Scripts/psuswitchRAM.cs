@@ -58,6 +58,10 @@ public class PSUSwitch1 : MonoBehaviour
     [Tooltip("Press + for each extra off/on step")]
     public SwitchStep[] moreSteps = new SwitchStep[0];
 
+    [Header("Only flip when it ticks a step")]
+    [Tooltip("Tick = the switch only flips when that press completes the CURRENT checklist step. Extra presses (pressing twice, pressing during another step) are ignored, so the switch never gets out of sync with the checklist.")]
+    public bool onlyWhenItCompletesAStep = false;
+
     [Header("Audio")]
     public AudioSource toggleSound;
 
@@ -98,6 +102,9 @@ public class PSUSwitch1 : MonoBehaviour
             return;
         }
 
+        if (onlyWhenItCompletesAStep && checklist != null && !WouldCompleteAStep(!isOn))
+            return;
+
         isOn = !isOn;
         ApplyVisual();
 
@@ -129,6 +136,22 @@ public class PSUSwitch1 : MonoBehaviour
         bool matches = onTurningOn ? isOn : !isOn;
         if (matches && checklist.IsCurrentStep(group, objective))
             checklist.CompleteObjective(group, objective);
+    }
+
+    // Would flipping the switch to 'newOn' tick the current checklist step?
+    private bool WouldCompleteAStep(bool newOn)
+    {
+        if (Matches(completeOnTurningOn, newOn, groupIndex, objectiveIndex)) return true;
+        if (useSecondStep && Matches(secondCompleteOnTurningOn, newOn, secondGroupIndex, secondObjectiveIndex)) return true;
+        if (moreSteps != null)
+            foreach (var st in moreSteps)
+                if (st != null && Matches(st.completeOnTurningOn, newOn, st.groupIndex, st.objectiveIndex)) return true;
+        return false;
+    }
+
+    private bool Matches(bool onTurningOn, bool newOn, int group, int objective)
+    {
+        return onTurningOn == newOn && checklist.IsCurrentStep(group, objective);
     }
 
     // Call this from NPCDialogue once the conversation finishes
