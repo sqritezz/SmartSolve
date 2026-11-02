@@ -21,6 +21,13 @@ public class TutorialHighlighter : MonoBehaviour
         public GameObject[] targets;
     }
 
+    public enum ShowFor { Everyone, BeginnersOnly }
+
+    [Header("Who sees these highlights")]
+    [Tooltip("Everyone = always on (use for TUTORIALS).\n" +
+             "Beginners Only = only if the player answered NO on the 'knowledgeable in hardware?' panel (use for REAL SCENES).")]
+    public ShowFor showFor = ShowFor.Everyone;
+
     [Header("Checklist to follow")]
     public SequentialChecklist checklist;
 
@@ -72,6 +79,18 @@ public class TutorialHighlighter : MonoBehaviour
 
     private void Update()
     {
+        // Experienced player in a real scene: no highlights at all
+        if (showFor == ShowFor.BeginnersOnly && ExperienceChoice.IsExperienced)
+        {
+            if (activeNow.Count > 0)
+            {
+                foreach (var go in activeNow) TurnOff(go);
+                activeNow.Clear();
+            }
+            lastGroup = -2;
+            return;
+        }
+
         int group = CurrentGroup();
         if (group != lastGroup)
         {
@@ -129,7 +148,15 @@ public class TutorialHighlighter : MonoBehaviour
             if (rend == null || rend.transform.IsChildOf(transform)) continue;
             for (int m = 0; m < lit.baseColors[r].Length; m++)
             {
-                Color c = Color.Lerp(lit.baseColors[r][m], highlightColor, k);
+                // read the material's color NOW (it may have been swapped, e.g. dirty -> clean RAM)
+                var mats = rend.sharedMaterials;
+                Color baseC = lit.baseColors[r][m];
+                if (m < mats.Length && mats[m] != null)
+                {
+                    if (mats[m].HasProperty(BaseColorID)) baseC = mats[m].GetColor(BaseColorID);
+                    else if (mats[m].HasProperty(ColorID)) baseC = mats[m].GetColor(ColorID);
+                }
+                Color c = Color.Lerp(baseC, highlightColor, k);
                 rend.GetPropertyBlock(mpb, m);
                 mpb.SetColor(BaseColorID, c);
                 mpb.SetColor(ColorID, c);
@@ -164,10 +191,8 @@ public class TutorialHighlighter : MonoBehaviour
             if (rend == null) continue;
             for (int m = 0; m < lit.baseColors[r].Length; m++)
             {
-                rend.GetPropertyBlock(mpb, m);
-                mpb.SetColor(BaseColorID, lit.baseColors[r][m]);
-                mpb.SetColor(ColorID, lit.baseColors[r][m]);
-                rend.SetPropertyBlock(mpb, m);
+                // remove the override completely, so the real material shows again
+                rend.SetPropertyBlock(null, m);
             }
         }
         if (lit.arrow != null) lit.arrow.gameObject.SetActive(false);
