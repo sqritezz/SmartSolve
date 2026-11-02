@@ -21,11 +21,35 @@ public class ExperienceChoice : MonoBehaviour
     [Tooltip("Optional: what to do after choosing (e.g. show the main menu)")]
     public UnityEvent onChosen;
 
-    // Restarting the game (Restart button): already answered, so don't ask again
+    // Set by the Restart button: skip the question ONCE after restarting
+    public static bool SkipQuestionOnce = false;
+
+    // Unity may keep these values between Play sessions in the Editor - start clean
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        IsExperienced = false; HasChosen = false; SkipQuestionOnce = false; OnChanged = null;
+    }
+
     private void Start()
     {
-        if (HasChosen && panelToHide != null) panelToHide.SetActive(false);
+        if (SkipQuestionOnce)
+        {
+            SkipQuestionOnce = false;
+            if (panelToHide != null) panelToHide.SetActive(false);
+            onChosen?.Invoke();
+        }
     }
+
+    // Used by the Options menu's Indicators switch (IndicatorOption)
+    public static void SetIndicatorsInRealScene(bool on)
+    {
+        IsExperienced = !on;
+        HasChosen = true;
+        OnChanged?.Invoke();
+    }
+
+    public static event System.Action OnChanged;
 
     public void ChooseExperienced() { Choose(true); }
     public void ChooseBeginner() { Choose(false); }
@@ -34,6 +58,7 @@ public class ExperienceChoice : MonoBehaviour
     {
         IsExperienced = experienced;
         HasChosen = true;
+        OnChanged?.Invoke();
         Debug.Log("[ExperienceChoice] Player is " + (experienced ? "EXPERIENCED (highlights only in tutorials)"
                                                                  : "a BEGINNER (highlights in tutorials and real scenes)"));
         if (panelToHide != null) panelToHide.SetActive(false);

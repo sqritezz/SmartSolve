@@ -45,12 +45,20 @@ public class FinalChallengeManager : MonoBehaviour
     public XRGrabInteractable ramStick;
     [Tooltip("Empty at the RAM slot - the fully seated position/rotation.")]
     public Transform ramSlotSpot;
+    [Tooltip("At start the RAM is placed LOOSE: raised this much (meters) out of its slot...")]
+    public float ramLooseRaise = 0.015f;
+    [Tooltip("...and tilted this much (degrees), so the player can SEE it isn't seated")]
+    public float ramLooseTilt = 8f;
 
     [Header("Monitor cable")]
     [Tooltip("The monitor cable plug (XR Grab Interactable + Rigidbody + Collider). Starts in the MOTHERBOARD port.")]
     public XRGrabInteractable monitorCable;
     public Transform motherboardPortSpot;
     public Transform gpuPortSpot;
+
+    [Tooltip("Ticked = wherever you placed the Monitor Cable in the scene (in Stop mode) IS the motherboard port. " +
+             "The MB Port spot is moved there automatically when the game starts.")]
+    public bool cableStartsWhereIPlacedIt = true;
 
     [Tooltip("How close (meters) a part must get to its spot to snap in")]
     public float snapDistance = 0.05f;
@@ -139,9 +147,21 @@ public class FinalChallengeManager : MonoBehaviour
         pcOn = false; pinIn = false; ramIn = false; finished = false;
         cablePort = 1; cableMoved = false; timeTaken = 0f;
         if (powerOnWarning != null) powerOnWarning.SetActive(false);
+        if (cableStartsWhereIPlacedIt && monitorCable != null && motherboardPortSpot != null)
+            motherboardPortSpot.SetPositionAndRotation(monitorCable.transform.position, monitorCable.transform.rotation);
         Place(monitorCable, motherboardPortSpot);
+        PlaceRamLoose();
         if (startTimerOnStart) StartChallenge();
         UpdatePC();
+    }
+
+    // Puts the RAM half out of its slot (raised + tilted) - the RAM problem
+    private void PlaceRamLoose()
+    {
+        if (ramStick == null || ramSlotSpot == null) return;
+        Transform t = ramStick.transform;
+        t.position = ramSlotSpot.position + ramSlotSpot.up * ramLooseRaise;
+        t.rotation = Quaternion.AngleAxis(ramLooseTilt, ramSlotSpot.right) * ramSlotSpot.rotation;
     }
 
     // Call from the NPC dialogue's On Dialogue Finished (optional)
