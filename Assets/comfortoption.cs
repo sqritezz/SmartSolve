@@ -26,7 +26,12 @@ public class ComfortOptions : MonoBehaviour
     public TMP_Text movementText;
     public TMP_Text vignetteText;
 
-    [Header("Defaults (first time the game runs)")]
+    [Header("Saving")]
+    [Tooltip("Unticked = every Play / every game start uses the Defaults below (choices only last until the game closes).\n" +
+             "Ticked = the player's choices are remembered after closing the game.")]
+    public bool rememberBetweenSessions = false;
+
+    [Header("Defaults (used at every start while 'Remember' is unticked)")]
     public bool snapTurning = true;
     public float snapAngle = 45f;
     public bool smoothMovement = true;
@@ -37,6 +42,18 @@ public class ComfortOptions : MonoBehaviour
     private void Awake()
     {
         FindProviders();
+
+        if (!rememberBetweenSessions)
+        {
+            // Fresh start every time: forget old choices, use the Defaults
+            PlayerPrefs.DeleteKey("SS_SnapTurn");
+            PlayerPrefs.DeleteKey("SS_SnapAngle");
+            PlayerPrefs.DeleteKey("SS_SmoothMove");
+            PlayerPrefs.DeleteKey("SS_Vignette");
+            ApplyAll();
+            return;
+        }
+
         // Load saved choices
         snapTurning = PlayerPrefs.GetInt("SS_SnapTurn", snapTurning ? 1 : 0) == 1;
         snapAngle = PlayerPrefs.GetFloat("SS_SnapAngle", snapAngle);
@@ -76,6 +93,7 @@ public class ComfortOptions : MonoBehaviour
     // ---------- Apply ----------
     private void SaveApply()
     {
+        if (!rememberBetweenSessions) { ApplyAll(); return; }
         PlayerPrefs.SetInt("SS_SnapTurn", snapTurning ? 1 : 0);
         PlayerPrefs.SetFloat("SS_SnapAngle", snapAngle);
         PlayerPrefs.SetInt("SS_SmoothMove", smoothMovement ? 1 : 0);

@@ -9,18 +9,43 @@ public static class LevelResults
 {
     public static event System.Action OnChanged;
 
-    // Results are only saved in the real game (the built APK on the Quest),
-    // NOT while testing in the Unity Editor.
-    public static bool CanSave => !Application.isEditor;
+    // Results are only saved in the REAL game (the headset build), not while testing in
+    // the Unity Editor. Set this to true if you want to test saving in the Editor.
+    public static bool SaveInEditor = false;
 
-    // Every level name the menu uses (for resetting)
-    public static readonly string[] AllLevels =
+    // MASTER SWITCH: false = nothing is saved or shown anywhere (Editor AND headset builds).
+    // Change to true only for the FINAL build you deploy.
+    public static readonly bool SavingEnabled = false;
+
+    private static bool CanSave => SavingEnabled && (!Application.isEditor || SaveInEditor);
+
+    // Every level name that was ever saved (so Reset can clear them all)
+    private const string ListKey = "SS_LevelList";
+    private static readonly string[] DefaultLevels =
     {
         "RAM Easy", "RAM Medium", "RAM Hard",
         "PSU Easy", "PSU Medium", "PSU Hard",
-        "GPU Easy", "GPU Medium", "GPU Hard",
-        "Final"
+        "GPU Easy", "GPU Medium", "GPU Hard", "Final"
     };
+
+    private static void Remember(string level)
+    {
+        string list = PlayerPrefs.GetString(ListKey, "");
+        if (("|" + list + "|").Contains("|" + level + "|")) return;
+        PlayerPrefs.SetString(ListKey, list.Length == 0 ? level : list + "|" + level);
+    }
+
+    // Clears every saved time and quiz score
+    public static void ResetAll()
+    {
+        var levels = new System.Collections.Generic.List<string>(DefaultLevels);
+        foreach (var l in PlayerPrefs.GetString(ListKey, "").Split('|'))
+            if (l.Length > 0 && !levels.Contains(l)) levels.Add(l);
+        ClearAll(levels.ToArray());
+        PlayerPrefs.DeleteKey(ListKey);
+        PlayerPrefs.Save();
+        Debug.Log("[LevelResults] All saved times and quiz scores were reset.");
+    }
 
     private static string TimeKey(string level) => "SS_Time_" + level;
     private static string QuizKey(string level) => "SS_Quiz_" + level;
@@ -29,7 +54,8 @@ public static class LevelResults
     // ---- Time ----
     public static void SaveTime(string level, float seconds)
     {
-        if (!CanSave || string.IsNullOrEmpty(level) || seconds <= 0f) return;
+        if (string.IsNullOrEmpty(level) || seconds <= 0f || !CanSave) return;
+        Remember(level);
         float best = PlayerPrefs.GetFloat(TimeKey(level), -1f);
         if (best < 0f || seconds < best)          // keep the fastest
         {
@@ -41,6 +67,8 @@ public static class LevelResults
 
     public static bool TryGetTime(string level, out float seconds)
     {
+        seconds = -1f;
+        if (!SavingEnabled) return false;      // show "--" until saving is turned on
         seconds = PlayerPrefs.GetFloat(TimeKey(level), -1f);
         return seconds > 0f;
     }
@@ -67,7 +95,8 @@ public static class LevelResults
 
     public static void SaveQuiz(string level, int correct, int total)
     {
-        if (!CanSave || string.IsNullOrEmpty(level) || total <= 0) return;
+        if (string.IsNullOrEmpty(level) || total <= 0 || !CanSave) return;
+        Remember(level);
         float score = (float)correct / total;
         float best = PlayerPrefs.GetFloat(QuizScoreKey(level), -1f);
         if (score >= best)                         // keep the best score
@@ -81,21 +110,15 @@ public static class LevelResults
 
     public static bool TryGetQuiz(string level, out string result)
     {
+        result = "";
+        if (!SavingEnabled) return false;      // show "--" until saving is turned on
         result = PlayerPrefs.GetString(QuizKey(level), "");
         return !string.IsNullOrEmpty(result);
     }
 
-    // Wipe every saved time and quiz score
-    // (used by Tools > SmartSolve > Reset Saved Times And Quiz Scores)
-    public static void ResetAll()
-    {
-        ClearAll(AllLevels);
-        Debug.Log("[LevelResults] All saved times and quiz scores were cleared.");
-    }
-
+    // Wipe everything (e.g. a "Reset progress" button)
     public static void ClearAll() { ResetAll(); }
 
-    // Wipe only the given levels
     public static void ClearAll(string[] levels)
     {
         foreach (var l in levels)

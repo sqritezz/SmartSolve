@@ -15,6 +15,7 @@ public class RestartScene : MonoBehaviour
 
     public void Restart()
     {
+        Debug.Log("[RestartScene] Restart pressed - reloading the scene...");
         // Undo the pause first (pause panel sets time to 0 and mutes sounds)
         Time.timeScale = 1f;
         AudioListener.pause = false;
@@ -26,16 +27,32 @@ public class RestartScene : MonoBehaviour
         // A helper that survives the reload, so it can teleport the player afterwards
         var runner = new GameObject("RestartRunner").AddComponent<RestartRunner>();
         DontDestroyOnLoad(runner.gameObject);
-        runner.Go(SceneManager.GetActiveScene().buildIndex, level);
+        runner.Go(SceneManager.GetActiveScene(), level);
     }
 
     private class RestartRunner : MonoBehaviour
     {
-        public void Go(int sceneIndex, string level) { StartCoroutine(Run(sceneIndex, level)); }
+        public void Go(Scene scene, string level) { StartCoroutine(Run(scene, level)); }
 
-        private IEnumerator Run(int sceneIndex, string level)
+        private IEnumerator Run(Scene scene, string level)
         {
-            yield return SceneManager.LoadSceneAsync(sceneIndex);
+            AsyncOperation op;
+            if (scene.buildIndex >= 0)
+                op = SceneManager.LoadSceneAsync(scene.buildIndex);
+            else
+            {
+#if UNITY_EDITOR
+                // Scene not in the Build list: still works while testing in the Editor
+                op = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(
+                        scene.path, new LoadSceneParameters(LoadSceneMode.Single));
+#else
+                op = SceneManager.LoadSceneAsync(scene.name);
+#endif
+                Debug.LogWarning("[RestartScene] '" + scene.name + "' is not in File > Build Profiles > Scene List. " +
+                                 "Add it, or Restart will NOT work on the Quest.");
+            }
+            if (op == null) { Debug.LogError("[RestartScene] Couldn't reload the scene."); Destroy(gameObject); yield break; }
+            yield return op;
             // Let every object finish its Start() first
             yield return null;
             yield return null;
