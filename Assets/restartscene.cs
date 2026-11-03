@@ -21,13 +21,14 @@ public class RestartScene : MonoBehaviour
         AudioListener.pause = false;
 
         string level = backToSameLevel ? TeleportToPoint.CurrentLevel : "";
+        TeleportToPoint.RestartIntoLevel = level;   // TeleportToPoint takes the player there after the reload
         // Going back to a level: don't ask "How well do you know computer?" again
         if (!string.IsNullOrEmpty(level) && ExperienceChoice.HasChosen) ExperienceChoice.SkipQuestionOnce = true;
 
         // A helper that survives the reload, so it can teleport the player afterwards
         var runner = new GameObject("RestartRunner").AddComponent<RestartRunner>();
         DontDestroyOnLoad(runner.gameObject);
-        runner.Go(SceneManager.GetActiveScene(), level);
+        runner.Go(SceneManager.GetActiveScene(), "");
     }
 
     private class RestartRunner : MonoBehaviour

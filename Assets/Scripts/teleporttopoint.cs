@@ -6,6 +6,9 @@ public class TeleportToPoint : MonoBehaviour
     // Name of the level the player is in now (matches QuizGate quiz names, e.g. "RAM Medium")
     public static string CurrentLevel = "";
 
+    // Set by the Restart button: after the scene reloads, go straight back to this level
+    public static string RestartIntoLevel = "";
+
     public Transform xrRig;
     public Transform pcRoom;
 
@@ -93,6 +96,16 @@ public class TeleportToPoint : MonoBehaviour
             hintButton.SetActive(false);
 
         ClearHints();
+
+        // Restarted from the pause menu: back into the same level, no intro
+        if (!string.IsNullOrEmpty(RestartIntoLevel))
+        {
+            string level = RestartIntoLevel;
+            RestartIntoLevel = "";
+            home.SetActive(false);
+            SendMessage("Teleport" + level.Replace(" ", ""), SendMessageOptions.RequireReceiver);
+            return;
+        }
 
         if (goToMenuRoomOnStart && menuRoomPoint != null)
             StartCoroutine(GoToMenuRoomAfterIntro());

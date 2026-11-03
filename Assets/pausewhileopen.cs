@@ -22,6 +22,12 @@ public class PauseWhileOpen : MonoBehaviour
     [Tooltip("How far the gray starts (meters). Keep it a bit FARTHER than the pause panel, so the panel and ray stay bright.")]
     public float grayDistance = 1.4f;
 
+    [Header("Start clean every time the pause menu opens")]
+    [Tooltip("Sub-panels and dark overlays inside the pause menu (Panel, Panel1-3, Restartpanel, PCroompanel, " +
+             "Optionpanel, Menupanel...). They are turned OFF each time the pause menu opens, so a panel " +
+             "left open (even invisible) can never block the buttons.")]
+    public GameObject[] closeOnOpen;
+
     public static bool IsPaused { get; private set; }
 
     private readonly List<Animator> frozen = new List<Animator>();
@@ -31,6 +37,9 @@ public class PauseWhileOpen : MonoBehaviour
 
     private void OnEnable()
     {
+        if (closeOnOpen != null)
+            foreach (var g in closeOnOpen) if (g != null) g.SetActive(false);
+
         IsPaused = true;
         Time.timeScale = 0f;
         if (pauseAudio) AudioListener.pause = true;
