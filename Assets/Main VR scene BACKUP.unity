@@ -953033,6 +953033,7 @@ MonoBehaviour:
   grayColor: {r: 0.15, g: 0.15, b: 0.15, a: 0.6}
   dimShader: {fileID: 4800000, guid: e6f511759301e4c4086eb8b367dff0c1, type: 3}
   grayDistance: 1.4
+  closeOnOpen: []
 --- !u!114 &1523120205
 MonoBehaviour:
   m_ObjectHideFlags: 0
