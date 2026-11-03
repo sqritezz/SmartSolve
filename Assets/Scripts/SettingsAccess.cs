@@ -61,9 +61,13 @@ public class SettingsAccess : MonoBehaviour
     // pause content we hid
     readonly List<GameObject> hiddenPauseChildren = new List<GameObject>();
 
+    bool homePlacementSaved;
+
     void Awake()
     {
         if (settingsPanel == null) return;
+
+        SaveHomePlacement();
 
         // Animator must keep working while the game is paused (Time.timeScale = 0)
         foreach (var anim in settingsPanel.GetComponentsInChildren<Animator>(true))
@@ -75,9 +79,46 @@ public class SettingsAccess : MonoBehaviour
     /// <summary>settingsbtn (Home menu) OnClick</summary>
     public void OpenFromHome()
     {
+        if (settingsPanel == null) return;
+
+        // If the panel was left on the pause canvas (e.g. went to Main menu while settings was open),
+        // bring it back to Home(UI) first.
+        if (CurrentSource == Source.Pause) CloseSettings();
+        if (settingsPanel.transform.parent != originalParent)
+        {
+            Debug.LogWarning("[SettingsAccess] Panel was not in Home(UI) - moving it back");
+            ReturnPanelToHome();
+        }
+        if (panelAnimator != null && !panelAnimator.enabled) panelAnimator.enabled = true;
+
         CurrentSource = Source.Home;
         Debug.Log("[SettingsAccess] Opening settings from HOME");
+
+        // make sure every parent (Home(UI)/GameObject) is ON
+        for (Transform p = settingsPanel.transform.parent; p != null; p = p.parent)
+            if (!p.gameObject.activeSelf)
+            {
+                Debug.LogWarning($"[SettingsAccess] Parent was OFF, turning ON: {GetPath(p)}");
+                p.gameObject.SetActive(true);
+            }
+
         ShowSettings();
+
+        // restart the Animator from the beginning so the open animation plays again
+        var anim = settingsPanel.GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.enabled = true;
+            anim.Rebind();
+            anim.Update(0f);
+        }
+
+        if (debugLogs)
+        {
+            Debug.Log("[SettingsAccess][DEBUG] --- HOME open ---");
+            LogDebugInfo();
+            debugFramesLeft = 2;
+        }
     }
 
     /// <summary>optionbtn (Pause menu) OnClick</summary>
@@ -92,17 +133,10 @@ public class SettingsAccess : MonoBehaviour
         CurrentSource = Source.Pause;
         Debug.Log("[SettingsAccess] Opening settings from PAUSE");
 
-        // 1. remember where the panel lives in Home(UI)
+        // 1. make sure we know where the panel lives in Home(UI)
+        //    (saved once in Awake - never re-saved here, so it can't get lost)
         var rt = (RectTransform)settingsPanel.transform;
-        originalParent = rt.parent;
-        originalSiblingIndex = rt.GetSiblingIndex();
-        originalLocalPos = rt.localPosition;
-        originalLocalRot = rt.localRotation;
-        originalLocalScale = rt.localScale;
-        originalAnchorMin = rt.anchorMin;
-        originalAnchorMax = rt.anchorMax;
-        originalPivot = rt.pivot;
-        originalAnchoredPos = rt.anchoredPosition;
+        if (!homePlacementSaved) SaveHomePlacement();
 
         // 2. hide the pause menu's own content (bg, title, buttons) but keep the canvas ON
         hiddenPauseChildren.Clear();
@@ -178,7 +212,7 @@ public class SettingsAccess : MonoBehaviour
                   $"Animator = {(panelAnimator ? (panelAnimator.enabled ? "ON" : "OFF") : "none")}");
 
         Debug.Log($"[SettingsAccess][DEBUG] Settingspanel activeInHierarchy = {settingsPanel.activeInHierarchy}, " +
-                  $"parent = {(t.parent ? t.parent.name : "none")}, Ypanelbtn active = {pauseCanvas.gameObject.activeInHierarchy}");
+                  $"parent = {(t.parent ? t.parent.name : "none")}, Ypanelbtn active = {(pauseCanvas ? pauseCanvas.gameObject.activeInHierarchy.ToString() : "not set")}");
 
         // first parent that is turned OFF
         for (Transform p = t; p != null; p = p.parent)
@@ -213,6 +247,7 @@ public class SettingsAccess : MonoBehaviour
     public void CloseSettings()
     {
         if (settingsPanel == null) return;
+        Debug.Log($"[SettingsAccess] CloseSettings (source = {CurrentSource})");
         settingsPanel.SetActive(false);
         debugFramesLeft = -1;
 
@@ -256,6 +291,21 @@ public class SettingsAccess : MonoBehaviour
             foreach (var p in subPanels) if (p != null) p.SetActive(false);
             defaultSubPanel.SetActive(true);
         }
+    }
+
+    void SaveHomePlacement()
+    {
+        var rt = (RectTransform)settingsPanel.transform;
+        originalParent = rt.parent;
+        originalSiblingIndex = rt.GetSiblingIndex();
+        originalLocalPos = rt.localPosition;
+        originalLocalRot = rt.localRotation;
+        originalLocalScale = rt.localScale;
+        originalAnchorMin = rt.anchorMin;
+        originalAnchorMax = rt.anchorMax;
+        originalPivot = rt.pivot;
+        originalAnchoredPos = rt.anchoredPosition;
+        homePlacementSaved = true;
     }
 
     void ReturnPanelToHome()
