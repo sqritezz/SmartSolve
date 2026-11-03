@@ -4,7 +4,7 @@ using TMPro;
 // Options menu: COMFORT settings (saved, so they stay after closing the game).
 //   Turning        : Snap / Smooth                  -> button On Click: ComfortOptions.ToggleTurning
 //   Snap angle     : 30 / 45 / 90                   -> button On Click: ComfortOptions.NextSnapAngle
-//   Movement       : Smooth + Teleport / Teleport only -> button On Click: ComfortOptions.ToggleMovement
+//   Movement speed : Slow / Normal / Fast          -> button On Click: ComfortOptions.NextMoveSpeed
 //   Vignette       : On / Off                       -> button On Click: ComfortOptions.ToggleVignette
 // Put ONE on the Option panel. Finds the XR Origin's turn/move providers by itself.
 public class ComfortOptions : MonoBehaviour
@@ -14,7 +14,7 @@ public class ComfortOptions : MonoBehaviour
     public Behaviour snapTurn;
     [Tooltip("The Continuous Turn Provider component")]
     public Behaviour smoothTurn;
-    [Tooltip("The Continuous Move Provider component (joystick walking)")]
+    [Tooltip("The Continuous / Dynamic Move Provider component (joystick walking)")]
     public Behaviour smoothMove;
     [Tooltip("Optional: the Tunneling Vignette object (child of Main Camera in the XR starter rig). " +
              "Leave empty if you don't have one - the vignette option then does nothing.")]
@@ -34,7 +34,10 @@ public class ComfortOptions : MonoBehaviour
     [Header("Defaults (used at every start while 'Remember' is unticked)")]
     public bool snapTurning = true;
     public float snapAngle = 45f;
-    public bool smoothMovement = true;
+    [Tooltip("0 = Slow, 1 = Normal, 2 = Fast")]
+    public int moveSpeedLevel = 1;
+    [Tooltip("Walking speed (meters per second) for Slow, Normal, Fast")]
+    public float[] moveSpeeds = { 1f, 2f, 3f };
     public bool vignetteOn = false;
 
     private static readonly float[] Angles = { 30f, 45f, 90f };
@@ -48,7 +51,7 @@ public class ComfortOptions : MonoBehaviour
             // Fresh start every time: forget old choices, use the Defaults
             PlayerPrefs.DeleteKey("SS_SnapTurn");
             PlayerPrefs.DeleteKey("SS_SnapAngle");
-            PlayerPrefs.DeleteKey("SS_SmoothMove");
+            PlayerPrefs.DeleteKey("SS_MoveSpeed");
             PlayerPrefs.DeleteKey("SS_Vignette");
             ApplyAll();
             return;
@@ -57,7 +60,7 @@ public class ComfortOptions : MonoBehaviour
         // Load saved choices
         snapTurning = PlayerPrefs.GetInt("SS_SnapTurn", snapTurning ? 1 : 0) == 1;
         snapAngle = PlayerPrefs.GetFloat("SS_SnapAngle", snapAngle);
-        smoothMovement = PlayerPrefs.GetInt("SS_SmoothMove", smoothMovement ? 1 : 0) == 1;
+        moveSpeedLevel = PlayerPrefs.GetInt("SS_MoveSpeed", moveSpeedLevel);
         vignetteOn = PlayerPrefs.GetInt("SS_Vignette", vignetteOn ? 1 : 0) == 1;
         ApplyAll();
     }
@@ -75,7 +78,9 @@ public class ComfortOptions : MonoBehaviour
 
     // ---------- Buttons ----------
     public void ToggleTurning() { snapTurning = !snapTurning; SaveApply(); }
-    public void ToggleMovement() { smoothMovement = !smoothMovement; SaveApply(); }
+    public void NextMoveSpeed() { moveSpeedLevel = (moveSpeedLevel + 1) % moveSpeeds.Length; SaveApply(); }
+    // Old name, so a Movement button still wired to ToggleMovement keeps working
+    public void ToggleMovement() { NextMoveSpeed(); }
     public void ToggleVignette() { vignetteOn = !vignetteOn; SaveApply(); }
 
     public void NextSnapAngle()
@@ -87,7 +92,6 @@ public class ComfortOptions : MonoBehaviour
 
     // For UI Toggles (checkboxes), if you prefer those
     public void SetSnapTurning(bool on) { snapTurning = on; SaveApply(); }
-    public void SetSmoothMovement(bool on) { smoothMovement = on; SaveApply(); }
     public void SetVignette(bool on) { vignetteOn = on; SaveApply(); }
 
     // ---------- Apply ----------
@@ -96,7 +100,7 @@ public class ComfortOptions : MonoBehaviour
         if (!rememberBetweenSessions) { ApplyAll(); return; }
         PlayerPrefs.SetInt("SS_SnapTurn", snapTurning ? 1 : 0);
         PlayerPrefs.SetFloat("SS_SnapAngle", snapAngle);
-        PlayerPrefs.SetInt("SS_SmoothMove", smoothMovement ? 1 : 0);
+        PlayerPrefs.SetInt("SS_MoveSpeed", moveSpeedLevel);
         PlayerPrefs.SetInt("SS_Vignette", vignetteOn ? 1 : 0);
         PlayerPrefs.Save();
         ApplyAll();
@@ -111,21 +115,28 @@ public class ComfortOptions : MonoBehaviour
             if (prop != null && prop.CanWrite) prop.SetValue(snapTurn, snapAngle);
         }
         if (smoothTurn != null) smoothTurn.enabled = !snapTurning;
-        if (smoothMove != null) smoothMove.enabled = smoothMovement;   // teleport always stays on
+        if (smoothMove != null)
+        {
+            smoothMove.enabled = true;   // joystick walking always on
+            moveSpeedLevel = Mathf.Clamp(moveSpeedLevel, 0, moveSpeeds.Length - 1);
+            var sp = smoothMove.GetType().GetProperty("moveSpeed");
+            if (sp != null && sp.CanWrite) sp.SetValue(smoothMove, moveSpeeds[moveSpeedLevel]);
+        }
         if (vignette != null) vignette.SetActive(vignetteOn);
         RefreshTexts();
     }
 
+    // Only the CURRENT CHOICE goes on the buttons (e.g. "Snap", "45°", "ON").
+    // The labels beside the buttons ("Turning:", "Pag-ikot:"...) use LocalizedText.
     private void RefreshTexts()
     {
-        Set(turningText, LanguageManager.Pick("Turning: ", "Pag-ikot: ") +
-            (snapTurning ? LanguageManager.Pick("Snap", "Snap") : LanguageManager.Pick("Smooth", "Tuloy-tuloy")));
-        Set(snapAngleText, LanguageManager.Pick("Snap angle: ", "Anggulo ng snap: ") + snapAngle + "°");
-        Set(movementText, LanguageManager.Pick("Movement: ", "Paggalaw: ") +
-            (smoothMovement ? LanguageManager.Pick("Smooth + Teleport", "Tuloy-tuloy + Teleport")
-                            : LanguageManager.Pick("Teleport only", "Teleport lang")));
-        Set(vignetteText, LanguageManager.Pick("Comfort vignette: ", "Comfort vignette: ") +
-            (vignetteOn ? LanguageManager.Pick("ON", "BUKAS") : LanguageManager.Pick("OFF", "SARADO")));
+        Set(turningText, snapTurning ? "Snap" : LanguageManager.Pick("Smooth", "Tuloy-tuloy"));
+        Set(snapAngleText, snapAngle + "°");
+        string[] en = { "Slow", "Normal", "Fast" };
+        string[] fil = { "Mabagal", "Normal", "Mabilis" };
+        int i = Mathf.Clamp(moveSpeedLevel, 0, 2);
+        Set(movementText, LanguageManager.Pick(en[i], fil[i]));
+        Set(vignetteText, vignetteOn ? LanguageManager.Pick("ON", "BUKAS") : LanguageManager.Pick("OFF", "SARADO"));
     }
 
     private static void Set(TMP_Text t, string s) { if (t != null) t.text = s; }
