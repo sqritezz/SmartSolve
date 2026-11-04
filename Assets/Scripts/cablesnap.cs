@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-// Attach to Cable Port. When the PSU cable (tag "PSUCable") is released
-// inside the port's trigger, it snaps onto the Snap Point.
+// Attach to Cable Port. When the PSU cable (tag "PSUCable") touches the
+// port's trigger, it snaps onto the Snap Point right away (even while held).
 //
 // "Fit inside the port": after snapping, the cable is placed at these
 // values (relative to Snap Point), so it sits exactly how you fitted it.
@@ -47,9 +47,16 @@ public class CableSnap : MonoBehaviour
         if (!other.CompareTag("PSUCable") || currentCable != null)
             return;
 
+        // Snaps as soon as it touches the port - no need to let go first
+        // (like the desk lamp bulb). If it's in the hand, the hand lets go of it.
         XRGrabInteractable grab = other.GetComponent<XRGrabInteractable>();
-        if (grab != null && grab.isSelected)
-            return;
+        if (grab == null) grab = other.GetComponentInParent<XRGrabInteractable>();
+        if (grab != null && grab.isSelected && grab.interactionManager != null)
+        {
+            var holders = new System.Collections.Generic.List<IXRSelectInteractor>(grab.interactorsSelecting);
+            foreach (var h in holders)
+                grab.interactionManager.SelectExit(h, grab);
+        }
 
         currentCable = other.gameObject;
 

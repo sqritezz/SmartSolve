@@ -8968,7 +8968,7 @@ Transform:
   m_GameObject: {fileID: 14664483}
   serializedVersion: 2
   m_LocalRotation: {x: -0.49795684, y: -0.49703237, z: -0.500616, w: 0.5043624}
-  m_LocalPosition: {x: -4.1438136, y: -3.2074108, z: -10.385576}
+  m_LocalPosition: {x: -4.14, y: -3.21, z: -10.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -243092,8 +243092,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.45891902, y: 0.50759244, z: 0.28392887}
-  m_Center: {x: -3.377252, y: 1.9008951, z: 3.8179061}
+  m_Size: {x: 0.59683746, y: 0.50759244, z: 0.45459303}
+  m_Center: {x: -3.3082707, y: 1.9008927, z: 3.9032278}
 --- !u!82 &396177984
 AudioSource:
   m_ObjectHideFlags: 0
@@ -728042,6 +728042,10 @@ MonoBehaviour:
   showFor: 0
   checklist: {fileID: 234896968}
   steps:
+  - note: Open the door
+    group: 0
+    targets:
+    - {fileID: 3282328464381973728}
   - note: Take the power cable
     group: 1
     targets:
