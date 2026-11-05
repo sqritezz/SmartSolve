@@ -26,12 +26,22 @@ public class RecalibrateHeightButton : MonoBehaviour
 
     private void OnEnable()
     {
+        running = false;
         if (messageText != null) messageText.text = "";
+    }
+
+    // If the panel closes in the middle of the countdown, the countdown stops -
+    // make sure the button works again next time
+    private void OnDisable()
+    {
+        running = false;
     }
 
     public void Press()
     {
-        if (running) return;
+        // Pressing again during the countdown simply starts it over
+        if (running) StopAllCoroutines();
+        running = false;
         if (playerHeight == null) playerHeight = FindFirstObjectByType<FixedPlayerHeight>();
         if (playerHeight == null)
         {
@@ -51,6 +61,7 @@ public class RecalibrateHeightButton : MonoBehaviour
         }
 
         playerHeight.Recalibrate();
+        Debug.Log("[RecalibrateHeightButton] Height recalibrated.", this);
         Show(LanguageManager.Pick(done, doneFilipino));
         yield return new WaitForSecondsRealtime(2f);
         Show("");

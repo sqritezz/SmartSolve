@@ -60,6 +60,9 @@ public class PSUScrew : MonoBehaviour
     [Tooltip("Set by PSUHardManager once the new PSU is installed")]
     public bool canFasten = false;
     [Range(0f, 1f)] public float progress = 0f;
+    [Tooltip("Once the screw is tightened back in (final step), it's DONE: it can't be loosened again")]
+    public bool lockAfterTightened = true;
+    public bool isDone = false;
 
     public bool IsFastened => state == ScrewState.Fastened;
     public bool IsRemoved => state == ScrewState.Removed;
@@ -85,6 +88,7 @@ public class PSUScrew : MonoBehaviour
     private void Start()
     {
         if (powerOnWarning != null) powerOnWarning.SetActive(false);
+        isDone = false;
         ApplyPose();
     }
 
@@ -121,6 +125,9 @@ public class PSUScrew : MonoBehaviour
         bool working = false;
 
         if (!touching) waitForRelease = false;
+
+        // Already tightened back in - nothing more to do with this screw
+        if (isDone) { StopLoop(); ApplyPose(); return; }
 
         if (state == ScrewState.Fastened && touching && !waitForRelease)
         {
@@ -160,6 +167,7 @@ public class PSUScrew : MonoBehaviour
                 state = ScrewState.Fastened;
                 waitForRelease = true;
                 spinAngle = 0f;
+                if (lockAfterTightened) isDone = true;
                 StopLoop(); Play(doneSound);
             }
         }

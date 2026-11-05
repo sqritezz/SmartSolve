@@ -42,6 +42,10 @@ public class PracticeFanTask : MonoBehaviour
     public Transform spinningBlades;
     public Vector3 spinAxis = Vector3.forward;
     public float maxSpinSpeed = 720f;
+    [Tooltip("Speed while the fan is still DUSTY (slow, struggling). Back to Max Spin Speed once it's clean.")]
+    public float dustySpinSpeed = 250f;
+    [Tooltip("Hum pitch while dusty (lower = sounds weaker). 1 = normal.")]
+    [Range(0.5f, 1f)] public float dustyHumPitch = 0.8f;
 
     [Tooltip("Seconds to spin up / spin down")]
     public float spinChangeTime = 1f;
@@ -73,6 +77,7 @@ public class PracticeFanTask : MonoBehaviour
     public bool isFanOn = true;
 
     private float currentSpinSpeed;
+    private bool isClean = false;   // true after the blades AND the case are cleaned
 
     // Where the case sits on the fan, remembered at start
     private Transform caseOriginalParent;
@@ -104,7 +109,8 @@ public class PracticeFanTask : MonoBehaviour
     {
         currentStep = Step.TurnOff;
         isFanOn = true;
-        currentSpinSpeed = maxSpinSpeed;
+        isClean = false;
+        currentSpinSpeed = dustySpinSpeed;   // starts dusty = slow
 
         StartHum();
 
@@ -136,7 +142,8 @@ public class PracticeFanTask : MonoBehaviour
     {
         UpdateHum();
 
-        float target = isFanOn ? maxSpinSpeed : 0f;
+        float onSpeed = isClean ? maxSpinSpeed : dustySpinSpeed;
+        float target = isFanOn ? onSpeed : 0f;
         float rate = spinChangeTime > 0f ? maxSpinSpeed / spinChangeTime : float.MaxValue;
         currentSpinSpeed = Mathf.MoveTowards(currentSpinSpeed, target, rate * Time.deltaTime);
 
@@ -287,6 +294,7 @@ public class PracticeFanTask : MonoBehaviour
 
         CompleteStep(Step.CleanCase);
         currentStep = Step.ReattachCase;
+        isClean = true;   // fully clean -> normal speed when turned back on
     }
 
     // ---------- Helpers ----------
@@ -362,6 +370,7 @@ public class PracticeFanTask : MonoBehaviour
 
         humSource.clip = fanHumClip;
         humSource.volume = audioSource.volume * fanHumVolume;
+        humSource.pitch = isClean ? 1f : dustyHumPitch;
         if (!humSource.isPlaying) humSource.Play();
     }
 

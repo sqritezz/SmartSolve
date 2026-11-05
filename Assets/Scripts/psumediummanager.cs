@@ -44,13 +44,16 @@ public class PSUMediumManager : MonoBehaviour
     public Transform psuFan;
     public Vector3 spinAxis = Vector3.forward;
     public float spinSpeed = 900f;
+    [Tooltip("Other fans (CPU fan, case fans, GPU fans). They spin only while the PC is running " +
+             "(not during the paperclip test). Each finds its own spin axis.")]
+    public Transform[] otherFans;
 
     [Header("Audio")]
     [Tooltip("Leave empty to use the Audio Source on this object")]
     public AudioSource audioSource;
     [Tooltip("Looping fan hum while the PSU fan spins (optional)")]
     public AudioClip fanSound;
-    [Tooltip("Plays every time the power button is pressed")]
+    [Tooltip("Plays when the power button is pressed but the PC can't start")]
     public AudioClip beepSound;
     [Tooltip("Plays when the PC finally starts")]
     public AudioClip successSound;
@@ -103,6 +106,8 @@ public class PSUMediumManager : MonoBehaviour
         bool spinning = FanSpinning;
         if (spinning && psuFan != null)
             psuFan.Rotate(spinAxis, spinSpeed * Time.deltaTime, Space.Self);
+        if (pcRunning && otherFans != null)
+            foreach (var f in otherFans) if (f != null) FanAxisFinder.Spin(f, spinSpeed * Time.deltaTime);
         UpdateFanSound(spinning);
 
         TryAdvance();
@@ -136,8 +141,8 @@ public class PSUMediumManager : MonoBehaviour
     // ---------- Power button ----------
     public void PressPowerButton()
     {
-        PlayOnce(beepSound);
-        if (pcRunning) return;
+        // Already fixed and running: pressing again does nothing (no beep)
+        if (pcRunning || currentStep == Step.Done) return;
 
         bool canStart = SwitchOn && Seated && !ClipIn &&
                         powerSwitchPlug != null && powerSwitchPlug.IsCorrect;
@@ -149,6 +154,9 @@ public class PSUMediumManager : MonoBehaviour
             PlayOnce(successSound);
             return;
         }
+
+        // Didn't start -> beep = "something is wrong"
+        PlayOnce(beepSound);
 
         // Pressing again with power on but nothing fixed counts as a mistake
         if (pressedOnce && SwitchOn && Seated && !ClipIn && performanceTracker != null)

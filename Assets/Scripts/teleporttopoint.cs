@@ -41,6 +41,10 @@ public class TeleportToPoint : MonoBehaviour
     public GameObject mainMenu;
     public GameObject home;
 
+    [Tooltip("Restart button: these are turned OFF after restarting (e.g. WarningCanvas, ControllerManual), " +
+             "so the game goes straight back into the level instead of the start-up screens")]
+    public GameObject[] hideOnRestart;
+
     [Header("Hint Button")]
     public GameObject hintButton;
     public HintSystem hintSystem;
@@ -103,6 +107,8 @@ public class TeleportToPoint : MonoBehaviour
             string level = RestartIntoLevel;
             RestartIntoLevel = "";
             home.SetActive(false);
+            if (hideOnRestart != null)
+                foreach (var g in hideOnRestart) if (g != null) g.SetActive(false);
             SendMessage("Teleport" + level.Replace(" ", ""), SendMessageOptions.RequireReceiver);
             return;
         }

@@ -17,6 +17,9 @@ public class TutorialHighlighter : MonoBehaviour
         public string note;
         [Tooltip("Checklist group (step) number. Group 0 is usually 'talk to the NPC'.")]
         public int group;
+        [Tooltip("-1 = glow for the whole group. Or the objective (line) number in that group: " +
+                 "the glow turns OFF as soon as that line is ticked, even if the group has more lines.")]
+        public int objective = -1;
         [Tooltip("What to highlight during this step (button, plug, port, NPC...)")]
         public GameObject[] targets;
     }
@@ -38,6 +41,10 @@ public class TutorialHighlighter : MonoBehaviour
     public Color highlightColor = new Color(1f, 0.85f, 0.1f);
     [Range(0f, 1f)] public float strength = 0.65f;
     public float pulseSpeed = 3f;
+    [Tooltip("Also lays a glowing see-through layer over every part. Works on ALL materials " +
+             "(textured, dark, glossy, any shader) - so the whole object lights up evenly.")]
+    public bool glowOverlay = true;
+    [Range(0f, 1f)] public float overlayStrength = 0.55f;
 
     [Header("Arrow above the object")]
     public bool showArrow = true;
@@ -54,6 +61,8 @@ public class TutorialHighlighter : MonoBehaviour
         public Color[][] baseColors;
         public XRBaseInteractable interactable;
         public Transform arrow;
+        public List<GameObject> shells = new List<GameObject>();
+        public Material shellMat;
     }
 
     private readonly Dictionary<GameObject, Lit> cache = new Dictionary<GameObject, Lit>();
@@ -92,18 +101,21 @@ public class TutorialHighlighter : MonoBehaviour
         }
 
         int group = CurrentGroup();
-        if (group != lastGroup)
-        {
-            lastGroup = group;
-            var wanted = new HashSet<GameObject>();
-            foreach (var s in steps)
-                if (s != null && s.group == group && s.targets != null)
-                    foreach (var t in s.targets) if (t != null) wanted.Add(t);
+        lastGroup = group;
 
-            foreach (var go in new List<GameObject>(activeNow))
-                if (!wanted.Contains(go)) { TurnOff(go); activeNow.Remove(go); }
-            foreach (var go in wanted) activeNow.Add(go);
-        }
+        // Rebuilt every frame: a target stops glowing the moment its step/line is done
+        var wanted = new HashSet<GameObject>();
+        if (group >= 0)
+            foreach (var s in steps)
+            {
+                if (s == null || s.group != group || s.targets == null) continue;
+                if (s.objective >= 0 && !checklist.IsCurrentStep(group, s.objective)) continue; // line done
+                foreach (var t in s.targets) if (t != null && t.activeInHierarchy) wanted.Add(t);
+            }
+
+        foreach (var go in new List<GameObject>(activeNow))
+            if (!wanted.Contains(go)) { TurnOff(go); activeNow.Remove(go); }
+        foreach (var go in wanted) activeNow.Add(go);
 
         float k = (Mathf.Sin(Time.time * pulseSpeed) * 0.5f + 0.5f) * strength;
         foreach (var go in activeNow) Glow(go, k);
@@ -133,6 +145,7 @@ public class TutorialHighlighter : MonoBehaviour
         }
         lit.interactable = go.GetComponentInParent<XRBaseInteractable>();
         if (lit.interactable == null) lit.interactable = go.GetComponentInChildren<XRBaseInteractable>();
+        if (glowOverlay) BuildShells(lit);
         cache[go] = lit;
         return lit;
     }
@@ -162,6 +175,13 @@ public class TutorialHighlighter : MonoBehaviour
                 mpb.SetColor(ColorID, c);
                 rend.SetPropertyBlock(mpb, m);
             }
+        }
+
+        if (lit.shellMat != null)
+        {
+            Color oc = highlightColor; oc.a = overlayStrength * (k / Mathf.Max(0.01f, strength));
+            lit.shellMat.color = oc;
+            foreach (var sh in lit.shells) if (sh != null && !sh.activeSelf) sh.SetActive(true);
         }
 
         if (!showArrow) return;
@@ -196,6 +216,34 @@ public class TutorialHighlighter : MonoBehaviour
             }
         }
         if (lit.arrow != null) lit.arrow.gameObject.SetActive(false);
+        foreach (var sh in lit.shells) if (sh != null) sh.SetActive(false);
+    }
+
+    // A see-through copy of each mesh, drawn on top of it in the highlight color
+    private void BuildShells(Lit lit)
+    {
+        Shader sh = Shader.Find("Sprites/Default");
+        if (sh == null) return;
+        lit.shellMat = new Material(sh);
+        foreach (var r in lit.renderers)
+        {
+            var mr = r as MeshRenderer;
+            if (mr == null || mr.transform.IsChildOf(transform)) continue;
+            var mf = mr.GetComponent<MeshFilter>();
+            if (mf == null || mf.sharedMesh == null) continue;
+
+            var shell = new GameObject("HighlightGlow");
+            shell.transform.SetParent(mr.transform, false);
+            shell.AddComponent<MeshFilter>().sharedMesh = mf.sharedMesh;
+            var sr = shell.AddComponent<MeshRenderer>();
+            var mats = new Material[mf.sharedMesh.subMeshCount];
+            for (int i = 0; i < mats.Length; i++) mats[i] = lit.shellMat;
+            sr.sharedMaterials = mats;
+            sr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            sr.receiveShadows = false;
+            shell.SetActive(false);
+            lit.shells.Add(shell);
+        }
     }
 
     private static Bounds Bounds(Lit lit)

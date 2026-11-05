@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -42,9 +43,29 @@ public class ComfortOptions : MonoBehaviour
 
     private static readonly float[] Angles = { 30f, 45f, 90f };
 
+    // ---- Shared between ALL copies (Home settings + Pause settings) ----
+    private static readonly List<ComfortOptions> all = new List<ComfortOptions>();
+    private static bool sInit;
+    private static bool sSnap, sVig;
+    private static float sAngle;
+    private static int sSpeed;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetShared() { all.Clear(); sInit = false; }
+
+    private void WriteShared() { sSnap = snapTurning; sAngle = snapAngle; sSpeed = moveSpeedLevel; sVig = vignetteOn; }
+    private void ReadShared() { snapTurning = sSnap; snapAngle = sAngle; moveSpeedLevel = sSpeed; vignetteOn = sVig; }
+
+    private void OnDestroy() { all.Remove(this); }
+
     private void Awake()
     {
         FindProviders();
+        if (!all.Contains(this)) all.Add(this);
+
+        // Another copy already started: use the SAME current settings, don't reset them
+        if (sInit) { ReadShared(); ApplyAll(); return; }
+        sInit = true;
 
         if (!rememberBetweenSessions)
         {
@@ -53,6 +74,7 @@ public class ComfortOptions : MonoBehaviour
             PlayerPrefs.DeleteKey("SS_SnapAngle");
             PlayerPrefs.DeleteKey("SS_MoveSpeed");
             PlayerPrefs.DeleteKey("SS_Vignette");
+            WriteShared();
             ApplyAll();
             return;
         }
@@ -62,11 +84,13 @@ public class ComfortOptions : MonoBehaviour
         snapAngle = PlayerPrefs.GetFloat("SS_SnapAngle", snapAngle);
         moveSpeedLevel = PlayerPrefs.GetInt("SS_MoveSpeed", moveSpeedLevel);
         vignetteOn = PlayerPrefs.GetInt("SS_Vignette", vignetteOn ? 1 : 0) == 1;
+        WriteShared();
         ApplyAll();
     }
 
     private void OnEnable()
     {
+        if (sInit) ReadShared();
         LanguageManager.OnLanguageChanged += RefreshTexts;
         RefreshTexts();
     }
@@ -97,6 +121,10 @@ public class ComfortOptions : MonoBehaviour
     // ---------- Apply ----------
     private void SaveApply()
     {
+        // Share the change with every copy (Home + Pause), so both show the same thing
+        WriteShared();
+        foreach (var c in all) if (c != null && c != this) { c.ReadShared(); c.RefreshTexts(); }
+
         if (!rememberBetweenSessions) { ApplyAll(); return; }
         PlayerPrefs.SetInt("SS_SnapTurn", snapTurning ? 1 : 0);
         PlayerPrefs.SetFloat("SS_SnapAngle", snapAngle);

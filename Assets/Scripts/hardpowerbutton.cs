@@ -144,11 +144,12 @@ public class PSUHardManager : MonoBehaviour
     // ---------- Power button ----------
     public void PressPowerButton()
     {
-        Play(beepSound);
-        if (pcRunning) return;
+        // Already fixed and running: pressing again does nothing (no beep)
+        if (pcRunning || currentStep == Step.Done) return;
 
         if (!SwitchOn)
         {
+            Play(beepSound);
             ShowScreen(false); // no power at all
             return;
         }
@@ -157,7 +158,8 @@ public class PSUHardManager : MonoBehaviour
 
         if (oldStillIn)
         {
-            // Dead PSU: sparks
+            // Dead PSU: beep + sparks
+            Play(beepSound);
             if (shortCircuitEffect != null) shortCircuitEffect.PlayEffect();
             if (pressedOnce && performanceTracker != null) performanceTracker.RegisterWrongAttempt();
             pressedOnce = true;
@@ -172,7 +174,8 @@ public class PSUHardManager : MonoBehaviour
             return;
         }
 
-        // New PSU missing or not plugged in yet - nothing happens
+        // New PSU missing or not plugged in yet - beep, nothing starts
+        Play(beepSound);
         if (performanceTracker != null) performanceTracker.RegisterWrongAttempt();
         pressedOnce = true;
     }

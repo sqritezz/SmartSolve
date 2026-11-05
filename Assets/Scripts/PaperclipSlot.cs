@@ -94,8 +94,40 @@ public class PaperclipSlot : MonoBehaviour
         SnapIn();
     }
 
+    [Header("Take out without the ray (backup)")]
+    [Tooltip("While the clip is in the holes: bring a controller this close (meters) to the clip " +
+             "and squeeze GRIP - it goes into that hand, even if the ray can't reach it")]
+    public float handGrabDistance = 0.2f;
+
+    private XRBaseInteractor[] interactors;
+    private float nextFind;
+
+    private void TryHandGrab()
+    {
+        if (!hasClip || bentPaperclip == null || bentPaperclip.isSelected || handGrabDistance <= 0f) return;
+        if (interactors == null || Time.unscaledTime > nextFind)
+        {
+            interactors = FindObjectsByType<XRBaseInteractor>(FindObjectsSortMode.None);
+            nextFind = Time.unscaledTime + 2f;
+        }
+        var manager = bentPaperclip.interactionManager;
+        if (manager == null) return;
+
+        Vector3 clipPos = bentPaperclip.transform.position;
+        foreach (var it in interactors)
+        {
+            if (it == null || !it.isActiveAndEnabled || !it.isSelectActive || it.hasSelection) continue;
+            if (it is XRSocketInteractor) continue;
+            if (Vector3.Distance(it.transform.position, clipPos) > handGrabDistance) continue;
+            manager.SelectEnter((IXRSelectInteractor)it, bentPaperclip);   // -> OnClipGrabbed takes it out
+            return;
+        }
+    }
+
     private void LateUpdate()
     {
+        TryHandGrab();
+
         // Keep the clip locked in the holes while inserted
         if (hasClip && bentPaperclip != null && !bentPaperclip.isSelected)
             bentPaperclip.transform.SetPositionAndRotation(transform.position, transform.rotation);
